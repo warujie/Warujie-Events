@@ -154,6 +154,7 @@ def main():
     ap.add_argument("--state", required=True, help="x_events.json: read (when it exists) and updated")
     ap.add_argument("--dry-run", action="store_true", help="read X only; list the new pictures; no model, no state change")
     ap.add_argument("--all", action="store_true", help="read every account now, whatever its week (testing)")
+    ap.add_argument("--accounts", default=ACCOUNTS, help="the accounts file (x_accounts.json; another for testing)")
     args = ap.parse_args()
     log = lambda s: print(s, flush=True)
     token = os.environ.get("X_BEARER_TOKEN", "")
@@ -167,7 +168,7 @@ def main():
             return
         import anthropic
         client = anthropic.Anthropic()
-    with open(ACCOUNTS, encoding="utf-8") as f:
+    with open(args.accounts, encoding="utf-8") as f:
         accounts = [a for a in json.load(f).get("accounts", []) if HANDLE_RE.fullmatch(a.get("handle", "")) and a.get("store")
                     and isinstance(a.get("p"), int) and 1 <= a["p"] <= 47]
     try:

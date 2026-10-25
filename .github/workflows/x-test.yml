@@ -6,7 +6,7 @@ name: X reader test
 on:
   push:
     branches: ['claude/**']
-    paths: [x_find.py]
+    paths: [x_test/kanto_candidates.json]
 
 permissions:
   contents: write
@@ -27,7 +27,7 @@ jobs:
           mkdir -p x_test
           ( echo "X token: $([ -n "$X_BEARER_TOKEN" ] && echo set || echo missing); Anthropic key: $([ -n "$ANTHROPIC_API_KEY" ] && echo set || echo missing)"
             pip install -q anthropic
-            python3 x_find.py --users msAWASE_CARD --max 100
+            python3 x_reader.py --state x_test/kanto_events.json --accounts x_test/kanto_candidates.json --all
           ) > x_test/log.txt 2>&1 || true
           cat x_test/log.txt
       - name: Commit the result to the branch
