@@ -3,7 +3,9 @@
 2026-10-25: automatic, but only the accounts listed in x_accounts.json, to keep the cost down).
 
 Each account in x_accounts.json is read once a week (X_EVERY_DAYS, the owner's choice of
-2026-10-25; the nightly run reads the accounts whose week is up):
+2026-10-25; the nightly run reads the accounts whose week is up), or every `every` days where the
+account says so (1 for shops that announce events on the day or the day before, the owner's
+choice of the same day):
 1. X's API (pay-per-use, the owner's developer account; secret X_BEARER_TOKEN) gives the account's
    own new posts since its last reading (`since_id`), at most X_MAX_POSTS, with any description the
    shop typed for a picture (alt text, free). Reposts and replies are left out. X bills each post
@@ -187,7 +189,7 @@ def main():
     for a in accounts:
         h = a["handle"].lower()
         s = seen.setdefault(h, {})
-        if s.get("read") and not args.all and (today - date.fromisoformat(s["read"])).days < X_EVERY_DAYS:
+        if s.get("read") and not args.all and (today - date.fromisoformat(s["read"])).days < a.get("every", X_EVERY_DAYS):
             continue   # read less than a week ago
         if reads >= args.max_reads:
             log(f"@{a['handle']}: tonight's {args.max_reads} readings are used; read tomorrow")
@@ -248,7 +250,8 @@ def main():
                     log(f"    {pic}: {len(evs)} Magic events (of {len(out.get('events', []))} given)")
                     for e in evs:
                         log(f"      {e['d']} {e['t'] or '--:--'} {e['name']} {','.join(e['f'])} {e.get('fee', '')}")
-                    found += evs
+                    # the same event twice in one post (a picture in Japanese and one in English) is kept once
+                    found += [e for e in evs if not any(same_event(e, f) for f in found)]
                 except Exception as e:   # tried again tomorrow (X bills the post again; the screening is cheap)
                     log(f"    {pic}: {e}")
                     ok = False

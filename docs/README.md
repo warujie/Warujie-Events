@@ -99,7 +99,9 @@ forbids automated collection without written permission, and pages need a login)
   2026-10-25: automatic, but only for the accounts they choose, and each **once a week**, to keep
   the cost down). In the nightly run, before the shops are read, for every account in
   `x_accounts.json` (`handle`, and the `store`, `p` and `c` its events get) last read
-  `X_EVERY_DAYS` (7) or more days ago:
+  `X_EVERY_DAYS` (7) or more days ago, or `every` days for an account that has it (1, daily, for
+  shops that announce events on the day or the day before: Fellows, CANTRIP, CARDWINGS; the
+  owner's choice, 2026-10-25):
   1. X's API (the owner's pay-per-use developer account, secret `X_BEARER_TOKEN`) gives the
      account's own posts since its last reading's newest (`since_id`), at most `X_MAX_POSTS` (25;
      a busier week loses its oldest posts, and the log says so), no reposts or replies, with the
@@ -114,7 +116,8 @@ forbids automated collection without written permission, and pages need a login)
      week before the post to four months after it). Each event links to its post.
   The result, with each account's `since_id` and last reading (`read`), is `x_events.json` in R2 (shop `x`, so the site tags
   it X投稿から); events before yesterday drop out, and a newer post's reading of the same event
-  replaces the older one. A post whose pictures failed (or met the night's limit) is tried again
+  replaces the older one, and the same event in two pictures of one post (Japanese and English) is
+  kept once. A post whose pictures failed (or met the night's limit) is tried again
   the next night. `build_events.py --x-events` adds them as hand-kept events (the same merging
   with Tonamel), and **an event checked by hand in `manual_events.json` wins** over the same one
   read automatically. Without both secrets the step does nothing (X isn't read, so nothing is paid
