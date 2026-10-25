@@ -4,7 +4,7 @@
 
 | File | What it does |
 |---|---|
-| [`build_events.py`](../build_events.py) | Reads the shops' event pages and writes `events.json` (the next 35 days) |
+| [`build_events.py`](../build_events.py) | Reads the shops' event pages and Tonamel's MTG event search, and writes `events.json` (the next 35 days) |
 | [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` alone to R2 |
 
 The site (`warujie/Warujie`) reads the file at `warujie.jp/data/events.json` (its Worker serves the
@@ -14,7 +14,8 @@ on the 大会 tab (the site's `docs/other-pages.md`, "Tournaments tab").
 ## When it runs
 
 Every day at **18:30 UTC** (3:30 in Japan), and by hand ("Run workflow" in GitHub Actions). It
-takes about 10 minutes: about 90 pages, 4 seconds apart. It runs from `main` only, and does nothing
+takes about 10 minutes: about 90 pages, 4 seconds apart, plus a minute to install the headless
+Chromium Tonamel needs. It runs from `main` only, and does nothing
 until the repository has the `CLOUDFLARE_R2_TOKEN` secret (the first step checks, before any shop is
 read).
 
@@ -39,23 +40,42 @@ forbids automated collection without written permission, and pages need a login)
   event's own page and its format icons (`HARERUYA_ICONS`; Dr/Se → limited). Hareruya's standing
   daily league (names with `[毎日開催]`) is left out (`keep()`). The stores, their prefecture and city
   are kept by hand in `HARERUYA` (calendar shop numbers, not the search's venue numbers).
-- **Amenity Dream** (`read_amenity()`): one page lists every store's MTG events, `/matches/?type=2`
-  (type 2 = ＭＴＧ). Its server sends an out-of-date certificate chain, so `amenity_context()` fetches
+- **Amenity Dream** (`read_amenity()`): every store's MTG list, `/matches/?type=2&shop=&date=`
+  (type 2 = ＭＴＧ), shows only the coming week, so the reader then reads one page per day for each
+  day its 開催日 drop-down offers (`amenity_dates()`, about a month: some 32 pages), with further
+  pages if a day's list ever has page links (`amenity_pages()`, at most `AMENITY_MAX_PAGES`).
+  Amenity's events have no page of their own: each links to its store's list for that day
+  (`?type=2&shop=<n>&date=<day>`). Its server sends an out-of-date certificate chain, so `amenity_context()` fetches
   the missing intermediate from the certificate's own AIA link and verifies normally. Stores:
   `AMENITY`.
 - **Yellow Submarine** (`read_yellowsub()`): each store's schedule, `/tmt_list/<store>/` (Shift_JIS),
   rows whose game is マジック. Its names are generic (フライデーナイトマジック), so the format from the
   notes column is added to the name. The store's name comes from the page title; prefecture and city
   from `YELLOWSUB`.
+- **Tonamel** (`read_tonamel()`, the owner's request of 2026-10-25): KAYAC's tournament site, where
+  many smaller stores list their MTG events (Absolute Zero in Okinawa, MINT GAMES, Hobby Station…).
+  Its `robots.txt` disallows only `/organize/` and `/settings/`. Its event search
+  (`TONAMEL_LIST`, MTG in Japan) is built in the browser, and its API (`TONAMEL_API`) answers only
+  the page itself, so the reader opens the page in a headless Chromium (Playwright) as a visitor
+  would, without pictures, fonts, ads or other sites, keeps the lists the page loads
+  (`getPublicCompetitions`, 32 events each) and scrolls for the next one `PAGE_GAP` seconds apart,
+  until the list ends, passes 40 days or `TONAMEL_MAX_PAGES` lists (the whole list was 4 lists on
+  2026-10-25). `parse_tonamel()` keeps offline events that aren't cancelled; leaves out events by
+  the shops read directly (`TONAMEL_SKIP`); takes the prefecture and city from the venue's address
+  (`place_of()`: the prefecture's name, else the postcode's first two digits in `POSTAL_PREF`, else
+  a big city in `CITY_PREF`); the store is the organiser's name, the format comes from the title or
+  the description's 【フォーマット】 line, and each event links to its own Tonamel page.
 - Formats from words come from `formats_in()` (`FORMAT_WORDS`, the same words as the site's
-  `EVENT_FORMAT_WORDS`). Dates without a year get one from `year_for()`.
+  `EVENT_FORMAT_WORDS`; full-width letters folded): every format a name or note names, スタン counting
+  as スタンダード, プレモダン not as モダン, and a モダンホライゾン draft as limited only. Dates without a year
+  get one from `year_for()`.
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
 ## `events.json`
 
 ```
 { "updated": "2026-10-24T18:30:00Z",
-  "sources": { "hareruya": 10678, "amenity": 16, "yellowsub": 240 },
+  "sources": { "hareruya": 10678, "amenity": 16, "yellowsub": 240, "tonamel": 104 },
   "events": [ { "d": "2026-10-25", "t": "13:00", "p": 13, "c": "千代田区",
                 "shop": "hareruya", "store": "秋葉原店", "name": "モダン神挑戦者決定戦トライアル",
                 "url": "https://www.hareruyamtg.com/ja/events/620342/detail", "f": ["modern"] } ] }
@@ -63,8 +83,9 @@ forbids automated collection without written permission, and pages need a login)
 
 One entry per event from today (Japan time) to 35 days ahead, sorted by day and start time. `t` is
 "" when the shop gives no time; `p` is the prefecture's JIS number (1–47), `c` the city or Tokyo
-ward; `shop` is `hareruya`, `amenity` or `yellowsub` (the site's `EVENT_SHOPS`); `url` is the
-event's own page (Hareruya) or the store's schedule (the others); `f` lists the formats (`standard`,
+ward; `shop` is `hareruya`, `amenity`, `yellowsub` or `tonamel` (the site's `EVENT_SHOPS`); `store`
+is the store (for Tonamel, the organiser's name); `url` is the event's own page (Hareruya, Tonamel)
+or the store's schedule (the others); `f` lists the formats (`standard`,
 `pioneer`, `modern`, `legacy`, `vintage`, `pauper`, `commander`, `premodern`, `limited`), left out
 when none is known. About 11,000 events, 2.6 MB (much smaller compressed in transit).
 
@@ -75,7 +96,9 @@ python3 build_events.py --out out/events.json            # every shop, about 10 
 python3 build_events.py --out out/events.json --only amenity
 ```
 
-It needs Python 3.10+ and, for Amenity Dream, `pip install cryptography`.
+It needs Python 3.10+, for Amenity Dream `pip install cryptography`, and for Tonamel
+`pip install playwright` then `python3 -m playwright install chromium` (without them Tonamel is
+skipped, and the log says so).
 
 ## Troubleshooting
 
@@ -84,4 +107,5 @@ It needs Python 3.10+ and, for Amenity Dream, `pip install cryptography`.
 | The 大会 tab says the list is coming | `events.json` was never published: is the secret set, and did the last run go green? |
 | One shop's events are missing | The run log says how many events each shop gave (`hareruya: 0 events` means its page changed; fix its parser) |
 | Events are a day old | Normal: the file is read once a night |
-| A new store is missing | Add it to `HARERUYA`, `AMENITY` or `YELLOWSUB` |
+| A new store is missing | Add it to `HARERUYA`, `AMENITY` or `YELLOWSUB`; a store that lists its events on Tonamel appears by itself |
+| A Tonamel event is missing | Online and cancelled events are left out, and so are events whose address names no prefecture `place_of()` knows; the log's `tonamel: stopped at …` line says why the list ended |

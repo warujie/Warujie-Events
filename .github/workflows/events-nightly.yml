@@ -1,9 +1,10 @@
 # Local Magic tournaments for warujie.jp's 大会 calendar, read once a night.
 #
 # build_events.py reads Hareruya's, Amenity Dream's and Yellow Submarine's own event lists
-# (the owner's decision, 2026-10-24): only pages their robots.txt allows, one page at a time,
-# 4 seconds apart, with a User-Agent naming warujie.jp. Every event links back to the shop's
-# page. If a shop asks us to stop, take it out of build_events.py at once.
+# (the owner's decision, 2026-10-24) and Tonamel's public MTG event search (the owner's request,
+# 2026-10-25): only pages their robots.txt allows, one page at a time, 4 seconds apart, with a
+# User-Agent naming warujie.jp. Every event links back to the shop's or Tonamel's page. If a site
+# asks us to stop, take it out of build_events.py at once.
 #
 # The result is published to the private R2 bucket (as events.json), which warujie.jp reads
 # through its Worker at /data/events.json. If every source fails, nothing is published and
@@ -47,7 +48,10 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
-      - run: pip install cryptography
+      # cryptography for Amenity Dream's certificate; a headless Chromium for Tonamel's search page
+      - run: |
+          pip install cryptography playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
 
       - name: Read the shops' event lists
         run: python3 build_events.py --out site/events.json
