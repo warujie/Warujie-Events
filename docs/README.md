@@ -37,7 +37,9 @@ anywhere else.
 We read only what each shop's `robots.txt` allows, one page at a time, `PAGE_GAP` (4) seconds apart
 (`fetch()`), with a User-Agent naming warujie.jp and our contact address. **If a shop asks us to
 stop, take it out at once.** Never added: Wizards' Store & Event Locator (its `robots.txt` disallows
-`/api/`, where its events come from, and its terms forbid scraping) and Facebook (its `robots.txt`
+`/api/`, where its events come from, and its terms forbid scraping), the event pages of mtg-jp.com
+(Wizards' Japanese site, e.g. its Store Championship list; checked 2026-10-25: Wizards' terms, 2.2(i),
+forbid robots, scripts and spiders, and Wizards gave no permission beyond the Fan Content Policy) and Facebook (its `robots.txt`
 forbids automated collection without written permission, and pages need a login).
 
 - **Hareruya** (`read_hareruya()`): each store's month calendar, `/ja/events/?shop=<n>&date=<YYYYMM>`,
@@ -97,6 +99,14 @@ forbids automated collection without written permission, and pages need a login)
   `EVENT_FORMAT_WORDS`; full-width letters folded): every format a name or note names, スタン counting
   as スタンダード, プレモダン not as モダン, and a モダンホライゾン draft as limited only. Dates without a year
   get one from `year_for()`.
+- **Entry fees** (the owner's request, 2026-10-25: yen only, where the source gives one): `yen_of()`
+  takes the first sum in yen (¥1,000, 1000円; 無料 is 0) and ignores a pack or purchase asked for
+  instead (1パック購入, 200円以上購入, 3,000円分). Sources: Yellow Submarine's 費用 column, a fee
+  column on Amenity Dream's table should it have one, the 参加費 line of a Tonamel description
+  (`tonamel_fee()`), and `fee` / `fee_to` in `manual_events.json` (read off the picture; `fee_to`
+  when the fee depends on the language of the packs, as at prereleases). Hareruya's calendar gives
+  no fee (only each event's own page does), so its events have none. A hand-kept event that merges
+  into a Tonamel event without a fee hands its fee over (`tidy()`).
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
 ## `events.json`
@@ -106,7 +116,7 @@ forbids automated collection without written permission, and pages need a login)
   "sources": { "hareruya": 10678, "amenity": 16, "yellowsub": 240, "tonamel": 104, "manual": 89 },
   "events": [ { "d": "2026-10-25", "t": "13:00", "p": 13, "c": "千代田区",
                 "shop": "hareruya", "store": "秋葉原店", "name": "モダン神挑戦者決定戦トライアル",
-                "url": "https://www.hareruyamtg.com/ja/events/620342/detail", "f": ["modern"] } ] }
+                "url": "https://www.hareruyamtg.com/ja/events/620342/detail", "f": ["modern"], "fee": 1000 } ] }
 ```
 
 One entry per event from today (Japan time) to 35 days ahead, sorted by day and start time. `t` is
@@ -116,7 +126,8 @@ ward; `shop` is `hareruya`, `amenity`, `yellowsub`, `tonamel`, `mint` or `x` (th
 page (Hareruya, Tonamel, MINT's Tonamel events), the post on X (`x`) or the store's schedule (the
 others); `sources` counts each reader's events (`manual`: the calendar pictures); `f` lists the formats (`standard`,
 `pioneer`, `modern`, `legacy`, `vintage`, `pauper`, `commander`, `premodern`, `limited`), left out
-when none is known. About 11,000 events, 2.6 MB (much smaller compressed in transit).
+when none is known; `fee` is the entry fee in yen (0 when free) and `fee_to` the higher fee when
+there are two (Japanese or English packs), both left out when unknown. About 11,000 events, 2.6 MB (much smaller compressed in transit).
 
 ## Running it on your computer
 

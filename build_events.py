@@ -103,6 +103,28 @@ def formats_in(text):
     return [f for f, pat in FORMAT_WORDS if re.search(pat, text, re.I)]
 
 
+# an entry fee in yen: ¥1,000 / 1000円 / 無料 (a pack to buy instead, 1パック購入 or 200円以上購入, is no fee)
+YEN_RE = re.compile(r"[¥￥]\s*(\d{1,3}(?:,\d{3})+|\d{1,6})(?!\d)|(?<![\d,])(\d{1,3}(?:,\d{3})+|\d{1,6})\s*円(?!\s*(?:分|以上|の?購入|相当))")
+
+
+def yen_of(text):
+    """The first entry fee in yen a piece of text gives, as a whole number (0 when it says free),
+    or None."""
+    text = unicodedata.normalize("NFKC", text or "").replace("¥", "¥")
+    m = YEN_RE.search(text.replace("￥", "¥"))
+    if m and not re.search(r"購入", text[m.end():m.end() + 6]):
+        return int((m.group(1) or m.group(2)).replace(",", ""))
+    if re.search(r"無料|free", text, re.I) and not re.search(r"\d", text):
+        return 0
+    return None
+
+
+def tonamel_fee(description):
+    """The fee on a Tonamel description's 参加費 line (【参加費】1,000円, 参加費：無料…)."""
+    m = re.search(r"参加費[】\]）)]*[：:\s　]*([^\n<]{1,40})", description or "")
+    return yen_of(m.group(1)) if m else None
+
+
 def clean(s):
     s = re.sub(r"<[^>]+>", " ", s)
     return re.sub(r"\s+", " ", htmllib.unescape(s)).strip()
@@ -214,9 +236,12 @@ def parse_amenity(html, today):
         shop, pref, city = AMENITY[tds[1]]
         name, style = tds[3], tds[4]
         fs = formats_in(name) or formats_in(style)
+        # a fee column, should the table have one: a later cell that is only a sum (1,000円, ¥500, 無料)
+        fee = next((yen_of(x) for x in tds[5:] if re.fullmatch(r"(参加費[：:]?\s*)?([¥￥]\s*[\d,]+|[\d,]+\s*円|無料)", x)), None)
         out.append({"d": f"{year_for(mo, today):04d}-{mo:02d}-{da:02d}", "t": m.group(3) or "", "p": pref, "c": city,
                     "shop": "amenity", "store": tds[1], "name": name,
-                    "url": f"https://amenitydream.co.jp/matches/?type=2&shop={shop}&date={year_for(mo, today):04d}-{mo:02d}-{da:02d}", "f": fs})
+                    "url": f"https://amenitydream.co.jp/matches/?type=2&shop={shop}&date={year_for(mo, today):04d}-{mo:02d}-{da:02d}", "f": fs,
+                    "fee": fee})
     return out
 
 
@@ -353,7 +378,7 @@ def parse_tonamel(nodes):
             m = re.search(r"フォーマット[】\]：:\s　]*([^<\n]{1,40})", n.get("description") or "")
             fs = formats_in(title) or (formats_in(clean(m.group(1))) if m else [])
             out.append({"d": d, "t": t, "p": pref, "c": city, "shop": shop, "store": store, "name": title,
-                        "url": f"https://tonamel.com/competition/{n['id']}", "f": fs})
+                        "url": f"https://tonamel.com/competition/{n['id']}", "f": fs, "fee": tonamel_fee(n.get("description"))})
     return out
 
 
@@ -442,7 +467,7 @@ def parse_yellowsub(html, slug, pref, city, today):
             name = f"{name}（{'・'.join(FORMAT_JA[f] for f in fs)}）"
         t = tds[3] if re.fullmatch(r"\d{1,2}:\d{2}", tds[3]) else ""
         out.append({"d": f"{year_for(mo, today):04d}-{mo:02d}-{da:02d}", "t": t, "p": pref, "c": city,
-                    "shop": "yellowsub", "store": store, "name": name, "url": url, "f": fs})
+                    "shop": "yellowsub", "store": store, "name": name, "url": url, "f": fs, "fee": yen_of(tds[4])})
     return out
 
 
@@ -487,8 +512,10 @@ def read_manual(today, log):
             log(f"  manual: left out {json.dumps(r, ensure_ascii=False)[:160]}")
             continue
         fs = [f for f in (r.get("f") or []) if f in FORMAT_JA] or formats_in(r["name"])
+        fee = r.get("fee") if isinstance(r.get("fee"), int) and r["fee"] >= 0 else None
+        fee_to = r.get("fee_to") if fee is not None and isinstance(r.get("fee_to"), int) and r["fee_to"] > fee else None
         out.append({"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": shop,
-                    "store": r["store"], "name": r["name"], "url": url, "f": fs})
+                    "store": r["store"], "name": r["name"], "url": url, "f": fs, "fee": fee, "fee_to": fee_to})
     return out
 
 
@@ -528,12 +555,17 @@ def tidy(events):
     seen, unique = set(), []
     for e in sorted(events, key=lambda e: (e["d"], e["t"] or "99:99", e["p"], e["store"], e["name"])):
         k = (e["d"], e["t"], e["shop"], e["store"], e["name"])
-        if k in seen or (hand_kept(e) and any(same_event(e, o) for o in read.get((e["d"], store_key(e["store"])), []))):
+        twin = hand_kept(e) and next((o for o in read.get((e["d"], store_key(e["store"])), []) if same_event(e, o)), None)
+        if twin and twin.get("fee") is None and e.get("fee") is not None:
+            twin["fee"], twin["fee_to"] = e["fee"], e.get("fee_to")   # the picture's fee, where Tonamel gives none
+        if k in seen or twin:
             continue
         seen.add(k)
-        if not e.get("f"):
-            e.pop("f", None)
         unique.append(e)
+    for e in unique:   # no empty fields in the file
+        for x in ("f", "fee", "fee_to"):
+            if e.get(x) is None or e.get(x) == []:
+                e.pop(x, None)
     return unique
 
 
