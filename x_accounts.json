@@ -2,6 +2,10 @@
   "note": "The shops' X accounts whose calendar pictures x_reader.py reads each night (docs/README.md, \"Calendar pictures on X, read automatically\"). Only these accounts are read, to keep the cost down (the owner's choice, 2026-10-25). handle: the account (x.com/<handle>); store: the shop's name as the calendar shows it (as on Tonamel when the shop lists there too); p: prefecture (JIS 1-47); c: city.",
   "accounts": [
     {"handle": "ZEROPOMTA", "store": "ABSOLUTE ZERO", "p": 47, "c": "中城村"},
-    {"handle": "msAWASE_CARD", "store": "マンガ倉庫 泡瀬店", "p": 47, "c": "沖縄市"}
+    {"handle": "msAWASE_CARD", "store": "マンガ倉庫 泡瀬店", "p": 47, "c": "沖縄市"},
+    {"handle": "TokyoMTG", "store": "東京MTG", "p": 13, "c": "千代田区"},
+    {"handle": "MastersSquare", "store": "マスターズスクウェア", "p": 13, "c": "八王子市"},
+    {"handle": "GOODGAME_Ootaka", "store": "GOODGAME 流山おおたかの森店", "p": 12, "c": "流山市"},
+    {"handle": "TrickMatsudo", "store": "トリックスター 松戸", "p": 12, "c": "松戸市"}
   ]
 }
