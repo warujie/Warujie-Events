@@ -1,6 +1,6 @@
 # A test of x_reader.py on a work branch (not on main): reads the accounts in x_accounts.json once,
 # from a fresh state, and commits the log and the result to the branch (x_test/). Without the
-# ANTHROPIC_API_KEY secret it only lists the new pictures (--dry-run). Removed before a publish.
+# ANTHROPIC_API_KEY secret it only lists the new pictures (--dry-run). Removed before a publish (test 2).
 name: X reader test
 
 on:
