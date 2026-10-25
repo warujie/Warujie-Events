@@ -1,0 +1,36 @@
+# A test of x_reader.py on a work branch (not on main): reads the accounts in x_accounts.json once,
+# from a fresh state, and commits the log and the result to the branch (x_test/). Without the
+# ANTHROPIC_API_KEY secret it only lists the new pictures (--dry-run). Removed before a publish.
+name: X reader test
+
+on:
+  push:
+    branches: ['claude/**']
+    paths: [x_reader.py, x_accounts.json, .github/workflows/x-test.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Read the accounts once
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          mkdir -p x_test
+          ( echo "X token: $([ -n "$X_BEARER_TOKEN" ] && echo set || echo missing); Anthropic key: $([ -n "$ANTHROPIC_API_KEY" ] && echo set || echo missing)"
+            pip install -q anthropic
+            if [ -n "$ANTHROPIC_API_KEY" ]; then python3 x_reader.py --state x_test/x_events.json; else python3 x_reader.py --state x_test/x_events.json --dry-run; fi
+          ) > x_test/log.txt 2>&1 || true
+          cat x_test/log.txt
+      - name: Commit the result to the branch
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add x_test && git commit -qm "X reader test: log and result" && git push || echo "nothing to commit"

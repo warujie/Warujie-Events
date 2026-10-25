@@ -531,6 +531,8 @@ def read_yellowsub(today, log):
 
 # ---- calendar pictures (by hand): shops' X posts and MINT's schedule pages
 MANUAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual_events.json")
+# the events x_reader.py read automatically from the chosen accounts' pictures on X (kept in R2)
+X_EVENTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "x_events.json")
 # what each hand-kept event may link to: for X, the post, or the shop's X account (where its
 # calendars are) when the post's own link isn't known; for MINT, the store's schedule page
 MANUAL_LINKS = {
@@ -541,13 +543,16 @@ MANUAL_LINKS = {
 
 def read_manual(today, log):
     """The events read by hand from shops' calendar pictures (manual_events.json): posts on X
-    (shop "x") and MINT's monthly schedule pages (shop "mint"). An entry that doesn't hold
-    together (a date, a time, a prefecture, a link of its kind) is left out."""
-    try:
-        with open(MANUAL, encoding="utf-8") as f:
-            rows = json.load(f).get("events", [])
-    except FileNotFoundError:
-        return []
+    (shop "x") and MINT's monthly schedule pages (shop "mint"), and those x_reader.py read
+    automatically from the chosen accounts' pictures on X (x_events.json). An entry that doesn't
+    hold together (a date, a time, a prefecture, a link of its kind) is left out."""
+    rows = []
+    for path in (MANUAL, X_EVENTS):
+        try:
+            with open(path, encoding="utf-8") as f:
+                rows += [dict(r, auto=path == X_EVENTS) for r in json.load(f).get("events", [])]
+        except (FileNotFoundError, ValueError):
+            pass
     out = []
     for r in rows:
         shop = r.get("shop") or "x"
@@ -562,8 +567,12 @@ def read_manual(today, log):
         fs = [f for f in (r.get("f") or []) if f in FORMAT_JA] or formats_in(r["name"])
         fee = r.get("fee") if isinstance(r.get("fee"), int) and r["fee"] >= 0 else None
         fee_to = r.get("fee_to") if fee is not None and isinstance(r.get("fee_to"), int) and r["fee_to"] > fee else None
-        out.append({"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": shop,
-                    "store": r["store"], "name": r["name"], "url": url, "f": fs, "fee": fee, "fee_to": fee_to})
+        e = {"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": shop,
+             "store": r["store"], "name": r["name"], "url": url, "f": fs, "fee": fee, "fee_to": fee_to}
+        # an event read automatically (x_events.json) gives way to the same event checked by hand
+        if r["auto"] and any(same_event(e, m) for m in out if not m.get("auto")):
+            continue
+        out.append(dict(e, auto=True) if r["auto"] else e)
     return out
 
 
@@ -611,6 +620,7 @@ def tidy(events):
         seen.add(k)
         unique.append(e)
     for e in unique:   # no empty fields in the file
+        e.pop("auto", None)
         for x in ("f", "fee", "fee_to"):
             if e.get(x) is None or e.get(x) == []:
                 e.pop(x, None)
@@ -640,7 +650,11 @@ def main():
     ap.add_argument("--manual-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
     ap.add_argument("--fees", metavar="CACHE", help="Hareruya's fees: read and update this cache (hareruya_fees.json)")
     ap.add_argument("--fee-minutes", type=float, default=32, help="stop reading Hareruya's event pages this long after the start")
+    ap.add_argument("--x-events", metavar="FILE", help="the events x_reader.py read from pictures on X (x_events.json)")
     args = ap.parse_args()
+    if args.x_events:
+        global X_EVENTS
+        X_EVENTS = args.x_events
     log = lambda s: print(s, flush=True)
     started = time.time()
     today = datetime.now(JST).date()

@@ -6,6 +6,7 @@
 |---|---|
 | [`build_events.py`](../build_events.py) | Reads the shops' event pages and Tonamel's MTG event search, adds the events read by hand from shops' calendar pictures, and writes `events.json` (the next 35 days) |
 | [`manual_events.json`](../manual_events.json) | The Magic events read by hand from shops' calendar pictures: posts on X and MINT's schedule pages ("Calendar pictures" below) |
+| [`x_reader.py`](../x_reader.py), [`x_accounts.json`](../x_accounts.json) | Reads the calendar pictures of the shops' X accounts listed in `x_accounts.json` automatically, each night, into `x_events.json` (kept in R2): "Calendar pictures on X, read automatically" below |
 | [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` (and Hareruya's fee cache, `hareruya_fees.json`) to R2; a change to `manual_events.json` on `main` updates only those events at once |
 
 The site (`warujie/Warujie`) reads the file at `warujie.jp/data/events.json` (its Worker serves the
@@ -93,9 +94,31 @@ forbids automated collection without written permission, and pages need a login)
   dropped in favour of the read one, whose page has the details (`tidy()`, `same_event()`;
   `store_key()` matches names across sources, `MINTGAMESMTG店` and `GAMES MTG店` alike). MINT's
   stores that list on Tonamel join MINT's own entry (`TONAMEL_MINT`), and Tonamel's play-room
-  bookings (【ルーム予約】貸切プレイルーム) are not events (`TONAMEL_NOT_EVENT`). The plan for reading
-  pictures automatically later (X's API with a spending cap, Claude reading the pictures) is in
-  the project files, `x-twitter/plan.md`.
+  bookings (【ルーム予約】貸切プレイルーム) are not events (`TONAMEL_NOT_EVENT`).
+- **Calendar pictures on X, read automatically** (`x_reader.py`, the owner's request of
+  2026-10-25: automatic, but only for the accounts they choose, to keep the cost down). Each night,
+  before the shops are read, for every account in `x_accounts.json` (`handle`, and the `store`, `p`
+  and `c` its events get):
+  1. X's API (the owner's pay-per-use developer account, secret `X_BEARER_TOKEN`) gives the
+     account's own posts since the last night's newest (`since_id`), at most `X_MAX_POSTS`, no
+     reposts or replies; the first night, the latest posts of the last `X_POST_DAYS` days. X bills
+     each post read ($0.005 in 2026-10) and each account's first lookup ($0.01).
+  2. Each picture goes first to a small model (`SCREEN_MODEL`, a fraction of a cent), which only
+     says whether it gives the dates of Magic events.
+  3. Those pictures go to `READ_MODEL` (secret `ANTHROPIC_API_KEY`), which lists the Magic events:
+     day, start, name, formats, fee (`READ_PROMPT`, a fixed JSON shape, `READ_SCHEMA`), at most
+     `X_MAX_READS` pictures a night; `valid_events()` keeps those that hold together (a date from a
+     week before the post to four months after it). Each event links to its post.
+  The result, with each account's `since_id`, is `x_events.json` in R2 (shop `x`, so the site tags
+  it X投稿から); events before yesterday drop out, and a newer post's reading of the same event
+  replaces the older one. A post whose pictures failed (or met the night's limit) is tried again
+  the next night. `build_events.py --x-events` adds them as hand-kept events (the same merging
+  with Tonamel), and **an event checked by hand in `manual_events.json` wins** over the same one
+  read automatically. Without both secrets the step does nothing (X isn't read, so nothing is paid
+  for). **To add a shop:** a line in `x_accounts.json`; to drop one, remove its line (its events go
+  when they have passed). A spending limit is set in X's Developer Console and Anthropic's Console.
+  The test workflow `x-test.yml` runs the reader once on a `claude/…` work branch and commits its
+  log to `x_test/` there.
 - Formats from words come from `formats_in()` (`FORMAT_WORDS`, the same words as the site's
   `EVENT_FORMAT_WORDS`; full-width letters folded): every format a name or note names, スタン counting
   as スタンダード, プレモダン not as モダン, and a モダンホライゾン draft as limited only. Dates without a year

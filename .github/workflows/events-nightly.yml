@@ -6,8 +6,10 @@
 # User-Agent naming warujie.jp. Every event links back to the shop's or Tonamel's page. If a site
 # asks us to stop, take it out of build_events.py at once.
 #
-# Shops' calendar pictures (posts on X, which is never read itself, and MINT's schedule pages)
-# are read by hand into manual_events.json; a push that changes that file on main puts its events
+# Shops' calendar pictures are read by hand into manual_events.json (MINT's schedule pages, and
+# posts on X the owner hands over), and the pictures of the X accounts listed in x_accounts.json
+# automatically by x_reader.py (X's paid API and a Claude model; secrets X_BEARER_TOKEN and
+# ANTHROPIC_API_KEY; the owner's request, 2026-10-25), kept in x_events.json in R2; a push that changes manual_events.json on main puts its events
 # into the published file at once, without reading any shop again.
 #
 # The result is published to the private R2 bucket (as events.json), which warujie.jp reads
@@ -62,22 +64,38 @@ jobs:
           pip install cryptography playwright==1.56.0
           python3 -m playwright install --with-deps chromium
 
+      # the chosen shops' calendar pictures on X, read automatically (x_reader.py): only with both
+      # secrets; yesterday's x_events.json says which posts are already read. A failure here never
+      # stops the calendar: the events read before stay.
+      - name: Read the chosen shops' pictures on X
+        if: github.event_name != 'push'
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          aws s3 cp "s3://warujie-price-data/x_events.json" x_events.json --endpoint-url "$R2_ENDPOINT" --only-show-errors || echo "No x_events.json yet"
+          if [ -n "$X_BEARER_TOKEN" ] && [ -n "$ANTHROPIC_API_KEY" ]; then
+            pip install -q anthropic && python3 x_reader.py --state x_events.json || echo "::warning::x_reader.py failed; yesterday's X events stay"
+          else echo "No X_BEARER_TOKEN or ANTHROPIC_API_KEY secret: X is not read"; fi
+
       # Hareruya's fees: yesterday's cache, so each event page is read once (none yet on the first night)
       - name: Read the shops' event lists
         if: github.event_name != 'push'
         run: |
           aws s3 cp "s3://warujie-price-data/hareruya_fees.json" hareruya_fees.json --endpoint-url "$R2_ENDPOINT" --only-show-errors || echo "No fee cache yet"
-          python3 build_events.py --out site/events.json --fees hareruya_fees.json
+          python3 build_events.py --out site/events.json --fees hareruya_fees.json --x-events x_events.json
 
       # manual_events.json changed: only its events change in the published file
       - name: Update the events read from calendar pictures
         if: github.event_name == 'push'
         run: |
           aws s3 cp "s3://warujie-price-data/events.json" published.json --endpoint-url "$R2_ENDPOINT" --only-show-errors
-          python3 build_events.py --out site/events.json --manual-only published.json
+          aws s3 cp "s3://warujie-price-data/x_events.json" x_events.json --endpoint-url "$R2_ENDPOINT" --only-show-errors || echo "No x_events.json yet"
+          python3 build_events.py --out site/events.json --manual-only published.json --x-events x_events.json
 
       - name: Publish to R2
         run: |
           aws s3 cp site/events.json "s3://warujie-price-data/events.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors
           echo "Published events.json ($(stat -c %s site/events.json) bytes)"
+          if [ -s x_events.json ] && [ "${{ github.event_name }}" != push ]; then aws s3 cp x_events.json "s3://warujie-price-data/x_events.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors; fi
           if [ -s hareruya_fees.json ]; then aws s3 cp hareruya_fees.json "s3://warujie-price-data/hareruya_fees.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors; fi
