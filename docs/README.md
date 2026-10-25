@@ -96,12 +96,11 @@ forbids automated collection without written permission, and pages need a login)
   stores that list on Tonamel join MINT's own entry (`TONAMEL_MINT`), and Tonamel's play-room
   bookings (【ルーム予約】貸切プレイルーム) are not events (`TONAMEL_NOT_EVENT`).
 - **Calendar pictures on X, read automatically** (`x_reader.py`, the owner's request of
-  2026-10-25: automatic, but only for the accounts they choose, and each **once a week**, to keep
-  the cost down). In the nightly run, before the shops are read, for every account in
-  `x_accounts.json` (`handle`, and the `store`, `p` and `c` its events get) last read
-  `X_EVERY_DAYS` (7) or more days ago, or `every` days for an account that has it (1, daily, for
-  shops that announce events on the day or the day before: Fellows, CANTRIP, CARDWINGS; the
-  owner's choice, 2026-10-25):
+  2026-10-25: automatic, but only for the accounts they choose, and each **once a week, on
+  Sunday**, to keep the cost down). In the nightly run, before the shops are read, for every
+  account in `x_accounts.json` (`handle`, and the `store`, `p` and `c` its events get) not read
+  since the last Sunday in Japan (`X_WEEKDAY`; so on Sunday morning's run, and the first run after
+  an account is added or was cut off):
   1. X's API (the owner's pay-per-use developer account, secret `X_BEARER_TOKEN`) gives the
      account's own posts since its last reading's newest (`since_id`), at most `X_MAX_POSTS` (25;
      a busier week loses its oldest posts, and the log says so), no reposts or replies, with the

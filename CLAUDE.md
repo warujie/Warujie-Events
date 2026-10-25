@@ -26,7 +26,7 @@ Start with [`docs/README.md`](docs/README.md).
    below). **Shops' calendar pictures on X** (the owner's choice, 2026-10-25): by hand
    (the owner hands over the picture and the post's link, Claude lists the Magic events, the owner
    checks them, and they go into `manual_events.json`), and **automatically through X's paid API**
-   (the owner's request, 2026-10-25) for the accounts in `x_accounts.json` only, each once a week (daily for shops that post on the day): `x_reader.py`, with
+   (the owner's request, 2026-10-25) for the accounts in `x_accounts.json` only, each once a week, on Sunday: `x_reader.py`, with
    the owner's secrets `X_BEARER_TOKEN` and `ANTHROPIC_API_KEY`; each event links to its post.
    **MINT** (the owner's request, 2026-10-25): its stores' monthly schedule pictures on mint-web.jp
    (robots.txt allows them), read the same way into `manual_events.json`, each linking to the

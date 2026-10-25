@@ -2,10 +2,9 @@
 """Magic events from shops' calendar pictures on X, read automatically (the owner's request,
 2026-10-25: automatic, but only the accounts listed in x_accounts.json, to keep the cost down).
 
-Each account in x_accounts.json is read once a week (X_EVERY_DAYS, the owner's choice of
-2026-10-25; the nightly run reads the accounts whose week is up), or every `every` days where the
-account says so (1 for shops that announce events on the day or the day before, the owner's
-choice of the same day):
+Each account in x_accounts.json is read once a week, on Sunday (X_WEEKDAY: the nightly run of
+3:30 on Sunday morning in Japan; the owner's choice of 2026-10-25). An account not read since the
+last Sunday (a new one, or one cut off by the night's limit) is read in the next nightly run:
 1. X's API (pay-per-use, the owner's developer account; secret X_BEARER_TOKEN) gives the account's
    own new posts since its last reading (`since_id`), at most X_MAX_POSTS, with any description the
    shop typed for a picture (alt text, free). Reposts and replies are left out. X bills each post
@@ -41,7 +40,7 @@ from build_events import FORMAT_JA, JST, USER_AGENT, formats_in, same_event
 HERE = os.path.dirname(os.path.abspath(__file__))
 ACCOUNTS = os.path.join(HERE, "x_accounts.json")
 X_API = "https://api.x.com/2"
-X_EVERY_DAYS = 7        # each account is read once a week (the owner's choice, 2026-10-25)
+X_WEEKDAY = 6           # each account is read once a week, on Sunday in Japan (the owner's choice, 2026-10-25)
 X_MAX_POSTS = 25        # per account and reading (about a week of a busy shop's posts; X's page is 5-100)
 X_MAX_READS = 20        # pictures read by READ_MODEL per night, whatever the accounts post
 X_POST_DAYS = 45        # posts older than this are never read (a first night, or an account added later)
@@ -156,7 +155,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--state", required=True, help="x_events.json: read (when it exists) and updated")
     ap.add_argument("--dry-run", action="store_true", help="read X only; list the new pictures; no model, no state change")
-    ap.add_argument("--all", action="store_true", help="read every account now, whatever its week (testing)")
+    ap.add_argument("--all", action="store_true", help="read every account now, whatever the day (testing)")
     ap.add_argument("--max-reads", type=int, default=X_MAX_READS, help="pictures read per night at most")
     ap.add_argument("--accounts", default=ACCOUNTS, help="the accounts file (x_accounts.json; another for testing)")
     args = ap.parse_args()
@@ -184,13 +183,14 @@ def main():
     kept = state.get("events", [])
     now = datetime.now(JST)
     today = now.date()
+    last_sunday = (today - timedelta(days=(today.weekday() - X_WEEKDAY) % 7)).isoformat()
     posts_read = screened = reads = 0
     cost_note = []
     for a in accounts:
         h = a["handle"].lower()
         s = seen.setdefault(h, {})
-        if s.get("read") and not args.all and (today - date.fromisoformat(s["read"])).days < a.get("every", X_EVERY_DAYS):
-            continue   # read less than a week ago
+        if s.get("read") and not args.all and s["read"] >= last_sunday:
+            continue   # read since the last Sunday
         if reads >= args.max_reads:
             log(f"@{a['handle']}: tonight's {args.max_reads} readings are used; read tomorrow")
             continue
