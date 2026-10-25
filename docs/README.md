@@ -52,7 +52,9 @@ forbids automated collection without written permission, and pages need a login)
   notes column is added to the name. The store's name comes from the page title; prefecture and city
   from `YELLOWSUB`.
 - Formats from words come from `formats_in()` (`FORMAT_WORDS`, the same words as the site's
-  `EVENT_FORMAT_WORDS`). Dates without a year get one from `year_for()`.
+  `EVENT_FORMAT_WORDS`; full-width letters folded): every format a name or note names, スタン counting
+  as スタンダード, プレモダン not as モダン, and a モダンホライゾン draft as limited only. Dates without a year
+  get one from `year_for()`.
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
 ## `events.json`

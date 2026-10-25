@@ -30,6 +30,7 @@ import re
 import ssl
 import sys
 import time
+import unicodedata
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -72,10 +73,12 @@ YELLOWSUB = [
     ("nagoya_gs", 23, "名古屋市"), ("nanba_s", 27, "大阪市"), ("nanba_3", 27, "大阪市"), ("kyoto", 26, "京都市"),
     ("sannomiya", 28, "神戸市"), ("himeji", 28, "姫路市"), ("hiroshima", 34, "広島市"), ("fukuoka_mc", 40, "福岡市"),
 ]
-# a format from words in an event's name or notes (the order matters: プレモダン before モダン)
+# the formats an event's name or notes name: スタン is スタンダード, プレモダン isn't モダン, and a
+# モダンホライゾン draft is limited, not modern
 FORMAT_WORDS = [
     ("premodern", r"プレモダン|premodern"), ("pauper", r"パウパー|pauper"), ("commander", r"統率者|EDH|コマンダー|commander"),
-    ("standard", r"スタンダード|standard"), ("pioneer", r"パイオニア|pioneer"), ("modern", r"モダン|modern"),
+    ("standard", r"スタン(?!プ)|standard"), ("pioneer", r"パイオニア|pioneer"),
+    ("modern", r"(?<!プレ)モダン(?!ホライゾン)|(?<!pre)modern(?! horizons)"),
     ("legacy", r"レガシー|legacy"), ("vintage", r"ヴィンテージ|vintage"),
     ("limited", r"ドラフト|シールド|リミテッド|プレリリース|draft|sealed|limited|prerelease"),
 ]
@@ -84,6 +87,7 @@ FORMAT_JA = {"standard": "スタンダード", "pioneer": "パイオニア", "mo
 
 
 def formats_in(text):
+    text = unicodedata.normalize("NFKC", text)
     return [f for f, pat in FORMAT_WORDS if re.search(pat, text, re.I)]
 
 
