@@ -1,0 +1,4 @@
+{
+  "note": "Magic events read by hand from shops' calendar pictures on X (docs/README.md, \"X posts\"). One entry per event: d (YYYY-MM-DD), t (HH:MM, or \"\"), p (prefecture, JIS 1-47), c (city), store (spelled as on Tonamel when the shop lists there too), name, f (formats), url (the post on X), read (the day it was read).",
+  "events": []
+}

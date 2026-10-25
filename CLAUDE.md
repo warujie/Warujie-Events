@@ -23,7 +23,10 @@ Start with [`docs/README.md`](docs/README.md).
    headless browser once a night under the same rules (its robots.txt disallows only `/organize/`
    and `/settings/`); every event links to its Tonamel page. **X (Twitter)** is not read: x.com's
    robots.txt forbids it, and the only permitted route is the paid X API (the owner chose "not now"
-   for X, 2026-10-18).
+   for X, 2026-10-18). **Shops' calendar pictures on X** (the owner's choice, 2026-10-25: by hand
+   first, automatic later): the owner hands over the picture and the post's link, Claude lists the
+   Magic events, the owner checks them, and they go into `manual_events.json`, each linking to its post.
+   Reading X automatically needs X's paid API and the owner's own keys (never pasted in chat).
 3. **No secrets in the repo or in chat.** The R2 token is the GitHub secret `CLOUDFLARE_R2_TOKEN`;
    never print it, and never ask the owner to paste a token.
 4. **Never publish an empty file.** `build_events.py` exits without writing when every source fails,

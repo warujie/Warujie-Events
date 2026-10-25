@@ -6,8 +6,12 @@
 # User-Agent naming warujie.jp. Every event links back to the shop's or Tonamel's page. If a site
 # asks us to stop, take it out of build_events.py at once.
 #
+# The shops' calendar pictures on X are read by hand into manual_events.json (x.com itself is
+# never read); a push that changes that file on main puts its events into the published file at
+# once, without reading any shop again.
+#
 # The result is published to the private R2 bucket (as events.json), which warujie.jp reads
-# through its Worker at /data/events.json. If every source fails, nothing is published and
+# through its Worker at /data/events.json. If every shop's source fails, nothing is published and
 # yesterday's file stays. Nothing is committed. Nothing runs until the repository has the
 # CLOUDFLARE_R2_TOKEN secret (docs/README.md, "The secret").
 
@@ -17,6 +21,9 @@ on:
   schedule:
     - cron: "30 18 * * *"    # 18:30 UTC = 3:30 in Japan, when the shops' sites are quiet
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [manual_events.json]
 
 permissions:
   contents: read
@@ -49,12 +56,21 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       # cryptography for Amenity Dream's certificate; a headless Chromium for Tonamel's search page
-      - run: |
+      - if: github.event_name != 'push'
+        run: |
           pip install cryptography playwright==1.56.0
           python3 -m playwright install --with-deps chromium
 
       - name: Read the shops' event lists
+        if: github.event_name != 'push'
         run: python3 build_events.py --out site/events.json
+
+      # manual_events.json changed: only its events change in the published file
+      - name: Update the events from X posts
+        if: github.event_name == 'push'
+        run: |
+          aws s3 cp "s3://warujie-price-data/events.json" published.json --endpoint-url "$R2_ENDPOINT" --only-show-errors
+          python3 build_events.py --out site/events.json --x-only published.json
 
       - name: Publish to R2
         run: |

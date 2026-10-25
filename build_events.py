@@ -19,12 +19,19 @@ Sources:
                  (KAYAC's tournament site; the owner's request of 2026-10-25): its event-search
                  page opened in a headless browser (Playwright), keeping the lists the page
                  itself loads; offline events only
+  X posts        shops' event calendars posted as pictures on X, read by hand from a picture
+                 the owner hands over (the owner's choice, 2026-10-25: by hand first, automatic
+                 later) and kept in manual_events.json; x.com itself is never read (its
+                 robots.txt forbids it); each event links to its post
 
     python3 build_events.py --out site/events.json [--days 35]
+    python3 build_events.py --out site/events.json --x-only published.json
 
 Writes { "updated", "sources": {shop: events}, "events": [{ "d", "t", "p", "c",
 "shop", "store", "name", "url", "f" }] } (docs/README.md), or exits non-zero
-without writing if every source failed, so yesterday's file stays published.
+without writing if every shop's source failed, so yesterday's file stays published.
+--x-only puts manual_events.json's events into an already published file without
+reading any shop (a change to manual_events.json goes out without a second crawl).
 """
 import argparse
 import html as htmllib
@@ -439,6 +446,60 @@ def read_yellowsub(today, log):
     return events
 
 
+# ---- X posts (by hand)
+MANUAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual_events.json")
+X_POST = re.compile(r"https://(?:x|twitter)\.com/[A-Za-z0-9_]{1,15}/status/\d{1,20}")
+
+
+def read_manual(today, log):
+    """The events read by hand from shops' calendar pictures on X (manual_events.json). An entry
+    that doesn't hold together (a date, a time, a prefecture, a link to the post) is left out."""
+    try:
+        with open(MANUAL, encoding="utf-8") as f:
+            rows = json.load(f).get("events", [])
+    except FileNotFoundError:
+        return []
+    out = []
+    for r in rows:
+        url = str(r.get("url") or "").split("?")[0]
+        ok = (re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("d") or "")) and re.fullmatch(r"(\d{1,2}:\d{2})?", str(r.get("t") or ""))
+              and isinstance(r.get("p"), int) and 1 <= r["p"] <= 47 and X_POST.fullmatch(url) and r.get("store") and r.get("name"))
+        if not ok:
+            log(f"  x: left out {json.dumps(r, ensure_ascii=False)[:160]}")
+            continue
+        fs = [f for f in (r.get("f") or []) if f in FORMAT_JA] or formats_in(r["name"])
+        out.append({"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": "x",
+                    "store": r["store"], "name": r["name"], "url": url, "f": fs})
+    return out
+
+
+def store_key(name):
+    return re.sub(r"\s+", "", unicodedata.normalize("NFKC", name)).lower()
+
+
+def tidy(events):
+    """One entry per event, sorted by day and start time. An event a shop lists on Tonamel and
+    also shows in its X calendar keeps Tonamel's entry (its own page, with the details)."""
+    on_tonamel = {(e["d"], e["t"], store_key(e["store"])) for e in events if e["shop"] == "tonamel"}
+    seen, unique = set(), []
+    for e in sorted(events, key=lambda e: (e["d"], e["t"] or "99:99", e["p"], e["store"], e["name"])):
+        k = (e["d"], e["t"], e["shop"], e["store"], e["name"])
+        if k in seen or (e["shop"] == "x" and (e["d"], e["t"], store_key(e["store"])) in on_tonamel):
+            continue
+        seen.add(k)
+        if not e.get("f"):
+            e.pop("f", None)
+        unique.append(e)
+    return unique
+
+
+def write(path, data, log):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
+    log(f"Wrote {len(data['events'])} events to {path} ({os.path.getsize(path) // 1024} KB)")
+
+
 def keep(e, first, last):
     if not (first <= e["d"] <= last) or not e["name"]:
         return False
@@ -452,11 +513,25 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--days", type=int, default=35)
     ap.add_argument("--only", default="", help="comma-separated shops (for testing)")
+    ap.add_argument("--x-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
     args = ap.parse_args()
     log = lambda s: print(s, flush=True)
     today = datetime.now(JST).date()
     first, last = today.isoformat(), (today + timedelta(days=args.days)).isoformat()
-    readers = {"hareruya": read_hareruya, "amenity": read_amenity, "yellowsub": read_yellowsub, "tonamel": read_tonamel}
+    if args.x_only:
+        with open(args.x_only, encoding="utf-8") as f:
+            data = json.load(f)
+        shops = [e for e in data.get("events", []) if e.get("shop") != "x" and keep(e, first, last)]
+        if not shops:
+            log("The published file has no shop events: nothing written.")
+            sys.exit(1)
+        got = [e for e in read_manual(today, log) if keep(e, first, last)]
+        log(f"x: {len(got)} events")
+        write(args.out, {"updated": data.get("updated", ""), "sources": {**data.get("sources", {}), "x": len(got)},
+                         "events": tidy(shops + got)}, log)
+        return
+    readers = {"hareruya": read_hareruya, "amenity": read_amenity, "yellowsub": read_yellowsub, "tonamel": read_tonamel,
+               "x": read_manual}
     only = [s for s in args.only.split(",") if s]
     events, sources = [], {}
     for shop, reader in readers.items():
@@ -467,22 +542,12 @@ def main():
         sources[shop] = len(got)
         log(f"{shop}: {len(got)} events ({time.time() - t0:.0f} s)")
         events += got
-    if not events:
-        log("No events from any source: nothing written, so the published file stays.")
+    # the hand-kept X events alone would replace every shop's: only with --only x (testing)
+    if not events or not any(n for shop, n in sources.items() if shop != "x") and only != ["x"]:
+        log("No events from any shop's source: nothing written, so the published file stays.")
         sys.exit(1)
-    seen, unique = set(), []
-    for e in sorted(events, key=lambda e: (e["d"], e["t"] or "99:99", e["p"], e["store"], e["name"])):
-        k = (e["d"], e["t"], e["shop"], e["store"], e["name"])
-        if k not in seen:
-            seen.add(k)
-            if not e["f"]:
-                del e["f"]
-            unique.append(e)
-    os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
-    data = {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "sources": sources, "events": unique}
-    with open(args.out, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
-    log(f"Wrote {len(unique)} events to {args.out} ({os.path.getsize(args.out) // 1024} KB)")
+    write(args.out, {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "sources": sources,
+                     "events": tidy(events)}, log)
 
 
 if __name__ == "__main__":

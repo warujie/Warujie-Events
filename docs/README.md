@@ -4,8 +4,9 @@
 
 | File | What it does |
 |---|---|
-| [`build_events.py`](../build_events.py) | Reads the shops' event pages and Tonamel's MTG event search, and writes `events.json` (the next 35 days) |
-| [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` alone to R2 |
+| [`build_events.py`](../build_events.py) | Reads the shops' event pages and Tonamel's MTG event search, adds the events read by hand from shops' X posts, and writes `events.json` (the next 35 days) |
+| [`manual_events.json`](../manual_events.json) | The Magic events read by hand from shops' calendar pictures on X ("X posts" below) |
+| [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` alone to R2; a change to `manual_events.json` on `main` updates only those events at once |
 
 The site (`warujie/Warujie`) reads the file at `warujie.jp/data/events.json` (its Worker serves the
 R2 bucket `warujie-price-data` to the site's own pages only) in `loadEventCalendar()`, and shows it
@@ -18,6 +19,10 @@ takes about 10 minutes: about 90 pages, 4 seconds apart, plus a minute to instal
 Chromium Tonamel needs. It runs from `main` only, and does nothing
 until the repository has the `CLOUDFLARE_R2_TOKEN` secret (the first step checks, before any shop is
 read).
+
+A push to `main` that changes `manual_events.json` also runs it, in under a minute: it downloads the
+published `events.json`, replaces its X events with the file's (`build_events.py --x-only`) and
+publishes that. No shop is read again, so the shops are still read once a night.
 
 ## The secret
 
@@ -65,6 +70,17 @@ forbids automated collection without written permission, and pages need a login)
   (`place_of()`: the prefecture's name, else the postcode's first two digits in `POSTAL_PREF`, else
   a big city in `CITY_PREF`); the store is the organiser's name, the format comes from the title or
   the description's 【フォーマット】 line, and each event links to its own Tonamel page.
+- **X posts** (`read_manual()`, the owner's choice of 2026-10-25): many shops post their month's
+  events as a calendar picture on X, mixing every game. x.com is never read (its `robots.txt`
+  forbids automated reading; the only permitted route is X's paid API). Instead the owner hands
+  Claude the picture and the post's link; Claude lists the Magic events (date, start time, format,
+  name), the owner checks them, and they go into `manual_events.json` with the post's link, the
+  shop's name (spelled as on Tonamel when the shop lists there too), prefecture and city. An entry
+  without a date, an `HH:MM` time (or none), a prefecture 1–47 or a link to an X post
+  (`X_POST`) is left out, and the log says so. An X event at the same store, day and start time as
+  one of its Tonamel events is dropped in favour of Tonamel's (`tidy()`, `store_key()`), whose page
+  has the details. The plan for reading the posts automatically later (X's API with a spending cap,
+  Claude reading the pictures) is in the project files, `x-twitter/plan.md`.
 - Formats from words come from `formats_in()` (`FORMAT_WORDS`, the same words as the site's
   `EVENT_FORMAT_WORDS`; full-width letters folded): every format a name or note names, スタン counting
   as スタンダード, プレモダン not as モダン, and a モダンホライゾン draft as limited only. Dates without a year
@@ -75,7 +91,7 @@ forbids automated collection without written permission, and pages need a login)
 
 ```
 { "updated": "2026-10-24T18:30:00Z",
-  "sources": { "hareruya": 10678, "amenity": 16, "yellowsub": 240, "tonamel": 104 },
+  "sources": { "hareruya": 10678, "amenity": 16, "yellowsub": 240, "tonamel": 104, "x": 12 },
   "events": [ { "d": "2026-10-25", "t": "13:00", "p": 13, "c": "千代田区",
                 "shop": "hareruya", "store": "秋葉原店", "name": "モダン神挑戦者決定戦トライアル",
                 "url": "https://www.hareruyamtg.com/ja/events/620342/detail", "f": ["modern"] } ] }
@@ -83,9 +99,9 @@ forbids automated collection without written permission, and pages need a login)
 
 One entry per event from today (Japan time) to 35 days ahead, sorted by day and start time. `t` is
 "" when the shop gives no time; `p` is the prefecture's JIS number (1–47), `c` the city or Tokyo
-ward; `shop` is `hareruya`, `amenity`, `yellowsub` or `tonamel` (the site's `EVENT_SHOPS`); `store`
-is the store (for Tonamel, the organiser's name); `url` is the event's own page (Hareruya, Tonamel)
-or the store's schedule (the others); `f` lists the formats (`standard`,
+ward; `shop` is `hareruya`, `amenity`, `yellowsub`, `tonamel` or `x` (the site's `EVENT_SHOPS`);
+`store` is the store (for Tonamel, the organiser's name); `url` is the event's own page (Hareruya,
+Tonamel), the post on X (`x`) or the store's schedule (the others); `f` lists the formats (`standard`,
 `pioneer`, `modern`, `legacy`, `vintage`, `pauper`, `commander`, `premodern`, `limited`), left out
 when none is known. About 11,000 events, 2.6 MB (much smaller compressed in transit).
 
@@ -94,6 +110,8 @@ when none is known. About 11,000 events, 2.6 MB (much smaller compressed in tran
 ```
 python3 build_events.py --out out/events.json            # every shop, about 10 minutes
 python3 build_events.py --out out/events.json --only amenity
+python3 build_events.py --out out/events.json --only x   # manual_events.json alone
+python3 build_events.py --out out/events.json --x-only published.json   # its X events replaced
 ```
 
 It needs Python 3.10+, for Amenity Dream `pip install cryptography`, and for Tonamel
@@ -108,4 +126,5 @@ skipped, and the log says so).
 | One shop's events are missing | The run log says how many events each shop gave (`hareruya: 0 events` means its page changed; fix its parser) |
 | Events are a day old | Normal: the file is read once a night |
 | A new store is missing | Add it to `HARERUYA`, `AMENITY` or `YELLOWSUB`; a store that lists its events on Tonamel appears by itself |
+| An X event is missing | Is its day still ahead, and does the entry in `manual_events.json` hold together? The log's `x: left out …` lines say which entries were dropped; an event the store also lists on Tonamel shows Tonamel's entry instead |
 | A Tonamel event is missing | Online and cancelled events are left out, and so are events whose address names no prefecture `place_of()` knows; the log's `tonamel: stopped at …` line says why the list ended |
