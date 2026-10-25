@@ -39,8 +39,12 @@ forbids automated collection without written permission, and pages need a login)
   event's own page and its format icons (`HARERUYA_ICONS`; Dr/Se → limited). Hareruya's standing
   daily league (names with `[毎日開催]`) is left out (`keep()`). The stores, their prefecture and city
   are kept by hand in `HARERUYA` (calendar shop numbers, not the search's venue numbers).
-- **Amenity Dream** (`read_amenity()`): one page lists every store's MTG events, `/matches/?type=2`
-  (type 2 = ＭＴＧ). Its server sends an out-of-date certificate chain, so `amenity_context()` fetches
+- **Amenity Dream** (`read_amenity()`): every store's MTG list, `/matches/?type=2&shop=&date=`
+  (type 2 = ＭＴＧ), shows only the coming week, so the reader then reads one page per day for each
+  day its 開催日 drop-down offers (`amenity_dates()`, about a month: some 32 pages), with further
+  pages if a day's list ever has page links (`amenity_pages()`, at most `AMENITY_MAX_PAGES`).
+  Amenity's events have no page of their own: each links to its store's list for that day
+  (`?type=2&shop=<n>&date=<day>`). Its server sends an out-of-date certificate chain, so `amenity_context()` fetches
   the missing intermediate from the certificate's own AIA link and verifies normally. Stores:
   `AMENITY`.
 - **Yellow Submarine** (`read_yellowsub()`): each store's schedule, `/tmt_list/<store>/` (Shift_JIS),
