@@ -19,6 +19,11 @@ Start with [`docs/README.md`](docs/README.md).
    once.** Never read Wizards' Store & Event Locator (robots.txt disallows its `/api/`; its terms
    forbid scraping; the site depends on Wizards' Fan Content Policy) or Facebook (robots.txt forbids
    automated collection; pages need a login). Any new source needs the owner's yes first.
+   **Tonamel** (the owner's request, 2026-10-25): its public MTG event search for Japan, opened in a
+   headless browser once a night under the same rules (its robots.txt disallows only `/organize/`
+   and `/settings/`); every event links to its Tonamel page. **X (Twitter)** is not read: x.com's
+   robots.txt forbids it, and the only permitted route is the paid X API (the owner chose "not now"
+   for X, 2026-10-18).
 3. **No secrets in the repo or in chat.** The R2 token is the GitHub secret `CLOUDFLARE_R2_TOKEN`;
    never print it, and never ask the owner to paste a token.
 4. **Never publish an empty file.** `build_events.py` exits without writing when every source fails,
