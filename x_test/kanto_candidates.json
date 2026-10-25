@@ -1,10 +1,34 @@
-{"accounts": [
- {"handle": "TokyoMTG", "store": "東京MTG", "p": 13, "c": "千代田区"},
- {"handle": "MTG_CANTRIP", "store": "CANTRIP", "p": 13, "c": "八王子市"},
- {"handle": "torecanoMTG", "store": "CARDWINGS 秋葉原駅前店", "p": 13, "c": "千代田区"},
- {"handle": "MastersSquare", "store": "マスターズスクウェア", "p": 13, "c": "八王子市"},
- {"handle": "GOODGAME_Ootaka", "store": "GOODGAME 流山おおたかの森店", "p": 12, "c": "流山市"},
- {"handle": "TrickMatsudo", "store": "トリックスター", "p": 12, "c": "松戸市"},
- {"handle": "Fellows_GOTTA", "store": "Fellows", "p": 13, "c": "港区"},
- {"handle": "TTChiratsuka", "store": "TSUTAYA Trading Card 平塚", "p": 14, "c": "平塚市"}
-]}
+{
+ "accounts": [
+  {
+   "handle": "MastersSquare",
+   "store": "マスターズスクウェア",
+   "p": 13,
+   "c": "八王子市"
+  },
+  {
+   "handle": "GOODGAME_Ootaka",
+   "store": "GOODGAME 流山おおたかの森店",
+   "p": 12,
+   "c": "流山市"
+  },
+  {
+   "handle": "TrickMatsudo",
+   "store": "トリックスター",
+   "p": 12,
+   "c": "松戸市"
+  },
+  {
+   "handle": "Fellows_GOTTA",
+   "store": "Fellows",
+   "p": 13,
+   "c": "港区"
+  },
+  {
+   "handle": "TTChiratsuka",
+   "store": "TSUTAYA Trading Card 平塚",
+   "p": 14,
+   "c": "平塚市"
+  }
+ ]
+}

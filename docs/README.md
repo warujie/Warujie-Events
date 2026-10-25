@@ -110,7 +110,7 @@ forbids automated collection without written permission, and pages need a login)
      says whether it gives the dates of Magic events.
   3. Those pictures go to `READ_MODEL` (secret `ANTHROPIC_API_KEY`), which lists the Magic events:
      day, start, name, formats, fee (`READ_PROMPT`, a fixed JSON shape, `READ_SCHEMA`), at most
-     `X_MAX_READS` pictures a night; `valid_events()` keeps those that hold together (a date from a
+     `X_MAX_READS` (20) pictures a night (an account cut off by it is read on from where it stopped the next night, and its week starts once it is done); `valid_events()` keeps those that hold together (a date from a
      week before the post to four months after it). Each event links to its post.
   The result, with each account's `since_id` and last reading (`read`), is `x_events.json` in R2 (shop `x`, so the site tags
   it X投稿から); events before yesterday drop out, and a newer post's reading of the same event

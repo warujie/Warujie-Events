@@ -11,7 +11,8 @@ Each account in x_accounts.json is read once a week (X_EVERY_DAYS, the owner's c
 2. Each picture in those posts is first shown to a small, cheap model (SCREEN_MODEL), which only
    says whether it is a schedule or announcement of Magic events.
 3. Only those pictures go to READ_MODEL, which lists the Magic events in them (day, start, name,
-   formats, fee). At most X_MAX_READS pictures a night.
+   formats, fee). At most X_MAX_READS pictures a night; an account cut off by that limit (or by an
+   error) is read again the next night from where it stopped, and its week starts once it is done.
 
 The events are kept in x_events.json (published to R2 beside events.json, with each account's
 `since_id`, so nothing is read or paid for twice). build_events.py puts them into events.json as
@@ -40,7 +41,7 @@ ACCOUNTS = os.path.join(HERE, "x_accounts.json")
 X_API = "https://api.x.com/2"
 X_EVERY_DAYS = 7        # each account is read once a week (the owner's choice, 2026-10-25)
 X_MAX_POSTS = 25        # per account and reading (about a week of a busy shop's posts; X's page is 5-100)
-X_MAX_READS = 10        # pictures read by READ_MODEL per night, whatever the accounts post
+X_MAX_READS = 20        # pictures read by READ_MODEL per night, whatever the accounts post
 X_POST_DAYS = 45        # posts older than this are never read (a first night, or an account added later)
 SCREEN_MODEL = "claude-haiku-5-5"
 READ_MODEL = "claude-opus-5-5"
@@ -154,6 +155,7 @@ def main():
     ap.add_argument("--state", required=True, help="x_events.json: read (when it exists) and updated")
     ap.add_argument("--dry-run", action="store_true", help="read X only; list the new pictures; no model, no state change")
     ap.add_argument("--all", action="store_true", help="read every account now, whatever its week (testing)")
+    ap.add_argument("--max-reads", type=int, default=X_MAX_READS, help="pictures read per night at most")
     ap.add_argument("--accounts", default=ACCOUNTS, help="the accounts file (x_accounts.json; another for testing)")
     args = ap.parse_args()
     log = lambda s: print(s, flush=True)
@@ -187,6 +189,9 @@ def main():
         s = seen.setdefault(h, {})
         if s.get("read") and not args.all and (today - date.fromisoformat(s["read"])).days < X_EVERY_DAYS:
             continue   # read less than a week ago
+        if reads >= args.max_reads:
+            log(f"@{a['handle']}: tonight's {args.max_reads} readings are used; read tomorrow")
+            continue
         try:
             if not s.get("id"):
                 s["id"] = x_get(f"/users/by/username/{a['handle']}", {}, token)["data"]["id"]
@@ -201,13 +206,13 @@ def main():
             log(f"@{a['handle']}: {e}")
             continue
         posts = got.get("data", [])
-        s["read"] = today.isoformat()
         if len(posts) >= X_MAX_POSTS and s.get("since_id"):
             log(f"@{a['handle']}: more than {X_MAX_POSTS} posts this week; only the latest are read")
         media = {m["media_key"]: m for m in got.get("includes", {}).get("media", [])}
         posts_read += len(posts)
         log(f"@{a['handle']}: {len(posts)} new posts")
         done = s.get("since_id")   # the newest post whose pictures are all dealt with
+        finished = True            # every new post dealt with: the account's week starts again
         for p in sorted(posts, key=lambda p: int(p["id"])):   # oldest first, so a newer reading replaces an older
             pics = [media[k] for k in p.get("attachments", {}).get("media_keys", []) if media.get(k, {}).get("type") == "photo" and media[k].get("url")]
             url = f"https://x.com/{a['handle']}/status/{p['id']}"
@@ -230,8 +235,8 @@ def main():
                     if not yes["magic_events"]:
                         log(f"    {pic}: not a Magic schedule")
                         continue
-                    if reads >= X_MAX_READS:
-                        log(f"    {pic}: a Magic schedule, but tonight's {X_MAX_READS} readings are used; read tomorrow")
+                    if reads >= args.max_reads:
+                        log(f"    {pic}: a Magic schedule, but tonight's {args.max_reads} readings are used; read tomorrow")
                         ok = False
                         break
                     reads += 1
@@ -249,12 +254,15 @@ def main():
                     ok = False
                     break
             if not ok:
+                finished = False
                 break
             # a newer post's reading of the same event replaces the older one
             kept = [k for k in kept if not any(same_event(k, n) for n in found)] + found
             done = p["id"]
         if done and not args.dry_run:
             s["since_id"] = done
+        if finished and not args.dry_run:
+            s["read"] = today.isoformat()
     log(f"X: {posts_read} posts read (about ${posts_read * 0.005:.3f}); {screened} pictures screened, {reads} read"
         + (f" (tokens in+out: {', '.join(cost_note)})" if cost_note else ""))
     if args.dry_run:
