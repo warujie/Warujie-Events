@@ -2,4 +2,278 @@ X token: set; Anthropic key: set
 
 [notice] A new release of pip is available: 26.2.1 -> 26.2.2
 [notice] To update, run: pip install --upgrade pip
-100 posts, 67 accounts
+@TokyoMTG: 25 new posts
+  https://x.com/TokyoMTG/status/2113829080298631529 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVXT3BHbgAATRtK.jpg
+    https://pbs.twimg.com/media/HVXT3BHbgAATRtK.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113830457968345528 (2026-10-24): 2 pictures; https://pbs.twimg.com/media/HVXVg2qbgAAoZLv.jpg https://pbs.twimg.com/media/HVXVkvaaUAAG2WZ.jpg
+    https://pbs.twimg.com/media/HVXVg2qbgAAoZLv.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVXVkvaaUAAG2WZ.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113838965430399348 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVXdVRYbMAA6jyj.jpg
+    https://pbs.twimg.com/media/HVXdVRYbMAA6jyj.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113839654143512667 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVXd9TtboAA8AUM.jpg
+    https://pbs.twimg.com/media/HVXd9TtboAA8AUM.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113856927218507824 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVXtoyZbIAA0aYk.jpg
+    https://pbs.twimg.com/media/HVXtoyZbIAA0aYk.jpg: 3 Magic events (of 3 given)
+      2026-11-06 --:-- プレリリース limited 
+      2026-11-07 --:-- プレリリース limited 
+      2026-11-08 --:-- プレリリース limited 
+  https://x.com/TokyoMTG/status/2113859523387801732 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVXwBqma4AAV43T.jpg
+    https://pbs.twimg.com/media/HVXwBqma4AAV43T.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113860128491614689 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVXwlCAbEAAoCg8.jpg
+    https://pbs.twimg.com/media/HVXwlCAbEAAoCg8.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113872603731656708 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVX75WFbsAAcVZe.jpg
+    https://pbs.twimg.com/media/HVX75WFbsAAcVZe.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113943702871953750 (2026-10-24): 3 pictures; https://pbs.twimg.com/media/HVY7HIkbsAAsDK_.jpg https://pbs.twimg.com/media/HVY7Hz-bEAAqizk.jpg https://pbs.twimg.com/media/HVY7_N3aIAAD1Ql.jpg
+    https://pbs.twimg.com/media/HVY7HIkbsAAsDK_.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVY7Hz-bEAAqizk.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVY7_N3aIAAD1Ql.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113943893876330793 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVY8vmLbMAA21wu.png
+    https://pbs.twimg.com/media/HVY8vmLbMAA21wu.png: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113947384254505266 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVY_7iEaMAAk809.jpg
+    https://pbs.twimg.com/media/HVY_7iEaMAAk809.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2113978827919835508 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVYeJZEbsAAuBZG.jpg
+    https://pbs.twimg.com/media/HVYeJZEbsAAuBZG.jpg: 16 Magic events (of 16 given)
+      2026-10-19 17:00 カジュアルコマンダー会 (Global Day) commander 
+      2026-10-19 19:00 平日レガシー legacy 
+      2026-10-21 17:00 カジュアルコマンダー会 commander 
+      2026-10-21 19:00 カジュアルPWS  
+      2026-10-21 19:00 平日パウパー pauper 
+      2026-10-22 17:00 ゆるMTGナイト  
+      2026-10-22 19:00 1000円ドラフト「リアリティ・フラクチャー」ドラフト limited 1000
+      2026-10-22 19:00 平日レガシー legacy 
+      2026-10-23 17:00 コマンダー交流会 commander 
+      2026-10-23 19:00 FNMスタンダード standard 
+      2026-10-23 19:00 FNMレガシー legacy 
+      2026-10-24 13:00 コマンダー交流会 commander 
+      2026-10-24 13:00 レガシー交流会 legacy 
+      2026-10-24 14:00 休日パイオニア pioneer 
+      2026-10-24 14:00 1000円カオスドラフト limited 1000
+      2026-10-25 11:00 シングルスター杯ver3.5  
+  https://x.com/TokyoMTG/status/2114175111310053522 (2026-10-25): 2 pictures; https://pbs.twimg.com/media/HVYeZ1hagAADSbj.jpg https://pbs.twimg.com/media/HVYeZ1iaQAAv2eH.jpg
+    https://pbs.twimg.com/media/HVYeZ1hagAADSbj.jpg: 16 Magic events (of 16 given)
+      2026-10-19 17:00 カジュアルコマンダー会 (Global Day) commander 
+      2026-10-19 19:00 平日レガシー legacy 
+      2026-10-21 17:00 カジュアルコマンダー会 commander 
+      2026-10-21 19:00 カジュアルPWS  
+      2026-10-21 19:00 平日パウパー pauper 
+      2026-10-22 17:00 ゆるMTGナイト  
+      2026-10-22 19:00 1000円ドラフト「リアリティ・フラクチャー」ドラフト limited 1000
+      2026-10-22 19:00 平日レガシー legacy 
+      2026-10-23 17:00 コマンダー交流会 commander 
+      2026-10-23 19:00 FNMスタンダード standard 
+      2026-10-23 19:00 FNMレガシー legacy 
+      2026-10-24 13:00 コマンダー交流会 commander 
+      2026-10-24 13:00 レガシー交流会 legacy 
+      2026-10-24 14:00 休日パイオニア pioneer 
+      2026-10-24 14:00 1000円カオスドラフト limited 1000
+      2026-10-25 11:00 シングルスター杯ver3.5  
+    https://pbs.twimg.com/media/HVYeZ1iaQAAv2eH.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114181653371433316 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVcU-CzaoAAO_8X.jpg
+    https://pbs.twimg.com/media/HVcU-CzaoAAO_8X.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114206963898933321 (2026-10-25): 4 pictures; https://pbs.twimg.com/media/HVcr18OaUAAwpAv.jpg https://pbs.twimg.com/media/HVcr62QaIAEAPPQ.jpg https://pbs.twimg.com/media/HVcr_URbwAAurD8.jpg https://pbs.twimg.com/media/HVcsBJzbQAAZKKD.png
+    https://pbs.twimg.com/media/HVcr18OaUAAwpAv.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVcr62QaIAEAPPQ.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVcr_URbwAAurD8.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVcsBJzbQAAZKKD.png: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114257024871760156 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVdZTmMasAAkf2S.jpg
+    https://pbs.twimg.com/media/HVdZTmMasAAkf2S.jpg: 3 Magic events (of 3 given)
+      2026-11-06 --:-- プレリリース limited 
+      2026-11-07 --:-- プレリリース limited 
+      2026-11-08 --:-- プレリリース limited 
+  https://x.com/TokyoMTG/status/2114259745553207651 (2026-10-25): 3 pictures; https://pbs.twimg.com/media/HVdb9BnaAAAGXwz.jpg https://pbs.twimg.com/media/HVdb-lRbwAE--RX.jpg https://pbs.twimg.com/media/HVdb_1zaAAAuTXx.jpg
+    https://pbs.twimg.com/media/HVdb9BnaAAAGXwz.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVdb-lRbwAE--RX.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVdb_1zaAAAuTXx.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114261958597935197 (2026-10-25): 3 pictures; https://pbs.twimg.com/media/HVddU4hasAA4z34.jpg https://pbs.twimg.com/media/HVddWVdbMAA124I.jpg https://pbs.twimg.com/media/HVddc2ZbwAAo4re.jpg
+    https://pbs.twimg.com/media/HVddU4hasAA4z34.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVddWVdbMAA124I.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVddc2ZbwAAo4re.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114271739148685790 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVdm8Hab0AA8Obq.jpg
+    https://pbs.twimg.com/media/HVdm8Hab0AA8Obq.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114287966994747775 (2026-10-25): 2 pictures; https://pbs.twimg.com/media/HVd1InnaQAEWgcF.jpg https://pbs.twimg.com/media/HVd1IniacAE35Vy.jpg
+    https://pbs.twimg.com/media/HVd1InnaQAEWgcF.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVd1IniacAE35Vy.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114311109943681139 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVeJLLJbcAAgNHy.jpg
+    https://pbs.twimg.com/media/HVeJLLJbcAAgNHy.jpg: not a Magic schedule
+  https://x.com/TokyoMTG/status/2114342795830047083 (2026-10-25): 2 pictures; https://pbs.twimg.com/media/HVenTr6acAAB19M.jpg https://pbs.twimg.com/media/HVeniuVaUAARxJ9.jpg
+    https://pbs.twimg.com/media/HVenTr6acAAB19M.jpg: 18 Magic events (of 18 given)
+      2026-10-26 17:00 カジュアルコマンダー会(Global Day) commander 
+      2026-10-26 19:00 平日レガシー legacy 
+      2026-10-28 17:00 カジュアルコマンダー会 commander 
+      2026-10-28 19:00 カジュアルPWS  
+      2026-10-28 19:00 平日パウパー pauper 
+      2026-10-29 17:00 ゆるMTGナイト  
+      2026-10-29 19:00 1000円ドラフト「リアリティ・フラクチャー」ドラフト limited 1000
+      2026-10-29 19:00 平日レガシー legacy 
+      2026-10-30 17:00 コマンダー交流会 commander 
+      2026-10-30 19:00 スタンダードショーダウン standard 
+      2026-10-30 19:00 FNMレガシー legacy 
+      2026-10-31 --:-- 【Artist Meetup】佐藤周作&辰馬大助  
+      2026-10-31 13:00 コマンダー交流会 commander 
+      2026-10-31 13:00 レガシー交流会 legacy 
+      2026-10-31 14:00 休日パイオニア pioneer 
+      2026-11-01 13:00 コマンダー交流会 commander 
+      2026-11-01 14:00 ウェルカム・FFドラフト limited 
+      2026-11-01 14:00 休日レガシー legacy 
+    https://pbs.twimg.com/media/HVeniuVaUAARxJ9.jpg: not a Magic schedule
+@MTG_CANTRIP: 25 new posts
+  https://x.com/MTG_CANTRIP/status/2113219061467533323 (2026-10-22): 4 pictures; https://pbs.twimg.com/media/HVOpcl4aMAA3523.jpg https://pbs.twimg.com/media/HVOpdxwa0AAHP44.jpg https://pbs.twimg.com/media/HVOpfjGbsAEFxSU.jpg https://pbs.twimg.com/media/HVOphzybQAA3HN8.jpg
+    https://pbs.twimg.com/media/HVOpcl4aMAA3523.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOpdxwa0AAHP44.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOpfjGbsAEFxSU.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOphzybQAA3HN8.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113224228061532363 (2026-10-22): 4 pictures; https://pbs.twimg.com/media/HVOuJt4asAAAjrO.jpg https://pbs.twimg.com/media/HVOuK-VaIAAXnwf.jpg https://pbs.twimg.com/media/HVOuMWFaQAAYu0Y.jpg https://pbs.twimg.com/media/HVOuNnTaEAATD8C.jpg
+    https://pbs.twimg.com/media/HVOuJt4asAAAjrO.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOuK-VaIAAXnwf.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOuMWFaQAAYu0Y.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOuNnTaEAATD8C.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113227883611296023 (2026-10-22): 4 pictures; https://pbs.twimg.com/media/HVOxfr0aYAAFD2b.jpg https://pbs.twimg.com/media/HVOxhKIbwAA-vf7.jpg https://pbs.twimg.com/media/HVOxidWacAEWMvc.jpg https://pbs.twimg.com/media/HVOxjtNbYAEPY9H.jpg
+    https://pbs.twimg.com/media/HVOxfr0aYAAFD2b.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOxhKIbwAA-vf7.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOxidWacAEWMvc.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVOxjtNbYAEPY9H.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113269141696127465 (2026-10-22): 1 pictures; https://pbs.twimg.com/media/HTj2Xj4aMAA0GV5.jpg
+    https://pbs.twimg.com/media/HTj2Xj4aMAA0GV5.jpg: 1 Magic events (of 1 given)
+      2026-10-23 19:30 FNM standard,modern,commander 500
+  https://x.com/MTG_CANTRIP/status/2113537940609470869 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTLiEzbIAAkFlC.jpg
+    https://pbs.twimg.com/media/HVTLiEzbIAAkFlC.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113549275778928862 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTTaugaQAAsaZi.jpg
+    https://pbs.twimg.com/media/HVTTaugaQAAsaZi.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113550332358017459 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTW0tTaAAAVqiA.jpg
+    https://pbs.twimg.com/media/HVTW0tTaAAAVqiA.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113550429464523073 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTW6JbbwAAiivA.jpg
+    https://pbs.twimg.com/media/HVTW6JbbwAAiivA.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113553791077491111 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTZj6VbEAAnAxu.jpg
+    https://pbs.twimg.com/media/HVTZj6VbEAAnAxu.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113555809011704087 (2026-10-23): 4 pictures; https://pbs.twimg.com/media/HVTbrpDbgAAJv47.jpg https://pbs.twimg.com/media/HVTbtLxbgAAc2sy.jpg https://pbs.twimg.com/media/HVTbw8nbEAA_Hkq.jpg https://pbs.twimg.com/media/HVTbyJlaUAAAVeI.jpg
+    https://pbs.twimg.com/media/HVTbrpDbgAAJv47.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVTbtLxbgAAc2sy.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVTbw8nbEAA_Hkq.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVTbyJlaUAAAVeI.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113560190239048041 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTfxuHaYAEnrP0.jpg
+    https://pbs.twimg.com/media/HVTfxuHaYAEnrP0.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113597459289268713 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVUA8qeaoAAEcq8.jpg
+    https://pbs.twimg.com/media/HVUA8qeaoAAEcq8.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113598192587801023 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVUB6pzaoAAJd07.jpg
+    https://pbs.twimg.com/media/HVUB6pzaoAAJd07.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113659204498341899 (2026-10-24): 2 pictures; https://pbs.twimg.com/media/HVU50rjboAA2yXp.png https://pbs.twimg.com/media/HVU51hLaoAAWyG_.png
+    https://pbs.twimg.com/media/HVU50rjboAA2yXp.png: not a Magic schedule
+    https://pbs.twimg.com/media/HVU51hLaoAAWyG_.png: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113659983971909812 (2026-10-24): 2 pictures; https://pbs.twimg.com/media/HVU6hkHaYAANv55.png https://pbs.twimg.com/media/HVU6iuZacAExrLt.png
+    https://pbs.twimg.com/media/HVU6hkHaYAANv55.png: not a Magic schedule
+    https://pbs.twimg.com/media/HVU6iuZacAExrLt.png: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113871832784965898 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVX7MQgbIAEgDvp.jpg
+    https://pbs.twimg.com/media/HVX7MQgbIAEgDvp.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113908808263327876 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVYc2gybgAAUwlA.jpg
+    https://pbs.twimg.com/media/HVYc2gybgAAUwlA.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113915709487210576 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVYjG1QbgAA0ogh.jpg
+    https://pbs.twimg.com/media/HVYjG1QbgAA0ogh.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2113937884495667618 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVY3QUFbIAAGK36.jpg
+    https://pbs.twimg.com/media/HVY3QUFbIAAGK36.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2114172599966274030 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVcMxbmasAAoN8V.jpg
+    https://pbs.twimg.com/media/HVcMxbmasAAoN8V.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2114230560138956870 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVdBfDcbQAAD8oZ.jpg
+    https://pbs.twimg.com/media/HVdBfDcbQAAD8oZ.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2114273435165901166 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVdnyDEbAAABzw3.jpg
+    https://pbs.twimg.com/media/HVdnyDEbAAABzw3.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2114273881834111186 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVdo0bTbYAEPX4L.jpg
+    https://pbs.twimg.com/media/HVdo0bTbYAEPX4L.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2114326111463064036 (2026-10-25): 2 pictures; https://pbs.twimg.com/media/HTjzQEgacAIeVmI.jpg https://pbs.twimg.com/media/HTjzQEtacAET35w.jpg
+    https://pbs.twimg.com/media/HTjzQEgacAIeVmI.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HTjzQEtacAET35w.jpg: not a Magic schedule
+  https://x.com/MTG_CANTRIP/status/2114326916421550365 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVeZHz0boAAwPlF.jpg
+    https://pbs.twimg.com/media/HVeZHz0boAAwPlF.jpg: not a Magic schedule
+@torecanoMTG: 25 new posts
+  https://x.com/torecanoMTG/status/2111435404926955644 (2026-10-17): 3 pictures; https://pbs.twimg.com/media/HU1TBaXaoAAlwKk.jpg https://pbs.twimg.com/media/HU1TE9Db0AAAVtG.jpg https://pbs.twimg.com/media/HU1THa2bsAAw_WE.jpg
+    https://pbs.twimg.com/media/HU1TBaXaoAAlwKk.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HU1TE9Db0AAAVtG.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HU1THa2bsAAw_WE.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2111741231328051533 (2026-10-18): 1 pictures; https://pbs.twimg.com/media/HU5pc6eakAA8EY4.jpg
+    https://pbs.twimg.com/media/HU5pc6eakAA8EY4.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2112020678446813650 (2026-10-19): 1 pictures; https://pbs.twimg.com/media/HU9ngsEaQAAeM13.jpg
+    https://pbs.twimg.com/media/HU9ngsEaQAAeM13.jpg: 1 Magic events (of 1 given)
+      2026-10-19 19:00 月曜ドラフト(リアリティーフラクチャー) limited 
+  https://x.com/torecanoMTG/status/2112287356317536607 (2026-10-20): 1 pictures; https://pbs.twimg.com/media/HVBaIzTaUAAs0ak.jpg
+    https://pbs.twimg.com/media/HVBaIzTaUAAs0ak.jpg: 1 Magic events (of 1 given)
+      2026-10-20 18:30 コマンダー交流会 commander 0
+  https://x.com/torecanoMTG/status/2112745618460516421 (2026-10-21): 1 pictures; https://pbs.twimg.com/media/HVH61UvakAErH6s.jpg
+    https://pbs.twimg.com/media/HVH61UvakAErH6s.jpg: 1 Magic events (of 1 given)
+      2026-10-21 19:00 水曜モダン modern 200
+  https://x.com/torecanoMTG/status/2112776808248869088 (2026-10-21): 1 pictures; https://pbs.twimg.com/media/HVIXTdSaoAAZWMk.jpg
+    https://pbs.twimg.com/media/HVIXTdSaoAAZWMk.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2112835271293325367 (2026-10-21): 4 pictures; https://pbs.twimg.com/media/HVJMA-BboAAzXEw.jpg https://pbs.twimg.com/media/HVJMBp7bYAA5uoY.jpg https://pbs.twimg.com/media/HVJMCewakAA2sKE.jpg https://pbs.twimg.com/media/HVJMDTmaAAA4A6m.jpg
+    https://pbs.twimg.com/media/HVJMA-BboAAzXEw.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMBp7bYAA5uoY.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMCewakAA2sKE.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMDTmaAAA4A6m.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2112835273629548956 (2026-10-21): 4 pictures; https://pbs.twimg.com/media/HVJMFpvakAINqqe.jpg https://pbs.twimg.com/media/HVJMGaaaIAE99Ev.jpg https://pbs.twimg.com/media/HVJMHHAaQAAVb5O.jpg https://pbs.twimg.com/media/HVJMH08bYAAPz5n.jpg
+    https://pbs.twimg.com/media/HVJMFpvakAINqqe.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMGaaaIAE99Ev.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMHHAaQAAVb5O.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMH08bYAAPz5n.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2112835275672199362 (2026-10-21): 4 pictures; https://pbs.twimg.com/media/HVJMJKTagAAnmR7.jpg https://pbs.twimg.com/media/HVJMJ0wbgAA2sxI.jpg https://pbs.twimg.com/media/HVJMKjcawAARw4D.jpg https://pbs.twimg.com/media/HVJMLPxbgAAKLVA.jpg
+    https://pbs.twimg.com/media/HVJMJKTagAAnmR7.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMJ0wbgAA2sxI.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMKjcawAARw4D.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMLPxbgAAKLVA.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2112835277769339274 (2026-10-21): 3 pictures; https://pbs.twimg.com/media/HVJMNhbbIAAqGGp.jpg https://pbs.twimg.com/media/HVJMOUYasAAjHYH.jpg https://pbs.twimg.com/media/HVJMShxa4AA-2mx.jpg
+    https://pbs.twimg.com/media/HVJMNhbbIAAqGGp.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMOUYasAAjHYH.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVJMShxa4AA-2mx.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2113451495882727718 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVR87puaAAAEjS9.jpg
+    https://pbs.twimg.com/media/HVR87puaAAAEjS9.jpg: 3 Magic events (of 3 given)
+      2026-10-23 19:00 FNM モダン modern 0
+      2026-10-23 19:00 FNM レガシー legacy 0
+      2026-10-23 19:00 FNM ドラフト limited 
+  https://x.com/torecanoMTG/status/2113455550038184433 (2026-10-23): 3 pictures; https://pbs.twimg.com/media/HVSAZ3jakAE0cP_.jpg https://pbs.twimg.com/media/HVSAauQa8AEZ2IK.jpg https://pbs.twimg.com/media/HVSAbmsa4AAUnYJ.jpg
+    https://pbs.twimg.com/media/HVSAZ3jakAE0cP_.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVSAauQa8AEZ2IK.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVSAbmsa4AAUnYJ.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2113629972363710835 (2026-10-23): 4 pictures; https://pbs.twimg.com/media/HVUfO7_aQAACUUn.jpg https://pbs.twimg.com/media/HVUfO7xboAAwuy_.jpg https://pbs.twimg.com/media/HVUfO8Ga4AEIby9.jpg https://pbs.twimg.com/media/HVUfO7yaQAE2Dnj.jpg
+    https://pbs.twimg.com/media/HVUfO7_aQAACUUn.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVUfO7xboAAwuy_.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVUfO8Ga4AEIby9.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVUfO7yaQAE2Dnj.jpg: not a Magic schedule
+  https://x.com/torecanoMTG/status/2113824187316122093 (2026-10-24): 2 pictures; https://pbs.twimg.com/media/HVXP5N1a0AACS5w.jpg https://pbs.twimg.com/media/HVXP5N2agAAhD4j.jpg
+    https://pbs.twimg.com/media/HVXP5N1a0AACS5w.jpg: a Magic schedule, but tonight's 10 readings are used; read tomorrow
+@MastersSquare: 25 new posts
+  https://x.com/MastersSquare/status/2113835370794361179 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVT-zgIasAAg6oS.jpg
+    https://pbs.twimg.com/media/HVT-zgIasAAg6oS.jpg: not a Magic schedule
+  https://x.com/MastersSquare/status/2113835372291698727 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVT-bi6aEAA3xA3.jpg
+    https://pbs.twimg.com/media/HVT-bi6aEAA3xA3.jpg: not a Magic schedule
+  https://x.com/MastersSquare/status/2113867499074990331 (2026-10-24): 2 pictures; https://pbs.twimg.com/media/HVX3PjEawAALB4f.jpg https://pbs.twimg.com/media/HVX3SIYakAAjGoH.jpg
+    https://pbs.twimg.com/media/HVX3PjEawAALB4f.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HVX3SIYakAAjGoH.jpg: not a Magic schedule
+  https://x.com/MastersSquare/status/2113923275701264608 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVYp4JcbAAAGZTC.jpg
+    https://pbs.twimg.com/media/HVYp4JcbAAAGZTC.jpg: not a Magic schedule
+  https://x.com/MastersSquare/status/2113923612721684628 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVYqMs6bEAAxlTI.jpg
+    https://pbs.twimg.com/media/HVYqMs6bEAAxlTI.jpg: not a Magic schedule
+  https://x.com/MastersSquare/status/2113956292461232395 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVZICknaEAAVFVH.jpg
+    https://pbs.twimg.com/media/HVZICknaEAAVFVH.jpg: not a Magic schedule
+  https://x.com/MastersSquare/status/2113960864898523370 (2026-10-24): 4 pictures; https://pbs.twimg.com/media/HVZMK22bIAETwOg.jpg https://pbs.twimg.com/media/HVZMLPuakAAfcbm.jpg https://pbs.twimg.com/media/HVZMLvCa4AA6U6R.jpg https://pbs.twimg.com/media/HVZMMNWbsAAZX7g.jpg
+    https://pbs.twimg.com/media/HVZMK22bIAETwOg.jpg: a Magic schedule, but tonight's 10 readings are used; read tomorrow
+@GOODGAME_Ootaka: 24 new posts
+  https://x.com/GOODGAME_Ootaka/status/2113205399054901650 (2026-10-22): 1 pictures; https://pbs.twimg.com/media/HVOWDJMasAApL1H.jpg
+    https://pbs.twimg.com/media/HVOWDJMasAApL1H.jpg: not a Magic schedule
+  https://x.com/GOODGAME_Ootaka/status/2113476076697710720 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVSTSbqbQAAvjQY.jpg
+    https://pbs.twimg.com/media/HVSTSbqbQAAvjQY.jpg: not a Magic schedule
+  https://x.com/GOODGAME_Ootaka/status/2113476720414355748 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVST34lbMAAtRDL.jpg
+    https://pbs.twimg.com/media/HVST34lbMAAtRDL.jpg: not a Magic schedule
+  https://x.com/GOODGAME_Ootaka/status/2113562285444931805 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVThnIwawAAF158.jpg
+    https://pbs.twimg.com/media/HVThnIwawAAF158.jpg: a Magic schedule, but tonight's 10 readings are used; read tomorrow
+@TrickMatsudo: 25 new posts
+  https://x.com/TrickMatsudo/status/2103790697954566193 (2026-09-26): 1 pictures; https://pbs.twimg.com/media/HTIqeYJaoAAkvb4.jpg
+    https://pbs.twimg.com/media/HTIqeYJaoAAkvb4.jpg: a Magic schedule, but tonight's 10 readings are used; read tomorrow
+@Fellows_GOTTA: 25 new posts
+  https://x.com/Fellows_GOTTA/status/2111684425746616370 (2026-10-18): 3 pictures; https://pbs.twimg.com/media/HU41ytVbwAA6xbE.jpg https://pbs.twimg.com/media/HU41ytUaUAAx3Tb.jpg https://pbs.twimg.com/media/HU41ytUbQAAYpu6.jpg
+    https://pbs.twimg.com/media/HU41ytVbwAA6xbE.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HU41ytUaUAAx3Tb.jpg: a Magic schedule, but tonight's 10 readings are used; read tomorrow
+@TTChiratsuka: 25 new posts
+  https://x.com/TTChiratsuka/status/2113537958192279947 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTLkURaAAAoQus.jpg
+    https://pbs.twimg.com/media/HVTLkURaAAAoQus.jpg: not a Magic schedule
+  https://x.com/TTChiratsuka/status/2113576052450803765 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTuNeCbwAAVBlH.jpg
+    https://pbs.twimg.com/media/HVTuNeCbwAAVBlH.jpg: not a Magic schedule
+  https://x.com/TTChiratsuka/status/2113796891381252103 (2026-10-24): 1 pictures; https://pbs.twimg.com/media/HVW2-IwaQAANi9v.jpg
+    https://pbs.twimg.com/media/HVW2-IwaQAANi9v.jpg: a Magic schedule, but tonight's 10 readings are used; read tomorrow
+X: 199 posts read (about $0.995); 125 pictures screened, 10 read (tokens in+out: 3907+147, 2502+1531, 2485+1461, 3906+147, 4851+1409, 2761+216, 2049+74, 3133+452, 3130+59, 3141+435)
+Wrote 26 events to x_test/kanto_events.json
