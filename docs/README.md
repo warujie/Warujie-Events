@@ -76,8 +76,9 @@ forbids automated collection without written permission, and pages need a login)
   Claude the picture and the post's link; Claude lists the Magic events (date, start time, format,
   name), the owner checks them, and they go into `manual_events.json` with the post's link, the
   shop's name (spelled as on Tonamel when the shop lists there too), prefecture and city. An entry
-  without a date, an `HH:MM` time (or none), a prefecture 1–47 or a link to an X post
-  (`X_POST`) is left out, and the log says so. An X event at the same store, day and start time as
+  without a date, an `HH:MM` time (or none), a prefecture 1–47 or a link to the X post (or, when
+  the post's own link isn't known, to the shop's X account, where its calendars are; `X_POST`) is
+  left out, and the log says so. An X event at the same store, day and start time as
   one of its Tonamel events is dropped in favour of Tonamel's (`tidy()`, `store_key()`), whose page
   has the details. The plan for reading the posts automatically later (X's API with a spending cap,
   Claude reading the pictures) is in the project files, `x-twitter/plan.md`.

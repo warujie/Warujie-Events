@@ -1,4 +1,32 @@
 {
-  "note": "Magic events read by hand from shops' calendar pictures on X (docs/README.md, \"X posts\"). One entry per event: d (YYYY-MM-DD), t (HH:MM, or \"\"), p (prefecture, JIS 1-47), c (city), store (spelled as on Tonamel when the shop lists there too), name, f (formats), url (the post on X), read (the day it was read).",
-  "events": []
+  "note": "Magic events read by hand from shops' calendar pictures on X (docs/README.md, \"X posts\"). One entry per event: d (YYYY-MM-DD), t (HH:MM, or \"\"), p (prefecture, JIS 1-47), c (city), store (spelled as on Tonamel when the shop lists there too), name, f (formats), url (the post on X, or the shop's X account when the post's link is not known), read (the day it was read).",
+  "events": [
+    {"d": "2026-11-01", "t": "13:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "FRA Store Championship", "f": ["standard"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-01", "t": "18:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Magic Presents: Chaos Draft", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-03", "t": "19:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Pick-Two Draft", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-06", "t": "19:30", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "プレリリース シールド", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-07", "t": "13:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "プレリリース シールド", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-07", "t": "17:30", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "プレリリース シールド", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-08", "t": "13:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "プレリリース シールド", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-08", "t": "17:30", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "プレリリース シールド", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-11", "t": "19:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "PWS Standard", "f": ["standard"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-13", "t": "19:30", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Standard", "f": ["standard"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-14", "t": "14:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "OKINAWA Vintage 2026", "f": ["vintage"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-15", "t": "14:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Champions Cup Store Qualifier シールド", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-17", "t": "19:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Pick-Two Draft", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-20", "t": "19:30", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Standard", "f": ["standard"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-21", "t": "14:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Modern", "f": ["modern"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-21", "t": "18:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Commander Party", "f": ["commander"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-22", "t": "14:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Modern", "f": ["modern"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-27", "t": "19:30", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Standard", "f": ["standard"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-28", "t": "14:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "PWS Standard", "f": ["standard"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-28", "t": "17:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Magic Academy 初心者講習会 Learn to Play", "f": [], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-28", "t": "18:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Magic Academy デッキ構築 Sealed Deck", "f": ["limited"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-29", "t": "13:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Legacy", "f": ["legacy"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-11-29", "t": "17:00", "p": 47, "c": "中城村", "store": "ABSOLUTE ZERO", "name": "Vintage", "f": ["vintage"], "url": "https://x.com/zeropomta", "read": "2026-10-25"},
+    {"d": "2026-10-25", "t": "13:00", "p": 47, "c": "北中城村", "store": "TABLE DOG", "name": "モダン", "f": ["modern"], "url": "https://x.com/tabledog3104", "read": "2026-10-25"},
+    {"d": "2026-10-31", "t": "19:00", "p": 47, "c": "北中城村", "store": "TABLE DOG", "name": "モダン", "f": ["modern"], "url": "https://x.com/tabledog3104", "read": "2026-10-25"},
+    {"d": "2026-10-25", "t": "18:30", "p": 47, "c": "沖縄市", "store": "マンガ倉庫 泡瀬店", "name": "ストアチャンピオンシップ", "f": ["standard"], "url": "https://x.com/msAWASE_CARD", "read": "2026-10-25"},
+    {"d": "2026-10-28", "t": "19:30", "p": 47, "c": "沖縄市", "store": "マンガ倉庫 泡瀬店", "name": "統率者交流会", "f": ["commander"], "url": "https://x.com/msAWASE_CARD", "read": "2026-10-25"}
+  ]
 }

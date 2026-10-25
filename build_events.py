@@ -448,7 +448,8 @@ def read_yellowsub(today, log):
 
 # ---- X posts (by hand)
 MANUAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual_events.json")
-X_POST = re.compile(r"https://(?:x|twitter)\.com/[A-Za-z0-9_]{1,15}/status/\d{1,20}")
+# the post, or the shop's X account (where its calendars are) when the post's own link isn't known
+X_POST = re.compile(r"https://(?:x|twitter)\.com/[A-Za-z0-9_]{1,15}(?:/status/\d{1,20})?")
 
 
 def read_manual(today, log):
@@ -461,7 +462,7 @@ def read_manual(today, log):
         return []
     out = []
     for r in rows:
-        url = str(r.get("url") or "").split("?")[0]
+        url = str(r.get("url") or "").split("?")[0].replace("https://twitter.com/", "https://x.com/")
         ok = (re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("d") or "")) and re.fullmatch(r"(\d{1,2}:\d{2})?", str(r.get("t") or ""))
               and isinstance(r.get("p"), int) and 1 <= r["p"] <= 47 and X_POST.fullmatch(url) and r.get("store") and r.get("name"))
         if not ok:
