@@ -2,7 +2,10 @@ X token: set; Anthropic key: missing
 
 [notice] A new release of pip is available: 26.2.1 -> 26.2.2
 [notice] To update, run: pip install --upgrade pip
-@ZEROPOMTA: 10 new posts
+@ZEROPOMTA: 25 new posts
+  https://x.com/ZEROPOMTA/status/2106596197456887865 (2026-10-04): 1 pictures; https://pbs.twimg.com/media/HTwh9xzakAARisl.png
+  https://x.com/ZEROPOMTA/status/2106653986334150685 (2026-10-04): 1 pictures; https://pbs.twimg.com/media/HTxWkNVbcAAXmsU.jpg
   https://x.com/ZEROPOMTA/status/2113546316349628749 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVTTJbnbEAAahHf.jpg
   https://x.com/ZEROPOMTA/status/2113600198081663066 (2026-10-23): 1 pictures; https://pbs.twimg.com/media/HVUEK3la8AAJ2G5.jpg
-X: 10 posts read (about $0.050); 0 pictures screened, 0 read
+  https://x.com/ZEROPOMTA/status/2114333714566246414 (2026-10-25): 1 pictures; https://pbs.twimg.com/media/HVefL0-aQAAjLJS.jpg
+X: 25 posts read (about $0.125); 0 pictures screened, 0 read
