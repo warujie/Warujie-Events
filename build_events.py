@@ -639,7 +639,7 @@ def main():
     ap.add_argument("--only", default="", help="comma-separated shops (for testing)")
     ap.add_argument("--manual-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
     ap.add_argument("--fees", metavar="CACHE", help="Hareruya's fees: read and update this cache (hareruya_fees.json)")
-    ap.add_argument("--fee-minutes", type=float, default=25, help="stop reading Hareruya's event pages this long after the start")
+    ap.add_argument("--fee-minutes", type=float, default=32, help="stop reading Hareruya's event pages this long after the start")
     args = ap.parse_args()
     log = lambda s: print(s, flush=True)
     started = time.time()

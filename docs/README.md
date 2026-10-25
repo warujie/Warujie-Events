@@ -110,10 +110,10 @@ forbids automated collection without written permission, and pages need a login)
   no fee, and its 33 stores hold about 10,000 events a month, too many pages to read each night,
   but a store's recurring event (the same name) costs the same each time: `hareruya_fees()` reads
   one page per store and name (its 参加費 row, `hareruya_fee()`), soonest event first, at most
-  `HARERUYA_FEE_PAGES` (250, about 17 minutes) a night and never past `--fee-minutes` (25) from
+  `HARERUYA_FEE_PAGES` (250, about 17 minutes) a night and never past `--fee-minutes` (32) from
   the start, and keeps the fees in `hareruya_fees.json` (`--fees`; downloaded from and published
   to R2 beside events.json), re-reading each after `HARERUYA_FEE_DAYS` (30). The first nights
-  fill it in (about 1,500 pairs); until then some Hareruya events have no fee. A hand-kept event that merges
+  fill it in (about 1,700 store-and-name pairs, about a week); until then some Hareruya events have no fee. A hand-kept event that merges
   into a Tonamel event without a fee hands its fee over (`tidy()`).
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
