@@ -11,7 +11,8 @@
 # into the published file at once, without reading any shop again.
 #
 # The result is published to the private R2 bucket (as events.json), which warujie.jp reads
-# through its Worker at /data/events.json. If every shop's source fails, nothing is published and
+# through its Worker at /data/events.json. Hareruya's fees come from its event pages, each store's
+# recurring event read once and kept in hareruya_fees.json (also in R2) for 30 days. If every shop's source fails, nothing is published and
 # yesterday's file stays. Nothing is committed. Nothing runs until the repository has the
 # CLOUDFLARE_R2_TOKEN secret (docs/README.md, "The secret").
 
@@ -36,7 +37,7 @@ jobs:
   read:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
     steps:
       # first, before any shop is read: can we publish at all?
       - name: Check the R2 token
@@ -61,9 +62,12 @@ jobs:
           pip install cryptography playwright==1.56.0
           python3 -m playwright install --with-deps chromium
 
+      # Hareruya's fees: yesterday's cache, so each event page is read once (none yet on the first night)
       - name: Read the shops' event lists
         if: github.event_name != 'push'
-        run: python3 build_events.py --out site/events.json
+        run: |
+          aws s3 cp "s3://warujie-price-data/hareruya_fees.json" hareruya_fees.json --endpoint-url "$R2_ENDPOINT" --only-show-errors || echo "No fee cache yet"
+          python3 build_events.py --out site/events.json --fees hareruya_fees.json
 
       # manual_events.json changed: only its events change in the published file
       - name: Update the events read from calendar pictures
@@ -76,3 +80,4 @@ jobs:
         run: |
           aws s3 cp site/events.json "s3://warujie-price-data/events.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors
           echo "Published events.json ($(stat -c %s site/events.json) bytes)"
+          if [ -s hareruya_fees.json ]; then aws s3 cp hareruya_fees.json "s3://warujie-price-data/hareruya_fees.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors; fi

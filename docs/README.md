@@ -6,7 +6,7 @@
 |---|---|
 | [`build_events.py`](../build_events.py) | Reads the shops' event pages and Tonamel's MTG event search, adds the events read by hand from shops' calendar pictures, and writes `events.json` (the next 35 days) |
 | [`manual_events.json`](../manual_events.json) | The Magic events read by hand from shops' calendar pictures: posts on X and MINT's schedule pages ("Calendar pictures" below) |
-| [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` alone to R2; a change to `manual_events.json` on `main` updates only those events at once |
+| [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` (and Hareruya's fee cache, `hareruya_fees.json`) to R2; a change to `manual_events.json` on `main` updates only those events at once |
 
 The site (`warujie/Warujie`) reads the file at `warujie.jp/data/events.json` (its Worker serves the
 R2 bucket `warujie-price-data` to the site's own pages only) in `loadEventCalendar()`, and shows it
@@ -16,7 +16,8 @@ on the 大会 tab (the site's `docs/other-pages.md`, "Tournaments tab").
 
 Every day at **18:30 UTC** (3:30 in Japan), and by hand ("Run workflow" in GitHub Actions). It
 takes about 10 minutes: about 90 pages, 4 seconds apart, plus a minute to install the headless
-Chromium Tonamel needs. It runs from `main` only, and does nothing
+Chromium Tonamel needs, and up to about 17 more for Hareruya's event pages, while its fee cache
+is filling in (a few minutes a night after that). It runs from `main` only, and does nothing
 until the repository has the `CLOUDFLARE_R2_TOKEN` secret (the first step checks, before any shop is
 read).
 
@@ -103,9 +104,16 @@ forbids automated collection without written permission, and pages need a login)
   takes the first sum in yen (¥1,000, 1000円; 無料 is 0) and ignores a pack or purchase asked for
   instead (1パック購入, 200円以上購入, 3,000円分). Sources: Yellow Submarine's 費用 column, a fee
   column on Amenity Dream's table should it have one, the 参加費 line of a Tonamel description
-  (`tonamel_fee()`), and `fee` / `fee_to` in `manual_events.json` (read off the picture; `fee_to`
-  when the fee depends on the language of the packs, as at prereleases). Hareruya's calendar gives
-  no fee (only each event's own page does), so its events have none. A hand-kept event that merges
+  (`tonamel_fee()`), `fee` / `fee_to` in `manual_events.json` (read off the picture; `fee_to`
+  when the fee depends on the language of the packs, as at prereleases), and Hareruya's event
+  pages (the owner's request, 2026-10-25; its `robots.txt` allows them). Hareruya's calendar gives
+  no fee, and its 33 stores hold about 10,000 events a month, too many pages to read each night,
+  but a store's recurring event (the same name) costs the same each time: `hareruya_fees()` reads
+  one page per store and name (its 参加費 row, `hareruya_fee()`), soonest event first, at most
+  `HARERUYA_FEE_PAGES` (250, about 17 minutes) a night and never past `--fee-minutes` (25) from
+  the start, and keeps the fees in `hareruya_fees.json` (`--fees`; downloaded from and published
+  to R2 beside events.json), re-reading each after `HARERUYA_FEE_DAYS` (30). The first nights
+  fill it in (about 1,500 pairs); until then some Hareruya events have no fee. A hand-kept event that merges
   into a Tonamel event without a fee hands its fee over (`tidy()`).
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
@@ -134,6 +142,7 @@ there are two (Japanese or English packs), both left out when unknown. About 11,
 ```
 python3 build_events.py --out out/events.json            # every shop, about 10 minutes
 python3 build_events.py --out out/events.json --only amenity
+python3 build_events.py --out out/events.json --only hareruya --fees out/hareruya_fees.json   # with fees
 python3 build_events.py --out out/events.json --only manual   # manual_events.json alone
 python3 build_events.py --out out/events.json --manual-only published.json   # its hand-kept events replaced
 ```

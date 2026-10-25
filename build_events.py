@@ -192,6 +192,54 @@ def read_hareruya(today, log):
     return events
 
 
+# Hareruya's calendar gives no fee; each event's own page does (■参加費 1,000円). A store's
+# recurring event (the same name) costs the same each time, so one page is read per store and
+# name, its fee kept in a small cache (hareruya_fees.json, beside events.json in R2) and re-read
+# after HARERUYA_FEE_DAYS; at most HARERUYA_FEE_PAGES pages a night, the soonest events first.
+HARERUYA_FEE_PAGES = 250          # about 17 minutes at PAGE_GAP
+HARERUYA_FEE_DAYS = 30
+HARERUYA_FEE_RE = re.compile(r'参加費</div>\s*<div class="event_detail_table_text">(.*?)</div>', re.S)
+
+
+def hareruya_fee(html):
+    """The fee on a Hareruya event page: its 参加費 row; None when the page gives none."""
+    m = HARERUYA_FEE_RE.search(html)
+    if m:
+        return yen_of(clean(m.group(1)))
+    m = re.search(r"■\s*参加費\s*([^■]{1,40})", clean(html))
+    return yen_of(m.group(1)) if m else None
+
+
+def hareruya_fees(events, cache, today, log, deadline):
+    """Puts the cached fee on each Hareruya event, after reading the pages of the store-and-name
+    pairs not in the cache yet (then the stalest), soonest event first, within the night's budget."""
+    key = lambda e: f"{e['store']}|{e['name']}"
+    first = {}
+    for e in sorted((e for e in events if e.get("shop") == "hareruya"), key=lambda e: (e["d"], e["t"] or "99:99")):
+        first.setdefault(key(e), e)
+    stale = (today - timedelta(days=HARERUYA_FEE_DAYS)).isoformat()
+    todo = [k for k in first if k not in cache] + sorted((k for k in first if k in cache and cache[k].get("read", "") < stale),
+                                                          key=lambda k: cache[k].get("read", ""))
+    read = 0
+    for k in todo[:HARERUYA_FEE_PAGES]:
+        if time.time() > deadline:
+            log("  hareruya fees: out of time for tonight")
+            break
+        try:
+            fee = hareruya_fee(fetch(first[k]["url"]))
+        except Exception as e:
+            log(f"  hareruya fee {first[k]['url']}: {e!r}"[:200])
+            continue
+        cache[k] = {"fee": fee, "read": today.isoformat(), "url": first[k]["url"]}
+        read += 1
+    for e in events:
+        if e.get("shop") == "hareruya" and cache.get(key(e), {}).get("fee") is not None:
+            e["fee"] = cache[key(e)]["fee"]
+    known = sum(1 for k in first if k in cache)
+    log(f"  hareruya fees: {read} pages read; {known} of {len(first)} store-and-name pairs known, {len(todo) - read} still to read")
+    return cache
+
+
 # ---- Amenity Dream
 def amenity_context(host="amenitydream.co.jp"):
     """A normal, verifying TLS context that also knows the intermediate certificate the
@@ -590,8 +638,11 @@ def main():
     ap.add_argument("--days", type=int, default=35)
     ap.add_argument("--only", default="", help="comma-separated shops (for testing)")
     ap.add_argument("--manual-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
+    ap.add_argument("--fees", metavar="CACHE", help="Hareruya's fees: read and update this cache (hareruya_fees.json)")
+    ap.add_argument("--fee-minutes", type=float, default=25, help="stop reading Hareruya's event pages this long after the start")
     args = ap.parse_args()
     log = lambda s: print(s, flush=True)
+    started = time.time()
     today = datetime.now(JST).date()
     first, last = today.isoformat(), (today + timedelta(days=args.days)).isoformat()
     if args.manual_only:
@@ -622,6 +673,15 @@ def main():
     if not events or not any(n for shop, n in sources.items() if shop != "manual") and only != ["manual"]:
         log("No events from any shop's source: nothing written, so the published file stays.")
         sys.exit(1)
+    if args.fees and sources.get("hareruya"):
+        try:
+            with open(args.fees, encoding="utf-8") as f:
+                cache = json.load(f).get("fees", {})
+        except (FileNotFoundError, ValueError):
+            cache = {}
+        cache = hareruya_fees(events, cache, today, log, started + args.fee_minutes * 60)
+        with open(args.fees, "w", encoding="utf-8") as f:
+            json.dump({"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "fees": cache}, f, ensure_ascii=False, separators=(",", ":"))
     write(args.out, {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "sources": sources,
                      "events": tidy(events)}, log)
 
