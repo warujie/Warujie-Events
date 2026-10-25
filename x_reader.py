@@ -2,10 +2,12 @@
 """Magic events from shops' calendar pictures on X, read automatically (the owner's request,
 2026-10-25: automatic, but only the accounts listed in x_accounts.json, to keep the cost down).
 
-Once a night, for each account in x_accounts.json:
+Each account in x_accounts.json is read once a week (X_EVERY_DAYS, the owner's choice of
+2026-10-25; the nightly run reads the accounts whose week is up):
 1. X's API (pay-per-use, the owner's developer account; secret X_BEARER_TOKEN) gives the account's
-   own new posts since the last night (`since_id`), at most X_MAX_POSTS. Reposts and replies are
-   left out. X bills each post read ($0.005 in 2026-10).
+   own new posts since its last reading (`since_id`), at most X_MAX_POSTS, with any description the
+   shop typed for a picture (alt text, free). Reposts and replies are left out. X bills each post
+   read ($0.005 in 2026-10).
 2. Each picture in those posts is first shown to a small, cheap model (SCREEN_MODEL), which only
    says whether it is a schedule or announcement of Magic events.
 3. Only those pictures go to READ_MODEL, which lists the Magic events in them (day, start, name,
@@ -36,7 +38,8 @@ from build_events import FORMAT_JA, JST, USER_AGENT, formats_in, same_event
 HERE = os.path.dirname(os.path.abspath(__file__))
 ACCOUNTS = os.path.join(HERE, "x_accounts.json")
 X_API = "https://api.x.com/2"
-X_MAX_POSTS = 10        # per account and night (X's smallest page is 5); the first night reads the latest 10
+X_EVERY_DAYS = 7        # each account is read once a week (the owner's choice, 2026-10-25)
+X_MAX_POSTS = 25        # per account and reading (about a week of a busy shop's posts; X's page is 5-100)
 X_MAX_READS = 10        # pictures read by READ_MODEL per night, whatever the accounts post
 X_POST_DAYS = 45        # posts older than this are never read (a first night, or an account added later)
 SCREEN_MODEL = "claude-haiku-5-5"
@@ -150,6 +153,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--state", required=True, help="x_events.json: read (when it exists) and updated")
     ap.add_argument("--dry-run", action="store_true", help="read X only; list the new pictures; no model, no state change")
+    ap.add_argument("--all", action="store_true", help="read every account now, whatever its week (testing)")
     args = ap.parse_args()
     log = lambda s: print(s, flush=True)
     token = os.environ.get("X_BEARER_TOKEN", "")
@@ -180,11 +184,13 @@ def main():
     for a in accounts:
         h = a["handle"].lower()
         s = seen.setdefault(h, {})
+        if s.get("read") and not args.all and (today - date.fromisoformat(s["read"])).days < X_EVERY_DAYS:
+            continue   # read less than a week ago
         try:
             if not s.get("id"):
                 s["id"] = x_get(f"/users/by/username/{a['handle']}", {}, token)["data"]["id"]
             params = {"max_results": X_MAX_POSTS, "exclude": "retweets,replies", "expansions": "attachments.media_keys",
-                      "media.fields": "type,url", "tweet.fields": "created_at"}
+                      "media.fields": "type,url,alt_text", "tweet.fields": "created_at"}
             if s.get("since_id"):
                 params["since_id"] = s["since_id"]
             else:
@@ -194,27 +200,32 @@ def main():
             log(f"@{a['handle']}: {e}")
             continue
         posts = got.get("data", [])
+        s["read"] = today.isoformat()
+        if len(posts) >= X_MAX_POSTS and s.get("since_id"):
+            log(f"@{a['handle']}: more than {X_MAX_POSTS} posts this week; only the latest are read")
         media = {m["media_key"]: m for m in got.get("includes", {}).get("media", [])}
         posts_read += len(posts)
         log(f"@{a['handle']}: {len(posts)} new posts")
         done = s.get("since_id")   # the newest post whose pictures are all dealt with
         for p in sorted(posts, key=lambda p: int(p["id"])):   # oldest first, so a newer reading replaces an older
-            pics = [media[k]["url"] for k in p.get("attachments", {}).get("media_keys", []) if media.get(k, {}).get("type") == "photo" and media[k].get("url")]
+            pics = [media[k] for k in p.get("attachments", {}).get("media_keys", []) if media.get(k, {}).get("type") == "photo" and media[k].get("url")]
             url = f"https://x.com/{a['handle']}/status/{p['id']}"
             posted = datetime.fromisoformat(p["created_at"].replace("Z", "+00:00")).astimezone(JST)
             if not pics:
                 done = p["id"]
                 continue
-            log(f"  {url} ({posted:%Y-%m-%d}): {len(pics)} pictures; {' '.join(pics)}")
+            log(f"  {url} ({posted:%Y-%m-%d}): {len(pics)} pictures; {' '.join(m['url'] for m in pics)}")
             if args.dry_run:
                 continue
             found, ok = [], True
-            for pic in pics:
+            for m in pics:
+                pic = m["url"]
+                alt = f"\nThe shop's description of the picture: {m['alt_text'][:1000]}" if m.get("alt_text") else ""
                 try:
                     data, kind = picture(pic)
                     img = {"type": "image", "source": {"type": "base64", "media_type": kind, "data": base64.standard_b64encode(data).decode()}}
                     screened += 1
-                    yes, _ = ask(client, SCREEN_MODEL, [img, {"type": "text", "text": SCREEN_PROMPT.format(store=f" ({a['store']})")}], SCREEN_SCHEMA, "low")
+                    yes, _ = ask(client, SCREEN_MODEL, [img, {"type": "text", "text": SCREEN_PROMPT.format(store=f" ({a['store']})") + alt}], SCREEN_SCHEMA, "low")
                     if not yes["magic_events"]:
                         log(f"    {pic}: not a Magic schedule")
                         continue
@@ -225,7 +236,7 @@ def main():
                     reads += 1
                     place = " ".join(x for x in (a.get("c", ""),) if x) or f"prefecture {a['p']}"
                     out, usage = ask(client, READ_MODEL, [img, {"type": "text", "text": READ_PROMPT.format(
-                        posted=f"{posted:%Y-%m-%d}", store=a["store"], place=place, text=p.get("text", "")[:1500])}], READ_SCHEMA, "medium")
+                        posted=f"{posted:%Y-%m-%d}", store=a["store"], place=place, text=p.get("text", "")[:1500]) + alt}], READ_SCHEMA, "medium")
                     evs = valid_events(out.get("events", []), a, url, posted.date(), today.isoformat())
                     cost_note.append(f"{usage.input_tokens}+{usage.output_tokens}")
                     log(f"    {pic}: {len(evs)} Magic events (of {len(out.get('events', []))} given)")

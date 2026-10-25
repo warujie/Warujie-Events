@@ -96,12 +96,15 @@ forbids automated collection without written permission, and pages need a login)
   stores that list on Tonamel join MINT's own entry (`TONAMEL_MINT`), and Tonamel's play-room
   bookings (【ルーム予約】貸切プレイルーム) are not events (`TONAMEL_NOT_EVENT`).
 - **Calendar pictures on X, read automatically** (`x_reader.py`, the owner's request of
-  2026-10-25: automatic, but only for the accounts they choose, to keep the cost down). Each night,
-  before the shops are read, for every account in `x_accounts.json` (`handle`, and the `store`, `p`
-  and `c` its events get):
+  2026-10-25: automatic, but only for the accounts they choose, and each **once a week**, to keep
+  the cost down). In the nightly run, before the shops are read, for every account in
+  `x_accounts.json` (`handle`, and the `store`, `p` and `c` its events get) last read
+  `X_EVERY_DAYS` (7) or more days ago:
   1. X's API (the owner's pay-per-use developer account, secret `X_BEARER_TOKEN`) gives the
-     account's own posts since the last night's newest (`since_id`), at most `X_MAX_POSTS`, no
-     reposts or replies; the first night, the latest posts of the last `X_POST_DAYS` days. X bills
+     account's own posts since its last reading's newest (`since_id`), at most `X_MAX_POSTS` (25;
+     a busier week loses its oldest posts, and the log says so), no reposts or replies, with the
+     description a shop typed for a picture (alt text), which goes to the models too; the first
+     time, the latest posts of the last `X_POST_DAYS` days. X bills
      each post read ($0.005 in 2026-10) and each account's first lookup ($0.01).
   2. Each picture goes first to a small model (`SCREEN_MODEL`, a fraction of a cent), which only
      says whether it gives the dates of Magic events.
@@ -109,7 +112,7 @@ forbids automated collection without written permission, and pages need a login)
      day, start, name, formats, fee (`READ_PROMPT`, a fixed JSON shape, `READ_SCHEMA`), at most
      `X_MAX_READS` pictures a night; `valid_events()` keeps those that hold together (a date from a
      week before the post to four months after it). Each event links to its post.
-  The result, with each account's `since_id`, is `x_events.json` in R2 (shop `x`, so the site tags
+  The result, with each account's `since_id` and last reading (`read`), is `x_events.json` in R2 (shop `x`, so the site tags
   it X投稿から); events before yesterday drop out, and a newer post's reading of the same event
   replaces the older one. A post whose pictures failed (or met the night's limit) is tried again
   the next night. `build_events.py --x-events` adds them as hand-kept events (the same merging
@@ -118,7 +121,7 @@ forbids automated collection without written permission, and pages need a login)
   for). **To add a shop:** a line in `x_accounts.json`; to drop one, remove its line (its events go
   when they have passed). A spending limit is set in X's Developer Console and Anthropic's Console.
   The test workflow `x-test.yml` runs the reader once on a `claude/…` work branch and commits its
-  log to `x_test/` there.
+  log to `x_test/` there (`--all` reads every account whatever its week).
 - Formats from words come from `formats_in()` (`FORMAT_WORDS`, the same words as the site's
   `EVENT_FORMAT_WORDS`; full-width letters folded): every format a name or note names, スタン counting
   as スタンダード, プレモダン not as モダン, and a モダンホライゾン draft as limited only. Dates without a year
