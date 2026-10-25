@@ -1,6 +1,7 @@
 {
   "note": "The shops' X accounts whose calendar pictures x_reader.py reads each night (docs/README.md, \"Calendar pictures on X, read automatically\"). Only these accounts are read, to keep the cost down (the owner's choice, 2026-10-25). handle: the account (x.com/<handle>); store: the shop's name as the calendar shows it (as on Tonamel when the shop lists there too); p: prefecture (JIS 1-47); c: city.",
   "accounts": [
-    {"handle": "ZEROPOMTA", "store": "ABSOLUTE ZERO", "p": 47, "c": "中城村"}
+    {"handle": "ZEROPOMTA", "store": "ABSOLUTE ZERO", "p": 47, "c": "中城村"},
+    {"handle": "msAWASE_CARD", "store": "マンガ倉庫 泡瀬店", "p": 47, "c": "沖縄市"}
   ]
 }
