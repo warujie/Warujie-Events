@@ -6,9 +6,9 @@
 # User-Agent naming warujie.jp. Every event links back to the shop's or Tonamel's page. If a site
 # asks us to stop, take it out of build_events.py at once.
 #
-# The shops' calendar pictures on X are read by hand into manual_events.json (x.com itself is
-# never read); a push that changes that file on main puts its events into the published file at
-# once, without reading any shop again.
+# Shops' calendar pictures (posts on X, which is never read itself, and MINT's schedule pages)
+# are read by hand into manual_events.json; a push that changes that file on main puts its events
+# into the published file at once, without reading any shop again.
 #
 # The result is published to the private R2 bucket (as events.json), which warujie.jp reads
 # through its Worker at /data/events.json. If every shop's source fails, nothing is published and
@@ -66,11 +66,11 @@ jobs:
         run: python3 build_events.py --out site/events.json
 
       # manual_events.json changed: only its events change in the published file
-      - name: Update the events from X posts
+      - name: Update the events read from calendar pictures
         if: github.event_name == 'push'
         run: |
           aws s3 cp "s3://warujie-price-data/events.json" published.json --endpoint-url "$R2_ENDPOINT" --only-show-errors
-          python3 build_events.py --out site/events.json --x-only published.json
+          python3 build_events.py --out site/events.json --manual-only published.json
 
       - name: Publish to R2
         run: |

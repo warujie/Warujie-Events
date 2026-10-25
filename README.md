@@ -6,7 +6,8 @@ The local Magic tournaments behind [warujie.jp](https://warujie.jp/)'s 大会 ca
   Tonamel's public MTG event search once a night (only what their robots.txt allows, one page every
   4 seconds, with a User-Agent naming warujie.jp) and writes `events.json`: the next 35 days of
   events, each linking back to the shop's or Tonamel's own page. Events from shops' calendar
-  pictures on X are read by hand into `manual_events.json`, each linking to its post.
+  pictures (posts on X, MINT's schedule pages) are read by hand into `manual_events.json`, each
+  linking to its post or page.
 - `.github/workflows/events-nightly.yml` runs it at 3:30 in Japan and publishes `events.json` to the
   private Cloudflare R2 bucket the site reads through its Worker. Nothing is committed.
 

@@ -19,18 +19,19 @@ Sources:
                  (KAYAC's tournament site; the owner's request of 2026-10-25): its event-search
                  page opened in a headless browser (Playwright), keeping the lists the page
                  itself loads; offline events only
-  X posts        shops' event calendars posted as pictures on X, read by hand from a picture
-                 the owner hands over (the owner's choice, 2026-10-25: by hand first, automatic
-                 later) and kept in manual_events.json; x.com itself is never read (its
-                 robots.txt forbids it); each event links to its post
+  Pictures       shops' event calendars posted as pictures, read by hand (the owner's choice,
+                 2026-10-25: by hand first, automatic later) and kept in manual_events.json:
+                 shops' posts on X, from a picture the owner hands over (x.com itself is never
+                 read: its robots.txt forbids it), and MINT's monthly schedule pages
+                 (mint-web.jp, the owner's request); each event links to its post or page
 
     python3 build_events.py --out site/events.json [--days 35]
-    python3 build_events.py --out site/events.json --x-only published.json
+    python3 build_events.py --out site/events.json --manual-only published.json
 
 Writes { "updated", "sources": {shop: events}, "events": [{ "d", "t", "p", "c",
 "shop", "store", "name", "url", "f" }] } (docs/README.md), or exits non-zero
 without writing if every shop's source failed, so yesterday's file stays published.
---x-only puts manual_events.json's events into an already published file without
+--manual-only puts manual_events.json's events into an already published file without
 reading any shop (a change to manual_events.json goes out without a second crawl).
 """
 import argparse
@@ -264,6 +265,10 @@ TONAMEL_API = "https://tonamel.com/graphql/competition_management"
 TONAMEL_MAX_PAGES = 30   # lists of 32 events
 # shops read from their own pages: their Tonamel listings would only repeat them
 TONAMEL_SKIP = re.compile(r"晴れる屋|イエローサブマリン|イエサブ|アメニティ")
+# MINT's stores that list on Tonamel (MINTGAMESMTG店) join MINT's own entry, as 'GAMES MTG店'
+TONAMEL_MINT = re.compile(r"^(?:MINT|ミント)\s*(GAMES\s*\S.*?|[^\x00-\x7f].*?)\s*(?:[(（].*)?$", re.I)
+# Tonamel listings that aren't events: a store's play room for hire (【ルーム予約】貸切プレイルーム)
+TONAMEL_NOT_EVENT = re.compile(r"ルーム予約|貸切")
 PREF_NAMES = ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県", "埼玉県",
               "千葉県", "東京都", "神奈川県", "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県",
               "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県",
@@ -338,11 +343,16 @@ def parse_tonamel(nodes):
             if not pref or not d:
                 continue
             title = clean(n.get("title") or "")
+            if TONAMEL_NOT_EVENT.search(title):
+                continue
+            shop, store = "tonamel", org or clean(loc.get("venueName") or "")
+            m = TONAMEL_MINT.match(unicodedata.normalize("NFKC", org))
+            if m:
+                shop, store = "mint", re.sub(r"^GAMES(?=\S)", "GAMES ", m.group(1), flags=re.I)
             # the format: from the title, else the description's 【フォーマット】 line
             m = re.search(r"フォーマット[】\]：:\s　]*([^<\n]{1,40})", n.get("description") or "")
             fs = formats_in(title) or (formats_in(clean(m.group(1))) if m else [])
-            out.append({"d": d, "t": t, "p": pref, "c": city, "shop": "tonamel",
-                        "store": org or clean(loc.get("venueName") or ""), "name": title,
+            out.append({"d": d, "t": t, "p": pref, "c": city, "shop": shop, "store": store, "name": title,
                         "url": f"https://tonamel.com/competition/{n['id']}", "f": fs})
     return out
 
@@ -446,15 +456,20 @@ def read_yellowsub(today, log):
     return events
 
 
-# ---- X posts (by hand)
+# ---- calendar pictures (by hand): shops' X posts and MINT's schedule pages
 MANUAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual_events.json")
-# the post, or the shop's X account (where its calendars are) when the post's own link isn't known
-X_POST = re.compile(r"https://(?:x|twitter)\.com/[A-Za-z0-9_]{1,15}(?:/status/\d{1,20})?")
+# what each hand-kept event may link to: for X, the post, or the shop's X account (where its
+# calendars are) when the post's own link isn't known; for MINT, the store's schedule page
+MANUAL_LINKS = {
+    "x": re.compile(r"https://(?:x|twitter)\.com/[A-Za-z0-9_]{1,15}(?:/status/\d{1,20})?"),
+    "mint": re.compile(r"https://mint-web\.jp/\?pid=\d{1,12}"),
+}
 
 
 def read_manual(today, log):
-    """The events read by hand from shops' calendar pictures on X (manual_events.json). An entry
-    that doesn't hold together (a date, a time, a prefecture, a link to the post) is left out."""
+    """The events read by hand from shops' calendar pictures (manual_events.json): posts on X
+    (shop "x") and MINT's monthly schedule pages (shop "mint"). An entry that doesn't hold
+    together (a date, a time, a prefecture, a link of its kind) is left out."""
     try:
         with open(MANUAL, encoding="utf-8") as f:
             rows = json.load(f).get("events", [])
@@ -462,30 +477,58 @@ def read_manual(today, log):
         return []
     out = []
     for r in rows:
-        url = str(r.get("url") or "").split("?")[0].replace("https://twitter.com/", "https://x.com/")
-        ok = (re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("d") or "")) and re.fullmatch(r"(\d{1,2}:\d{2})?", str(r.get("t") or ""))
-              and isinstance(r.get("p"), int) and 1 <= r["p"] <= 47 and X_POST.fullmatch(url) and r.get("store") and r.get("name"))
+        shop = r.get("shop") or "x"
+        url = str(r.get("url") or "").replace("https://twitter.com/", "https://x.com/")
+        url = url if shop == "mint" else url.split("?")[0]
+        ok = (shop in MANUAL_LINKS and MANUAL_LINKS[shop].fullmatch(url)
+              and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("d") or "")) and re.fullmatch(r"(\d{1,2}:\d{2})?", str(r.get("t") or ""))
+              and isinstance(r.get("p"), int) and 1 <= r["p"] <= 47 and r.get("store") and r.get("name"))
         if not ok:
-            log(f"  x: left out {json.dumps(r, ensure_ascii=False)[:160]}")
+            log(f"  manual: left out {json.dumps(r, ensure_ascii=False)[:160]}")
             continue
         fs = [f for f in (r.get("f") or []) if f in FORMAT_JA] or formats_in(r["name"])
-        out.append({"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": "x",
+        out.append({"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": shop,
                     "store": r["store"], "name": r["name"], "url": url, "f": fs})
     return out
 
 
+def hand_kept(e):
+    return any(link.fullmatch(e.get("url", "")) for link in MANUAL_LINKS.values())
+
+
 def store_key(name):
-    return re.sub(r"\s+", "", unicodedata.normalize("NFKC", name)).lower()
+    """A store's name for matching across sources: 'MINTGAMESMTG店' and 'GAMES MTG店' alike."""
+    k = re.sub(r"\s+", "", unicodedata.normalize("NFKC", name)).lower()
+    return re.sub(r"店$", "", re.sub(r"^(mint|ミント)", "", k))
+
+
+def minutes(t):
+    h, m = t.split(":")
+    return int(h) * 60 + int(m)
+
+
+def same_event(a, b):
+    """The same store's event on the same day: the same start, or starts within 30 minutes and a
+    format in common (a shop's picture may give the start where Tonamel gives the doors)."""
+    if a["d"] != b["d"] or store_key(a["store"]) != store_key(b["store"]):
+        return False
+    if a["t"] == b["t"]:
+        return True
+    return bool(a["t"] and b["t"] and abs(minutes(a["t"]) - minutes(b["t"])) <= 30 and set(a.get("f") or []) & set(b.get("f") or []))
 
 
 def tidy(events):
-    """One entry per event, sorted by day and start time. An event a shop lists on Tonamel and
-    also shows in its X calendar keeps Tonamel's entry (its own page, with the details)."""
-    on_tonamel = {(e["d"], e["t"], store_key(e["store"])) for e in events if e["shop"] == "tonamel"}
+    """One entry per event, sorted by day and start time. An event read by hand from a picture
+    that a shop also lists on Tonamel (or another read source) keeps that entry instead: its own
+    page, with the details (the owner's request, 2026-10-25)."""
+    read = {}
+    for e in events:
+        if not hand_kept(e):
+            read.setdefault((e["d"], store_key(e["store"])), []).append(e)
     seen, unique = set(), []
     for e in sorted(events, key=lambda e: (e["d"], e["t"] or "99:99", e["p"], e["store"], e["name"])):
         k = (e["d"], e["t"], e["shop"], e["store"], e["name"])
-        if k in seen or (e["shop"] == "x" and (e["d"], e["t"], store_key(e["store"])) in on_tonamel):
+        if k in seen or (hand_kept(e) and any(same_event(e, o) for o in read.get((e["d"], store_key(e["store"])), []))):
             continue
         seen.add(k)
         if not e.get("f"):
@@ -514,25 +557,25 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--days", type=int, default=35)
     ap.add_argument("--only", default="", help="comma-separated shops (for testing)")
-    ap.add_argument("--x-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
+    ap.add_argument("--manual-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
     args = ap.parse_args()
     log = lambda s: print(s, flush=True)
     today = datetime.now(JST).date()
     first, last = today.isoformat(), (today + timedelta(days=args.days)).isoformat()
-    if args.x_only:
-        with open(args.x_only, encoding="utf-8") as f:
+    if args.manual_only:
+        with open(args.manual_only, encoding="utf-8") as f:
             data = json.load(f)
-        shops = [e for e in data.get("events", []) if e.get("shop") != "x" and keep(e, first, last)]
+        shops = [e for e in data.get("events", []) if not hand_kept(e) and keep(e, first, last)]
         if not shops:
             log("The published file has no shop events: nothing written.")
             sys.exit(1)
         got = [e for e in read_manual(today, log) if keep(e, first, last)]
-        log(f"x: {len(got)} events")
-        write(args.out, {"updated": data.get("updated", ""), "sources": {**data.get("sources", {}), "x": len(got)},
+        log(f"manual: {len(got)} events")
+        write(args.out, {"updated": data.get("updated", ""), "sources": {**data.get("sources", {}), "manual": len(got)},
                          "events": tidy(shops + got)}, log)
         return
     readers = {"hareruya": read_hareruya, "amenity": read_amenity, "yellowsub": read_yellowsub, "tonamel": read_tonamel,
-               "x": read_manual}
+               "manual": read_manual}
     only = [s for s in args.only.split(",") if s]
     events, sources = [], {}
     for shop, reader in readers.items():
@@ -543,8 +586,8 @@ def main():
         sources[shop] = len(got)
         log(f"{shop}: {len(got)} events ({time.time() - t0:.0f} s)")
         events += got
-    # the hand-kept X events alone would replace every shop's: only with --only x (testing)
-    if not events or not any(n for shop, n in sources.items() if shop != "x") and only != ["x"]:
+    # the hand-kept events alone would replace every shop's: only with --only manual (testing)
+    if not events or not any(n for shop, n in sources.items() if shop != "manual") and only != ["manual"]:
         log("No events from any shop's source: nothing written, so the published file stays.")
         sys.exit(1)
     write(args.out, {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "sources": sources,
