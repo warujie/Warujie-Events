@@ -31,6 +31,9 @@ Start with [`docs/README.md`](docs/README.md).
    **MINT** (the owner's request, 2026-10-25): its stores' monthly schedule pictures on mint-web.jp
    (robots.txt allows them), read the same way into `manual_events.json`, each linking to the
    store's page. Events a shop also lists on Tonamel merge into one entry.
+   **CARDWINGS and CANTRIP** (the owner's request, 2026-10-26, in place of their X posts): CARDWINGS'
+   tournament list (card-wings.com, robots.txt allows it) and the schedule picture on CANTRIP's 八王子
+   store page (cantripmtg.com, robots.txt allows it), once a night, one page each, linking back.
    Reading X automatically needs X's paid API and the owner's own keys (never pasted in chat).
 3. **No secrets in the repo or in chat.** The R2 token is the GitHub secret `CLOUDFLARE_R2_TOKEN`;
    never print it, and never ask the owner to paste a token.
