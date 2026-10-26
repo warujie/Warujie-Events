@@ -2,7 +2,54 @@ X token: set; Anthropic key: set
 
 [notice] A new release of pip is available: 26.2.1 -> 26.2.2
 [notice] To update, run: pip install --upgrade pip
-sq3_robots.txt https://www.square-3rd.jp/robots.txt 110
-sq3.html https://www.square-3rd.jp/page/1 360151
-sq3_search.html https://www.square-3rd.jp/product-list?keyword=%E7%A8%B2%E5%A6%BB 578145
-tokyomtg 429
+fees updated 2026-10-25T19:36:34Z events updated 2026-10-25T19:36:34Z
+cache entries 250 with fee 250 read dates Counter({'2026-10-26': 250})
+hareruya events 10606 with fee 4649 pairs 1601 pairs in cache 250 cached with None fee 0
+2026-10-26 0 cache: {"fee": 0, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/635028/detail"} | マジック・リーグ
+2026-10-26 300 cache: {"fee": 300, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/634894/detail"} | 『盛り上げハッピー！』コマンダー集会ー18時の部(特殊ルール)
+2026-10-26 100 cache: {"fee": 100, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/634984/detail"} | 【1回戦固定】刹那の戦い 18時の部【BO3】
+2026-10-26 500 cache: {"fee": 500, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/645318/detail"} | 『盛り上げハッピー！』コマンダー集会ー19時の部[2回戦]
+2026-10-26 500 cache: {"fee": 500, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/634795/detail"} | 推奨日【パイオニア】夜の部
+2026-10-26 500 cache: {"fee": 500, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/634777/detail"} | 推奨日【レガシー】夜の部
+2026-10-26 500 cache: {"fee": 500, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/634828/detail"} | 月曜デイリー構築戦 19時の部（スタンダード・モダン・パウパー）
+2026-10-26 300 cache: {"fee": 300, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/646269/detail"} | 『盛り上げハッピー！』コマンダー集会ー20時30分の部[1回戦]
+2026-10-26 300 cache: {"fee": 300, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/646344/detail"} | 『盛り上げハッピー！』コマンダー集会ー22時の部(特殊ルール)
+2026-10-26 100 cache: {"fee": 100, "read": "2026-10-26", "url": "https://www.hareruyamtg.com/ja/events/635006/detail"} | 【1回戦固定】刹那の戦い 22時の部【BO3】
+2026-10-27 None cache: NOT IN CACHE | コマンダー交流会：甘口(ブラケット2基準)ー19時の部
+2026-10-27 None cache: NOT IN CACHE | プレインズウォーカー・シリーズ：カジュアル[3回戦][じゃんけん大会][フレンドリーイベント]
+2026-10-27 None cache: NOT IN CACHE | 推奨日【パウパー】夜の部
+2026-10-27 None cache: NOT IN CACHE | 火曜デイリー構築戦 19時の部（スタンダード・モダン・レガシー）
+2026-10-28 None cache: NOT IN CACHE | 推奨日【スタンダード】夜の部
+2026-10-28 None cache: NOT IN CACHE | 水曜デイリー構築戦 19時の部（モダン・レガシー・パイオニア・パウパー）
+2026-10-29 None cache: NOT IN CACHE | 推奨日【モダン】夜の部
+2026-10-29 None cache: NOT IN CACHE | 木曜デイリー構築戦 19時の部（スタンダード・レガシー・パイオニア・パウパー）
+2026-10-30 None cache: NOT IN CACHE | スタンダードショーダウン in 町田
+2026-10-30 None cache: NOT IN CACHE | 金曜デイリー構築戦 19時の部（パイオニア・パウパー）
+2026-10-31 None cache: NOT IN CACHE | Match 4 Fun モダン in 町田
+2026-10-31 None cache: NOT IN CACHE | 『リアリティフラクチャー』ストアチャンピオンシップ in 町田店 [決勝SEあり]
+2026-10-31 None cache: NOT IN CACHE | カジュアルマジック！【スタンダード交流会】
+2026-10-31 None cache: NOT IN CACHE | マジック・プレゼンツ：力線前夜
+2026-10-31 None cache: NOT IN CACHE | コマンダー交流会：甘口(ブラケット2基準)ー18時の部
+2026-10-31 None cache: NOT IN CACHE | コマンダー交流会：辛口(ブラケット4推奨)ー18時の部
+2026-10-31 None cache: NOT IN CACHE | 休日デイリー構築戦 18時の部（モダン・レガシー・パウパー・パイオニア）
+2026-11-01 None cache: NOT IN CACHE | Match 4 Fun スタンダード in 町田
+2026-11-01 None cache: NOT IN CACHE | モダン神挑戦者決定戦トライアル
+2026-11-01 None cache: NOT IN CACHE | コマンダー交流会：甘口(ブラケット2基準)ー16時の部
+2026-11-03 None cache: NOT IN CACHE | 10,000ポイント争奪レガシー杯
+2026-11-06 None cache: NOT IN CACHE | 【時間を気にせず遊べる】『マジック・ザ・ギャザリング | スター・トレック』フリープレイプレリリース
+2026-11-06 None cache: NOT IN CACHE | 【開封楽しんでポイントゲット！ 】『マジック・ザ・ギャザリング | スター・トレック™』パック開封選
+2026-11-06 None cache: NOT IN CACHE | 【あっさり】『マジック・ザ・ギャザリング | スター・トレック』プレリリース in 町田店(30分x
+2026-11-07 None cache: NOT IN CACHE | 『マジック：ザ・ギャザリング | スタートレック™』プレイブースタ―Box争奪モダン
+2026-11-07 None cache: NOT IN CACHE | 【じっくり】『マジック・ザ・ギャザリング | スター・トレック』プレリリース in 町田店(BO3x
+2026-11-08 None cache: NOT IN CACHE | 『マジック：ザ・ギャザリング | スタートレック™』プレイブースタ―Box争奪スタンダード
+2026-11-13 None cache: NOT IN CACHE | 『マジック・プレゼンツ：果敢に挑め』
+2026-11-14 None cache: NOT IN CACHE | プレインズウォーカー・シリーズ ：競技 [3回戦][予約可]
+2026-11-15 None cache: NOT IN CACHE | Match 4 Fun パウパー in 町田
+2026-11-15 None cache: NOT IN CACHE | レガシー神挑戦者決定戦トライアル
+2026-11-21 None cache: NOT IN CACHE | Match 4 Fun パイオニア in 町田
+2026-11-22 None cache: NOT IN CACHE | 10,000ポイント争奪モダン杯
+2026-11-22 None cache: NOT IN CACHE | 『マジック・ザ・ギャザリング | スター・トレック™』双頭巨人戦コマンダー・ナイト
+2026-11-23 None cache: NOT IN CACHE | コマンダーパラダイス in 町田
+2026-11-26 None cache: NOT IN CACHE | 『マジック・ザ・ギャザリング | スター・トレック™』コマンダーパーティー
+2026-11-28 None cache: NOT IN CACHE | Match 4 Fun レガシー in 町田
+2026-11-29 None cache: NOT IN CACHE | 晴れる屋スタンダード杯
