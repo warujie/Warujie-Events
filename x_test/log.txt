@@ -2,8 +2,7 @@ X token: set; Anthropic key: set
 
 [notice] A new release of pip is available: 26.2.1 -> 26.2.2
 [notice] To update, run: pip install --upgrade pip
-tokyomtg_cal.html HTTP Error 429: Too Many Requests
-ms1 https://www.tcgacademy.com/ 826127
-ms2 https://www.masters-square.com/ 795790
-ms3 https://www.square-bushiroad.com/ 1262942
-ms4 https://www.masters-square.com/ 795790
+sq3_robots.txt https://www.square-3rd.jp/robots.txt 110
+sq3.html https://www.square-3rd.jp/page/1 360151
+sq3_search.html https://www.square-3rd.jp/product-list?keyword=%E7%A8%B2%E5%A6%BB 578145
+tokyomtg 429
