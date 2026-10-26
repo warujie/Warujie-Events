@@ -1,0 +1,71 @@
+{
+ "updated": "2026-10-26T11:26:51Z",
+ "accounts": {},
+ "pages": {
+  "https://cantripmtg.com/pages/hachiojistore": {
+   "picture": "https://cdn.shopify.com/s/files/1/0613/9595/9990/files/2026_-_Google__page-0001_4_e77d9e49-5770-4bc8-9ecd-fc00b9007cf3.jpg?v=1790798843"
+  }
+ },
+ "events": [
+  {
+   "shop": "cantrip",
+   "d": "2026-10-28",
+   "t": "19:30",
+   "p": 13,
+   "c": "八王子市",
+   "store": "八王子店",
+   "name": "ショーダウン",
+   "f": [
+    "standard"
+   ],
+   "url": "https://cantripmtg.com/pages/hachiojistore",
+   "read": "2026-10-26",
+   "fee": 500
+  },
+  {
+   "shop": "cantrip",
+   "d": "2026-10-28",
+   "t": "19:30",
+   "p": 13,
+   "c": "八王子市",
+   "store": "八王子店",
+   "name": "モダン",
+   "f": [
+    "modern"
+   ],
+   "url": "https://cantripmtg.com/pages/hachiojistore",
+   "read": "2026-10-26",
+   "fee": 500
+  },
+  {
+   "shop": "cantrip",
+   "d": "2026-10-28",
+   "t": "19:30",
+   "p": 13,
+   "c": "八王子市",
+   "store": "八王子店",
+   "name": "コマンダー交流会甘口",
+   "f": [
+    "commander"
+   ],
+   "url": "https://cantripmtg.com/pages/hachiojistore",
+   "read": "2026-10-26",
+   "fee": 0
+  },
+  {
+   "shop": "cantrip",
+   "d": "2026-10-28",
+   "t": "19:30",
+   "p": 13,
+   "c": "八王子市",
+   "store": "八王子店",
+   "name": "コマンダー交流会辛口",
+   "f": [
+    "commander"
+   ],
+   "url": "https://cantripmtg.com/pages/hachiojistore",
+   "read": "2026-10-26",
+   "fee": 0
+  }
+ ]
+}

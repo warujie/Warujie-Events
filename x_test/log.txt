@@ -2,6 +2,41 @@ X token: set; Anthropic key: set
 
 [notice] A new release of pip is available: 26.2.1 -> 26.2.2
 [notice] To update, run: pip install --upgrade pip
-cw_mtg.html ok
-cw_mtg_p2.html ok
-cw_detail.html ok
+https://cantripmtg.com/pages/hachiojistore: a new schedule picture, 11 Magic events
+  2026-10-21 19:30 ショーダウン standard 500
+  2026-10-21 19:30 モダン modern 500
+  2026-10-21 19:30 コマンダー交流会甘口 commander 0
+  2026-10-21 19:30 コマンダー交流会辛口 commander 0
+  2026-10-23 19:30 FNM（スタン） standard 500
+  2026-10-23 19:30 FNM（モダン） modern 500
+  2026-10-23 19:30 コマンダー交流会 commander 500
+  2026-10-28 19:30 ショーダウン standard 500
+  2026-10-28 19:30 モダン modern 500
+  2026-10-28 19:30 コマンダー交流会甘口 commander 0
+  2026-10-28 19:30 コマンダー交流会辛口 commander 0
+X: 0 posts read (about $0.000); 0 pictures screened, 1 read (tokens in+out: 5783+2842)
+Wrote 4 events to x_test/pages_events.json
+{'d': '2026-11-27', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3953/', 'f': [], 'fee': 0}
+{'d': '2026-11-13', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3939/', 'f': [], 'fee': 0}
+{'d': '2026-10-26', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3834/', 'f': ['limited'], 'fee': None}
+{'d': '2026-10-19', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3833/', 'f': ['limited'], 'fee': None}
+{'d': '2026-10-12', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3832/', 'f': ['limited'], 'fee': None}
+{'d': '2026-10-05', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3831/', 'f': ['limited'], 'fee': None}
+{'d': '2026-09-28', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3780/', 'f': ['limited'], 'fee': None}
+{'d': '2026-09-21', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3779/', 'f': ['limited'], 'fee': None}
+{'d': '2026-09-14', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3778/', 'f': ['limited'], 'fee': None}
+{'d': '2026-09-07', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3776/', 'f': ['limited'], 'fee': None}
+{'d': '2026-09-18', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3661/', 'f': [], 'fee': 500}
+{'d': '2026-09-11', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3660/', 'f': [], 'fee': 500}
+{'d': '2026-09-04', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3653/', 'f': [], 'fee': 500}
+{'d': '2026-08-31', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3549/', 'f': ['limited'], 'fee': None}
+{'d': '2026-08-24', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3548/', 'f': ['limited'], 'fee': None}
+{'d': '2026-08-17', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3547/', 'f': ['limited'], 'fee': None}
+{'d': '2026-08-10', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3546/', 'f': ['limited'], 'fee': None}
+{'d': '2026-08-03', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3545/', 'f': ['limited'], 'fee': None}
+{'d': '2026-07-31', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3426/', 'f': [], 'fee': 500}
+{'d': '2026-07-24', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3419/', 'f': [], 'fee': 500}
+{'d': '2026-07-17', 't': '16:00', 'p': 13, 'c': '八王子市', 'shop': 'cardwings', 'store': '八王子駅前店', 'name': '【公式】MTG Friday Night Magic', 'url': 'https://card-wings.com/tournament/tournament-3412/', 'f': [], 'fee': 500}
+{'d': '2026-07-27', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3397/', 'f': ['limited'], 'fee': None}
+{'d': '2026-07-20', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3396/', 'f': ['limited'], 'fee': None}
+{'d': '2026-07-13', 't': '19:00', 'p': 13, 'c': '千代田区', 'shop': 'cardwings', 'store': '秋葉原駅前店', 'name': '（MTG）月曜ドラフト', 'url': 'https://card-wings.com/tournament/tournament-3395/', 'f': ['limited'], 'fee': None}
