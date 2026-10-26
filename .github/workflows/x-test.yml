@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir -p x_test
           ( echo "X token: $([ -n "$X_BEARER_TOKEN" ] && echo set || echo missing); Anthropic key: $([ -n "$ANTHROPIC_API_KEY" ] && echo set || echo missing)"
-            pip install -q anthropic
+            pip install -q anthropic playwright==1.56.0 && python3 -m playwright install --with-deps chromium > /dev/null 2>&1
             python3 x_test/probe_sites.py
           ) > x_test/log.txt 2>&1 || true
           cat x_test/log.txt
