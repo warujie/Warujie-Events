@@ -529,6 +529,45 @@ def read_yellowsub(today, log):
     return events
 
 
+# ---- CARDWINGS (the owner's request, 2026-10-26, in place of reading its X posts): the tournament
+# list's own search for Magic (game 156), both stores; robots.txt allows it. Newest entries first,
+# so the first pages hold every coming event.
+CARDWINGS_LIST = ("https://card-wings.com/{page}?search_element_1=156&search_element_2=&search_element_3=&search_element_4="
+                  "&csp=search_add&feadvns_max_line_0=5&fe_form_no=0")
+CARDWINGS_STORES = {"秋葉原駅前店": (13, "千代田区"), "八王子駅前店": (13, "八王子市")}
+CARDWINGS_MAX_PAGES = 3   # 12 events a page
+
+
+def parse_cardwings(html, today):
+    out = []
+    for url, row in re.findall(r'<tr data-href="(https://card-wings\.com/tournament/[\w-]+/)">(.*?)</tr>', html, re.S):
+        tds = [clean(x) for x in re.findall(r"<td>(.*?)</td>", row, re.S)]
+        m = re.match(r"(\d{4})\.(\d{2})\.(\d{2})(?:\D*(\d{1,2}:\d{2}))?", tds[0]) if len(tds) >= 7 else None
+        store = tds[3].replace("カードウイングス", "").strip() if m else ""
+        if not m or "magic.png" not in row or store not in CARDWINGS_STORES:
+            continue
+        pref, city = CARDWINGS_STORES[store]
+        name = re.sub(r"\s+", " ", re.sub(r"【(?:秋葉原|八王子)】", "", tds[2])).strip()
+        out.append({"d": f"{m.group(1)}-{m.group(2)}-{m.group(3)}", "t": f"{int(m.group(4).split(':')[0]):02d}:{m.group(4).split(':')[1]}" if m.group(4) else "",
+                    "p": pref, "c": city, "shop": "cardwings", "store": store, "name": name, "url": url,
+                    "f": formats_in(name) or formats_in(tds[5]), "fee": yen_of(tds[6])})
+    return out
+
+
+def read_cardwings(today, log):
+    events = []
+    for n in range(1, CARDWINGS_MAX_PAGES + 1):
+        try:
+            got = parse_cardwings(fetch(CARDWINGS_LIST.format(page=f"page/{n}/" if n > 1 else "")), today)
+        except Exception as e:
+            log(f"  cardwings page {n}: {e!r}"[:200])
+            break
+        events += got
+        if not any(e["d"] >= today.isoformat() for e in got):   # the rest are past events
+            break
+    return events
+
+
 # ---- calendar pictures (by hand): shops' X posts and MINT's schedule pages
 MANUAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual_events.json")
 # the events x_reader.py read automatically from the chosen accounts' pictures on X (kept in R2)
@@ -538,6 +577,8 @@ X_EVENTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "x_events.js
 MANUAL_LINKS = {
     "x": re.compile(r"https://(?:x|twitter)\.com/[A-Za-z0-9_]{1,15}(?:/status/\d{1,20})?"),
     "mint": re.compile(r"https://mint-web\.jp/\?pid=\d{1,12}"),
+    # CANTRIP's monthly schedule picture on its store page, read by x_reader.py (the owner's request, 2026-10-26)
+    "cantrip": re.compile(r"https://cantripmtg\.com/pages/hachiojistore"),
 }
 
 
@@ -671,7 +712,7 @@ def main():
         write(args.out, {"updated": data.get("updated", ""), "sources": {**data.get("sources", {}), "manual": len(got)},
                          "events": tidy(shops + got)}, log)
         return
-    readers = {"hareruya": read_hareruya, "amenity": read_amenity, "yellowsub": read_yellowsub, "tonamel": read_tonamel,
+    readers = {"hareruya": read_hareruya, "amenity": read_amenity, "yellowsub": read_yellowsub, "tonamel": read_tonamel, "cardwings": read_cardwings,
                "manual": read_manual}
     only = [s for s in args.only.split(",") if s]
     events, sources = [], {}

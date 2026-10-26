@@ -1,5 +1,5 @@
 {
-  "note": "The shops' X accounts whose calendar pictures x_reader.py reads once a week, on Sunday (docs/README.md, \"Calendar pictures on X, read automatically\"). Only these accounts are read, to keep the cost down (the owner's choice, 2026-10-25). handle: the account (x.com/<handle>); store: the shop's name as the calendar shows it (as on Tonamel when the shop lists there too); p: prefecture (JIS 1-47); c: city.",
+  "note": "The shops' X accounts whose calendar pictures x_reader.py reads once a week, on Sunday (docs/README.md, \"Calendar pictures on X, read automatically\"). Only these accounts are read, to keep the cost down (the owner's choice, 2026-10-25). handle: the account (x.com/<handle>); store: the shop's name as the calendar shows it (as on Tonamel when the shop lists there too); p: prefecture (JIS 1-47); c: city. pages: a shop's own page with its schedule picture, read instead of its X posts (the owner's request, 2026-10-26): page, picture (a piece of the picture's address that finds it on the page), shop (the site's EVENT_SHOPS id), store, p, c; the picture is read again only when it changes.",
   "accounts": [
     {"handle": "ZEROPOMTA", "store": "ABSOLUTE ZERO", "p": 47, "c": "中城村"},
     {"handle": "msAWASE_CARD", "store": "マンガ倉庫 泡瀬店", "p": 47, "c": "沖縄市"},
@@ -7,8 +7,9 @@
     {"handle": "MastersSquare", "store": "マスターズスクウェア", "p": 13, "c": "八王子市"},
     {"handle": "GOODGAME_Ootaka", "store": "GOODGAME 流山おおたかの森店", "p": 12, "c": "流山市"},
     {"handle": "TrickMatsudo", "store": "トリックスター 松戸", "p": 12, "c": "松戸市"},
-    {"handle": "Fellows_GOTTA", "store": "Fellows", "p": 13, "c": "港区"},
-    {"handle": "MTG_CANTRIP", "store": "CANTRIP", "p": 13, "c": "八王子市"},
-    {"handle": "torecanoMTG", "store": "CARDWINGS 秋葉原駅前店", "p": 13, "c": "千代田区"}
+    {"handle": "Fellows_GOTTA", "store": "Fellows", "p": 13, "c": "港区"}
+  ],
+  "pages": [
+    {"page": "https://cantripmtg.com/pages/hachiojistore", "picture": "Google__page", "shop": "cantrip", "store": "八王子店", "p": 13, "c": "八王子市"}
   ]
 }

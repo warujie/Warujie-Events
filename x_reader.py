@@ -125,7 +125,7 @@ def ask(client, model, content, schema, effort):
     return json.loads(text), msg.usage
 
 
-def valid_events(rows, account, url, posted, read_day):
+def valid_events(rows, account, url, posted, read_day, shop="x"):
     """The model's events that hold together: a real date from a week before the post to four months
     after it, a time, a name; the account's store and place."""
     out = []
@@ -141,7 +141,7 @@ def valid_events(rows, account, url, posted, read_day):
         fee = r.get("fee") if isinstance(r.get("fee"), int) and 0 <= r["fee"] <= 100000 else None
         fee_to = r.get("fee_to") if fee is not None and isinstance(r.get("fee_to"), int) and fee < r["fee_to"] <= 100000 else None
         fs = [f for f in r.get("f") or [] if f in FORMAT_JA] or formats_in(r["name"])
-        e = {"shop": "x", "d": d.isoformat(), "t": t, "p": account["p"], "c": account.get("c", ""), "store": account["store"],
+        e = {"shop": shop, "d": d.isoformat(), "t": t, "p": account["p"], "c": account.get("c", ""), "store": account["store"],
              "name": r["name"].strip()[:80], "f": fs, "url": url, "read": read_day}
         if fee is not None:
             e["fee"] = fee
@@ -172,8 +172,11 @@ def main():
         import anthropic
         client = anthropic.Anthropic()
     with open(args.accounts, encoding="utf-8") as f:
-        accounts = [a for a in json.load(f).get("accounts", []) if HANDLE_RE.fullmatch(a.get("handle", "")) and a.get("store")
-                    and isinstance(a.get("p"), int) and 1 <= a["p"] <= 47]
+        listed = json.load(f)
+    place_ok = lambda a: a.get("store") and isinstance(a.get("p"), int) and 1 <= a["p"] <= 47
+    accounts = [a for a in listed.get("accounts", []) if HANDLE_RE.fullmatch(a.get("handle", "")) and place_ok(a)]
+    pages = [g for g in listed.get("pages", []) if re.fullmatch(r"https://[\w.-]+/[\w/.-]*", g.get("page", "")) and g.get("picture")
+             and re.fullmatch(r"[a-z]+", g.get("shop", "")) and place_ok(g)]
     try:
         with open(args.state, encoding="utf-8") as f:
             state = json.load(f)
@@ -266,6 +269,42 @@ def main():
             s["since_id"] = done
         if finished and not args.dry_run:
             s["read"] = today.isoformat()
+    # a shop's own page with its schedule picture (x_accounts.json "pages", the owner's request of
+    # 2026-10-26): the page is fetched each run, and the picture read only when it has changed
+    page_state = state.get("pages", {})
+    for g in pages if not args.dry_run else []:
+        ps = page_state.setdefault(g["page"], {})
+        try:
+            req = urllib.request.Request(g["page"], headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                html = resp.read().decode("utf-8", "replace")
+            srcs = [u for u in re.findall(r'<img[^>]+src="([^"]+)"', html) if g["picture"] in u]
+            if not srcs:
+                log(f"{g['page']}: no picture with {g['picture']!r}")
+                continue
+            pic = ("https:" + srcs[0] if srcs[0].startswith("//") else srcs[0]).replace("&amp;", "&")
+            if pic == ps.get("picture"):
+                log(f"{g['page']}: the schedule picture is unchanged")
+                continue
+            if reads >= args.max_reads:
+                log(f"{g['page']}: tonight's {args.max_reads} readings are used; read tomorrow")
+                continue
+            with urllib.request.urlopen(urllib.request.Request(pic, headers={"User-Agent": USER_AGENT}), timeout=30) as resp:
+                data, kind = resp.read(), resp.headers.get_content_type()
+            kind = kind if kind in ("image/jpeg", "image/png", "image/webp", "image/gif") else "image/jpeg"
+            img = {"type": "image", "source": {"type": "base64", "media_type": kind, "data": base64.standard_b64encode(data).decode()}}
+            reads += 1
+            out, usage = ask(client, READ_MODEL, [img, {"type": "text", "text": READ_PROMPT.replace("posted on X on {posted} (Japan time)", "shown on the shop's website on {posted} (Japan time)").format(
+                posted=f"{today:%Y-%m-%d}", store=g["store"], place=g.get("c", "") or f"prefecture {g['p']}", text="(the shop's schedule page)")}], READ_SCHEMA, "medium")
+            evs = valid_events(out.get("events", []), g, g["page"], today, today.isoformat(), shop=g["shop"])
+            cost_note.append(f"{usage.input_tokens}+{usage.output_tokens}")
+            log(f"{g['page']}: a new schedule picture, {len(evs)} Magic events")
+            for e in evs:
+                log(f"  {e['d']} {e['t'] or '--:--'} {e['name']} {','.join(e['f'])} {e.get('fee', '')}")
+            kept = [k for k in kept if k["url"] != g["page"]] + evs   # the new picture replaces the old one's events
+            ps["picture"] = pic
+        except Exception as e:
+            log(f"{g['page']}: {e}")
     log(f"X: {posts_read} posts read (about ${posts_read * 0.005:.3f}); {screened} pictures screened, {reads} read"
         + (f" (tokens in+out: {', '.join(cost_note)})" if cost_note else ""))
     if args.dry_run:
@@ -273,7 +312,7 @@ def main():
     first = (today - timedelta(days=1)).isoformat()
     kept = [k for k in kept if k["d"] >= first]   # past events go
     with open(args.state, "w", encoding="utf-8") as f:
-        json.dump({"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "accounts": seen,
+        json.dump({"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "accounts": seen, "pages": page_state,
                    "events": sorted(kept, key=lambda e: (e["d"], e["t"], e["store"]))}, f, ensure_ascii=False, indent=1)
     log(f"Wrote {len(kept)} events to {args.state}")
 
