@@ -196,7 +196,7 @@ def read_hareruya(today, log):
 # recurring event (the same name) costs the same each time, so one page is read per store and
 # name, its fee kept in a small cache (hareruya_fees.json, beside events.json in R2) and re-read
 # after HARERUYA_FEE_DAYS; at most HARERUYA_FEE_PAGES pages a night, the soonest events first.
-HARERUYA_FEE_PAGES = 250          # about 17 minutes at PAGE_GAP
+HARERUYA_FEE_PAGES = 750          # about 50 minutes at PAGE_GAP (the first nights; later nights need far fewer)
 HARERUYA_FEE_DAYS = 30
 HARERUYA_FEE_RE = re.compile(r'参加費</div>\s*<div class="event_detail_table_text">(.*?)</div>', re.S)
 
@@ -690,7 +690,7 @@ def main():
     ap.add_argument("--only", default="", help="comma-separated shops (for testing)")
     ap.add_argument("--manual-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
     ap.add_argument("--fees", metavar="CACHE", help="Hareruya's fees: read and update this cache (hareruya_fees.json)")
-    ap.add_argument("--fee-minutes", type=float, default=32, help="stop reading Hareruya's event pages this long after the start")
+    ap.add_argument("--fee-minutes", type=float, default=65, help="stop reading Hareruya's event pages this long after the start")
     ap.add_argument("--x-events", metavar="FILE", help="the events x_reader.py read from pictures on X (x_events.json)")
     args = ap.parse_args()
     if args.x_events:

@@ -39,7 +39,7 @@ jobs:
   read:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 95
     steps:
       # first, before any shop is read: can we publish at all?
       - name: Check the R2 token
