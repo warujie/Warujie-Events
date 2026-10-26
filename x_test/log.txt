@@ -2,6 +2,6 @@ X token: set; Anthropic key: set
 
 [notice] A new release of pip is available: 26.2.1 -> 26.2.2
 [notice] To update, run: pip install --upgrade pip
-cantrip_robots.txt ok
-cantrip_store.html ok
-cw_tournament.html ok
+cw_mtg.html ok
+cw_mtg_p2.html ok
+cw_detail.html ok
