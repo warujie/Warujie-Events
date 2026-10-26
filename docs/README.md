@@ -95,6 +95,15 @@ forbids automated collection without written permission, and pages need a login)
   `store_key()` matches names across sources, `MINTGAMESMTG店` and `GAMES MTG店` alike). MINT's
   stores that list on Tonamel join MINT's own entry (`TONAMEL_MINT`), and Tonamel's play-room
   bookings (【ルーム予約】貸切プレイルーム) are not events (`TONAMEL_NOT_EVENT`).
+- **CARDWINGS** (`read_cardwings()`, the owner's request of 2026-10-26, in place of reading its X
+  posts; robots.txt allows the site): its tournament list's own search for Magic (`CARDWINGS_LIST`,
+  game 156), both stores (`CARDWINGS_STORES`: 秋葉原駅前店, 八王子駅前店), newest entries first, up to
+  `CARDWINGS_MAX_PAGES` pages until a page holds no coming event. Each links to its event page; the
+  fee is the 参加料 column (a pack to buy instead is no fee). `shop` `cardwings`.
+- **CANTRIP** (the owner's request of 2026-10-26, in place of its X posts): the monthly schedule
+  picture on its 八王子 store page, listed under `pages` in `x_accounts.json` and read by
+  `x_reader.py` (below) in each nightly run: one page a night, and the picture is read only when it
+  has changed; its events replace the previous picture's. `shop` `cantrip`, linking to the page.
 - **Calendar pictures on X, read automatically** (`x_reader.py`, the owner's request of
   2026-10-25: automatic, but only for the accounts they choose, and each **once a week, on
   Sunday**, to keep the cost down). In the nightly run, before the shops are read, for every
