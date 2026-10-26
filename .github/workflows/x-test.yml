@@ -16,6 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: R2 (read only, for probes)
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_R2_TOKEN }}
+        run: |
+          key=$(curl -fsS -H "Authorization: Bearer $CF_TOKEN" https://api.cloudflare.com/client/v4/user/tokens/verify | jq -r '.result.id // empty')
+          acct=$(curl -fsS -H "Authorization: Bearer $CF_TOKEN" https://api.cloudflare.com/client/v4/accounts | jq -r '.result[0].id // empty')
+          secret=$(printf %s "$CF_TOKEN" | sha256sum | cut -d' ' -f1)
+          echo "::add-mask::$secret"
+          { echo "AWS_ACCESS_KEY_ID=$key"; echo "AWS_SECRET_ACCESS_KEY=$secret"; echo "AWS_DEFAULT_REGION=auto"; echo "AWS_REQUEST_CHECKSUM_CALCULATION=when_required"; echo "AWS_RESPONSE_CHECKSUM_VALIDATION=when_required"
+            echo "R2_ENDPOINT=https://$acct.r2.cloudflarestorage.com"; } >> "$GITHUB_ENV"
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
@@ -27,6 +37,7 @@ jobs:
           mkdir -p x_test
           ( echo "X token: $([ -n "$X_BEARER_TOKEN" ] && echo set || echo missing); Anthropic key: $([ -n "$ANTHROPIC_API_KEY" ] && echo set || echo missing)"
             pip install -q anthropic playwright==1.56.0 && python3 -m playwright install --with-deps chromium > /dev/null 2>&1
+            mkdir -p /tmp/r2 && for f in hareruya_fees.json events.json; do aws s3 cp "s3://warujie-price-data/$f" /tmp/r2/$f --endpoint-url "$R2_ENDPOINT" --only-show-errors; done
             python3 x_test/probe_sites.py
           ) > x_test/log.txt 2>&1 || true
           cat x_test/log.txt

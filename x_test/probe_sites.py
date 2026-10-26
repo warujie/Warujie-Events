@@ -1,22 +1,35 @@
-# One-off probe (work branch only): Masters Square's Magic store, and Tokyo MTG's calendar in a browser.
-import time, urllib.request, os
-UA = "WarujieEvents/1.0 (+https://warujie.jp)"
-os.makedirs("x_test/probe", exist_ok=True)
-for name, u in {"sq3_robots.txt": "https://www.square-3rd.jp/robots.txt", "sq3.html": "https://www.square-3rd.jp/page/1",
-                "sq3_search.html": "https://www.square-3rd.jp/product-list?keyword=%E7%A8%B2%E5%A6%BB"}.items():
-    try:
-        with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": UA}), timeout=30) as r:
-            body = r.read(); print(name, r.geturl(), len(body)); open(f"x_test/probe/{name}", "wb").write(body)
-    except Exception as e:
-        print(name, e)
+# Probe (work branch only): why some Hareruya events have no fee
+import json, re, sys, time, collections
+sys.path.insert(0, ".")
+import build_events as b
+fees = json.load(open("/tmp/r2/hareruya_fees.json"))
+cache = fees["fees"]
+ev = json.load(open("/tmp/r2/events.json"))
+print("fees updated", fees.get("updated"), "events updated", ev.get("updated"))
+print("cache entries", len(cache), "with fee", sum(1 for v in cache.values() if v.get("fee") is not None),
+      "read dates", collections.Counter(v.get("read") for v in cache.values()))
+har = [e for e in ev["events"] if e.get("shop") == "hareruya"]
+pairs = {f"{e['store']}|{e['name']}" for e in har}
+print("hareruya events", len(har), "with fee", sum(1 for e in har if e.get("fee") is not None), "pairs", len(pairs),
+      "pairs in cache", sum(1 for k in pairs if k in cache), "cached with None fee", sum(1 for k in pairs if k in cache and cache[k].get("fee") is None))
+mach = [e for e in har if "町田" in e["store"]]
+seen = set()
+for e in sorted(mach, key=lambda e: e["d"]):
+    k = f"{e['store']}|{e['name']}"
+    if k in seen: continue
+    seen.add(k)
+    print(e["d"], e.get("fee"), "cache:", json.dumps(cache.get(k), ensure_ascii=False)[:120] if k in cache else "NOT IN CACHE", "|", e["name"][:50])
+# read a few pages cached with None fee, show the text around 参加費
+nones = [(k, v) for k, v in cache.items() if v.get("fee") is None][:5]
+for k, v in nones:
     time.sleep(4)
-try:
-    from playwright.sync_api import sync_playwright
-    with sync_playwright() as p:
-        b = p.chromium.launch(); pg = b.new_page(user_agent=UA)
-        r = pg.goto("https://tokyomtg.com/content.html?p=eventcalendar", wait_until="networkidle", timeout=60000)
-        print("tokyomtg", r and r.status); pg.wait_for_timeout(3000)
-        open("x_test/probe/tokyomtg_cal.html", "w").write(pg.content()); pg.screenshot(path="x_test/probe/tokyomtg_cal.png", full_page=True)
-        b.close()
-except Exception as e:
-    print("tokyomtg", e)
+    try:
+        html = b.fetch(v["url"])
+    except Exception as x:
+        print("ERR", v["url"], x); continue
+    i = html.find("参加費")
+    print("\n====", k, v["url"], "found 参加費 at", i)
+    for m in re.finditer("参加費", html):
+        print("  ...", re.sub(r"\s+", " ", html[max(0, m.start()-200):m.start()+300]))
+        break
+    print("  parsed:", b.hareruya_fee(html))
