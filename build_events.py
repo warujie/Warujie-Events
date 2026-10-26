@@ -196,7 +196,7 @@ def read_hareruya(today, log):
 # recurring event (the same name) costs the same each time, so one page is read per store and
 # name, its fee kept in a small cache (hareruya_fees.json, beside events.json in R2) and re-read
 # after HARERUYA_FEE_DAYS; at most HARERUYA_FEE_PAGES pages a night, the soonest events first.
-HARERUYA_FEE_PAGES = 250          # about 17 minutes at PAGE_GAP
+HARERUYA_FEE_PAGES = 750          # about 50 minutes at PAGE_GAP (the first nights; later nights need far fewer)
 HARERUYA_FEE_DAYS = 30
 HARERUYA_FEE_RE = re.compile(r'参加費</div>\s*<div class="event_detail_table_text">(.*?)</div>', re.S)
 
@@ -529,25 +529,71 @@ def read_yellowsub(today, log):
     return events
 
 
+# ---- CARDWINGS (the owner's request, 2026-10-26, in place of reading its X posts): the tournament
+# list's own search for Magic (game 156), both stores; robots.txt allows it. Newest entries first,
+# so the first pages hold every coming event.
+CARDWINGS_LIST = ("https://card-wings.com/{page}?search_element_1=156&search_element_2=&search_element_3=&search_element_4="
+                  "&csp=search_add&feadvns_max_line_0=5&fe_form_no=0")
+CARDWINGS_STORES = {"秋葉原駅前店": (13, "千代田区"), "八王子駅前店": (13, "八王子市")}
+CARDWINGS_MAX_PAGES = 3   # 12 events a page
+
+
+def parse_cardwings(html, today):
+    out = []
+    for url, row in re.findall(r'<tr data-href="(https://card-wings\.com/tournament/[\w-]+/)">(.*?)</tr>', html, re.S):
+        tds = [clean(x) for x in re.findall(r"<td>(.*?)</td>", row, re.S)]
+        m = re.match(r"(\d{4})\.(\d{2})\.(\d{2})(?:\D*(\d{1,2}:\d{2}))?", tds[0]) if len(tds) >= 7 else None
+        store = tds[3].replace("カードウイングス", "").strip() if m else ""
+        if not m or "magic.png" not in row or store not in CARDWINGS_STORES:
+            continue
+        pref, city = CARDWINGS_STORES[store]
+        name = re.sub(r"\s+", " ", re.sub(r"【(?:秋葉原|八王子)】", "", tds[2])).strip()
+        out.append({"d": f"{m.group(1)}-{m.group(2)}-{m.group(3)}", "t": f"{int(m.group(4).split(':')[0]):02d}:{m.group(4).split(':')[1]}" if m.group(4) else "",
+                    "p": pref, "c": city, "shop": "cardwings", "store": store, "name": name, "url": url,
+                    "f": formats_in(name) or formats_in(tds[5]), "fee": yen_of(tds[6])})
+    return out
+
+
+def read_cardwings(today, log):
+    events = []
+    for n in range(1, CARDWINGS_MAX_PAGES + 1):
+        try:
+            got = parse_cardwings(fetch(CARDWINGS_LIST.format(page=f"page/{n}/" if n > 1 else "")), today)
+        except Exception as e:
+            log(f"  cardwings page {n}: {e!r}"[:200])
+            break
+        events += got
+        if not any(e["d"] >= today.isoformat() for e in got):   # the rest are past events
+            break
+    return events
+
+
 # ---- calendar pictures (by hand): shops' X posts and MINT's schedule pages
 MANUAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual_events.json")
+# the events x_reader.py read automatically from the chosen accounts' pictures on X (kept in R2)
+X_EVENTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "x_events.json")
 # what each hand-kept event may link to: for X, the post, or the shop's X account (where its
 # calendars are) when the post's own link isn't known; for MINT, the store's schedule page
 MANUAL_LINKS = {
     "x": re.compile(r"https://(?:x|twitter)\.com/[A-Za-z0-9_]{1,15}(?:/status/\d{1,20})?"),
     "mint": re.compile(r"https://mint-web\.jp/\?pid=\d{1,12}"),
+    # CANTRIP's monthly schedule picture on its store page, read by x_reader.py (the owner's request, 2026-10-26)
+    "cantrip": re.compile(r"https://cantripmtg\.com/pages/hachiojistore"),
 }
 
 
 def read_manual(today, log):
     """The events read by hand from shops' calendar pictures (manual_events.json): posts on X
-    (shop "x") and MINT's monthly schedule pages (shop "mint"). An entry that doesn't hold
-    together (a date, a time, a prefecture, a link of its kind) is left out."""
-    try:
-        with open(MANUAL, encoding="utf-8") as f:
-            rows = json.load(f).get("events", [])
-    except FileNotFoundError:
-        return []
+    (shop "x") and MINT's monthly schedule pages (shop "mint"), and those x_reader.py read
+    automatically from the chosen accounts' pictures on X (x_events.json). An entry that doesn't
+    hold together (a date, a time, a prefecture, a link of its kind) is left out."""
+    rows = []
+    for path in (MANUAL, X_EVENTS):
+        try:
+            with open(path, encoding="utf-8") as f:
+                rows += [dict(r, auto=path == X_EVENTS) for r in json.load(f).get("events", [])]
+        except (FileNotFoundError, ValueError):
+            pass
     out = []
     for r in rows:
         shop = r.get("shop") or "x"
@@ -562,8 +608,12 @@ def read_manual(today, log):
         fs = [f for f in (r.get("f") or []) if f in FORMAT_JA] or formats_in(r["name"])
         fee = r.get("fee") if isinstance(r.get("fee"), int) and r["fee"] >= 0 else None
         fee_to = r.get("fee_to") if fee is not None and isinstance(r.get("fee_to"), int) and r["fee_to"] > fee else None
-        out.append({"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": shop,
-                    "store": r["store"], "name": r["name"], "url": url, "f": fs, "fee": fee, "fee_to": fee_to})
+        e = {"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": shop,
+             "store": r["store"], "name": r["name"], "url": url, "f": fs, "fee": fee, "fee_to": fee_to}
+        # an event read automatically (x_events.json) gives way to the same event checked by hand
+        if r["auto"] and any(same_event(e, m) for m in out if not m.get("auto")):
+            continue
+        out.append(dict(e, auto=True) if r["auto"] else e)
     return out
 
 
@@ -611,6 +661,7 @@ def tidy(events):
         seen.add(k)
         unique.append(e)
     for e in unique:   # no empty fields in the file
+        e.pop("auto", None)
         for x in ("f", "fee", "fee_to"):
             if e.get(x) is None or e.get(x) == []:
                 e.pop(x, None)
@@ -639,8 +690,12 @@ def main():
     ap.add_argument("--only", default="", help="comma-separated shops (for testing)")
     ap.add_argument("--manual-only", metavar="PUBLISHED", help="put manual_events.json into this published file; no shop is read")
     ap.add_argument("--fees", metavar="CACHE", help="Hareruya's fees: read and update this cache (hareruya_fees.json)")
-    ap.add_argument("--fee-minutes", type=float, default=32, help="stop reading Hareruya's event pages this long after the start")
+    ap.add_argument("--fee-minutes", type=float, default=65, help="stop reading Hareruya's event pages this long after the start")
+    ap.add_argument("--x-events", metavar="FILE", help="the events x_reader.py read from pictures on X (x_events.json)")
     args = ap.parse_args()
+    if args.x_events:
+        global X_EVENTS
+        X_EVENTS = args.x_events
     log = lambda s: print(s, flush=True)
     started = time.time()
     today = datetime.now(JST).date()
@@ -657,7 +712,7 @@ def main():
         write(args.out, {"updated": data.get("updated", ""), "sources": {**data.get("sources", {}), "manual": len(got)},
                          "events": tidy(shops + got)}, log)
         return
-    readers = {"hareruya": read_hareruya, "amenity": read_amenity, "yellowsub": read_yellowsub, "tonamel": read_tonamel,
+    readers = {"hareruya": read_hareruya, "amenity": read_amenity, "yellowsub": read_yellowsub, "tonamel": read_tonamel, "cardwings": read_cardwings,
                "manual": read_manual}
     only = [s for s in args.only.split(",") if s]
     events, sources = [], {}

@@ -21,14 +21,19 @@ Start with [`docs/README.md`](docs/README.md).
    automated collection; pages need a login). Any new source needs the owner's yes first.
    **Tonamel** (the owner's request, 2026-10-25): its public MTG event search for Japan, opened in a
    headless browser once a night under the same rules (its robots.txt disallows only `/organize/`
-   and `/settings/`); every event links to its Tonamel page. **X (Twitter)** is not read: x.com's
-   robots.txt forbids it, and the only permitted route is the paid X API (the owner chose "not now"
-   for X, 2026-10-18). **Shops' calendar pictures on X** (the owner's choice, 2026-10-25: by hand
-   first, automatic later): the owner hands over the picture and the post's link, Claude lists the
-   Magic events, the owner checks them, and they go into `manual_events.json`, each linking to its post.
+   and `/settings/`); every event links to its Tonamel page. **X (Twitter)** pages are never read: x.com's
+   robots.txt forbids it, and the only permitted route is the paid X API (used since 2026-10-25,
+   below). **Shops' calendar pictures on X** (the owner's choice, 2026-10-25): by hand
+   (the owner hands over the picture and the post's link, Claude lists the Magic events, the owner
+   checks them, and they go into `manual_events.json`), and **automatically through X's paid API**
+   (the owner's request, 2026-10-25) for the accounts in `x_accounts.json` only, each once a week, on Sunday: `x_reader.py`, with
+   the owner's secrets `X_BEARER_TOKEN` and `ANTHROPIC_API_KEY`; each event links to its post.
    **MINT** (the owner's request, 2026-10-25): its stores' monthly schedule pictures on mint-web.jp
    (robots.txt allows them), read the same way into `manual_events.json`, each linking to the
    store's page. Events a shop also lists on Tonamel merge into one entry.
+   **CARDWINGS and CANTRIP** (the owner's request, 2026-10-26, in place of their X posts): CARDWINGS'
+   tournament list (card-wings.com, robots.txt allows it) and the schedule picture on CANTRIP's 八王子
+   store page (cantripmtg.com, robots.txt allows it), once a night, one page each, linking back.
    Reading X automatically needs X's paid API and the owner's own keys (never pasted in chat).
 3. **No secrets in the repo or in chat.** The R2 token is the GitHub secret `CLOUDFLARE_R2_TOKEN`;
    never print it, and never ask the owner to paste a token.
