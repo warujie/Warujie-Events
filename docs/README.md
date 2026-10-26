@@ -6,6 +6,7 @@
 |---|---|
 | [`build_events.py`](../build_events.py) | Reads the shops' event pages and Tonamel's MTG event search, adds the events read by hand from shops' calendar pictures, and writes `events.json` (the next 35 days) |
 | [`manual_events.json`](../manual_events.json) | The Magic events read by hand from shops' calendar pictures: posts on X and MINT's schedule pages ("Calendar pictures" below) |
+| [`x_reader.py`](../x_reader.py), [`x_accounts.json`](../x_accounts.json) | Reads the calendar pictures of the shops' X accounts listed in `x_accounts.json` automatically, each night, into `x_events.json` (kept in R2): "Calendar pictures on X, read automatically" below |
 | [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` (and Hareruya's fee cache, `hareruya_fees.json`) to R2; a change to `manual_events.json` on `main` updates only those events at once |
 
 The site (`warujie/Warujie`) reads the file at `warujie.jp/data/events.json` (its Worker serves the
@@ -93,9 +94,45 @@ forbids automated collection without written permission, and pages need a login)
   dropped in favour of the read one, whose page has the details (`tidy()`, `same_event()`;
   `store_key()` matches names across sources, `MINTGAMESMTG店` and `GAMES MTG店` alike). MINT's
   stores that list on Tonamel join MINT's own entry (`TONAMEL_MINT`), and Tonamel's play-room
-  bookings (【ルーム予約】貸切プレイルーム) are not events (`TONAMEL_NOT_EVENT`). The plan for reading
-  pictures automatically later (X's API with a spending cap, Claude reading the pictures) is in
-  the project files, `x-twitter/plan.md`.
+  bookings (【ルーム予約】貸切プレイルーム) are not events (`TONAMEL_NOT_EVENT`).
+- **CARDWINGS** (`read_cardwings()`, the owner's request of 2026-10-26, in place of reading its X
+  posts; robots.txt allows the site): its tournament list's own search for Magic (`CARDWINGS_LIST`,
+  game 156), both stores (`CARDWINGS_STORES`: 秋葉原駅前店, 八王子駅前店), newest entries first, up to
+  `CARDWINGS_MAX_PAGES` pages until a page holds no coming event. Each links to its event page; the
+  fee is the 参加料 column (a pack to buy instead is no fee). `shop` `cardwings`.
+- **CANTRIP** (the owner's request of 2026-10-26, in place of its X posts): the monthly schedule
+  picture on its 八王子 store page, listed under `pages` in `x_accounts.json` and read by
+  `x_reader.py` (below) in each nightly run: one page a night, and the picture is read only when it
+  has changed; its events replace the previous picture's. `shop` `cantrip`, linking to the page.
+- **Calendar pictures on X, read automatically** (`x_reader.py`, the owner's request of
+  2026-10-25: automatic, but only for the accounts they choose, and each **once a week, on
+  Sunday**, to keep the cost down). In the nightly run, before the shops are read, for every
+  account in `x_accounts.json` (`handle`, and the `store`, `p` and `c` its events get) not read
+  since the last Sunday in Japan (`X_WEEKDAY`; so on Sunday morning's run, and the first run after
+  an account is added or was cut off):
+  1. X's API (the owner's pay-per-use developer account, secret `X_BEARER_TOKEN`) gives the
+     account's own posts since its last reading's newest (`since_id`), at most `X_MAX_POSTS` (25;
+     a busier week loses its oldest posts, and the log says so), no reposts or replies, with the
+     description a shop typed for a picture (alt text), which goes to the models too; the first
+     time, the latest posts of the last `X_POST_DAYS` days. X bills
+     each post read ($0.005 in 2026-10) and each account's first lookup ($0.01).
+  2. Each picture goes first to a small model (`SCREEN_MODEL`, a fraction of a cent), which only
+     says whether it gives the dates of Magic events.
+  3. Those pictures go to `READ_MODEL` (secret `ANTHROPIC_API_KEY`), which lists the Magic events:
+     day, start, name, formats, fee (`READ_PROMPT`, a fixed JSON shape, `READ_SCHEMA`), at most
+     `X_MAX_READS` (20) pictures a night (an account cut off by it is read on from where it stopped the next night, and its week starts once it is done); `valid_events()` keeps those that hold together (a date from a
+     week before the post to four months after it). Each event links to its post.
+  The result, with each account's `since_id` and last reading (`read`), is `x_events.json` in R2 (shop `x`, so the site tags
+  it X投稿から); events before yesterday drop out, and a newer post's reading of the same event
+  replaces the older one, and the same event in two pictures of one post (Japanese and English) is
+  kept once. A post whose pictures failed (or met the night's limit) is tried again
+  the next night. `build_events.py --x-events` adds them as hand-kept events (the same merging
+  with Tonamel), and **an event checked by hand in `manual_events.json` wins** over the same one
+  read automatically. Without both secrets the step does nothing (X isn't read, so nothing is paid
+  for). **To add a shop:** a line in `x_accounts.json`; to drop one, remove its line (its events go
+  when they have passed). A spending limit is set in X's Developer Console and Anthropic's Console.
+  To test on a work branch, run the reader with `--all` (every account whatever its week) from a
+  throwaway workflow there; it is never published.
 - Formats from words come from `formats_in()` (`FORMAT_WORDS`, the same words as the site's
   `EVENT_FORMAT_WORDS`; full-width letters folded): every format a name or note names, スタン counting
   as スタンダード, プレモダン not as モダン, and a モダンホライゾン draft as limited only. Dates without a year
@@ -110,10 +147,12 @@ forbids automated collection without written permission, and pages need a login)
   no fee, and its 33 stores hold about 10,000 events a month, too many pages to read each night,
   but a store's recurring event (the same name) costs the same each time: `hareruya_fees()` reads
   one page per store and name (its 参加費 row, `hareruya_fee()`), soonest event first, at most
-  `HARERUYA_FEE_PAGES` (250, about 17 minutes) a night and never past `--fee-minutes` (32) from
+  `HARERUYA_FEE_PAGES` (750, about 50 minutes; raised from 250 on 2026-10-26 so the first nights
+  catch up faster) a night and never past `--fee-minutes` (65) from
   the start, and keeps the fees in `hareruya_fees.json` (`--fees`; downloaded from and published
   to R2 beside events.json), re-reading each after `HARERUYA_FEE_DAYS` (30). The first nights
-  fill it in (about 1,700 store-and-name pairs, about a week); until then some Hareruya events have no fee. A hand-kept event that merges
+  fill it in (about 1,600 store-and-name pairs, two or three nights); until then some Hareruya events have no
+  fee. After that a night reads only new names and the month-old ones (about 100), a few minutes. A hand-kept event that merges
   into a Tonamel event without a fee hands its fee over (`tidy()`).
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
