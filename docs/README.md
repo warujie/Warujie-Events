@@ -48,7 +48,9 @@ forbids automated collection without written permission, and pages need a login)
   this month and next (66 pages). `parse_hareruya()` takes each day's events: time, name, the
   event's own page and its format icons (`HARERUYA_ICONS`; Dr/Se → limited). Hareruya's standing
   daily league (names with `[毎日開催]`) is left out (`keep()`). The stores, their prefecture and city
-  are kept by hand in `HARERUYA` (calendar shop numbers, not the search's venue numbers).
+  are kept by hand in `HARERUYA` (calendar shop numbers, not the search's venue numbers). The
+  トーナメントセンター東京 and TCG BAR 飲める屋 are in 高田馬場, so 新宿区 (they were filed under 千代田区
+  until 2026-11-02; the owner noticed the Tournament Center missing from 新宿区).
 - **Amenity Dream** (`read_amenity()`): every store's MTG list, `/matches/?type=2&shop=&date=`
   (type 2 = ＭＴＧ), shows only the coming week, so the reader then reads one page per day for each
   day its 開催日 drop-down offers (`amenity_dates()`, about a month: some 32 pages), with further
@@ -154,6 +156,15 @@ forbids automated collection without written permission, and pages need a login)
   fill it in (about 1,600 store-and-name pairs, two or three nights); until then some Hareruya events have no
   fee. After that a night reads only new names and the month-old ones (about 100), a few minutes. A hand-kept event that merges
   into a Tonamel event without a fee hands its fee over (`tidy()`).
+- **Neighbourhoods** (`a`, the owner's pick of 2026-11-02): each event carries the station area
+  players know its store by, shown under its city in the site's city menu (新宿区: 高田馬場・新宿) and
+  found by the keyword box. A store named after its place gives it by its name (秋葉原店, 秋葉原駅前店 →
+  秋葉原: `store_area()`, for Hareruya, Amenity Dream and CARDWINGS); `STORE_AREA` has the others
+  (トーナメントセンター東京 → 高田馬場, トーナメントセンター大阪 → 梅田…) and `YELLOWSUB_AREA` Yellow
+  Submarine's stores by their page. A Tonamel event takes the town after the city or ward in its
+  venue's address (`town_area()`: 新宿区高田馬場4-11-10 → 高田馬場, a big city's ward skipped), with
+  `TOWN_AREA` turning towns into the station players say (外神田 → 秋葉原, 難波千日前 → なんば). A hand-kept
+  event may give its own `a`. `tidy()` fills it in last and leaves it out when unknown.
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
 ## `events.json`
@@ -163,12 +174,12 @@ forbids automated collection without written permission, and pages need a login)
   "sources": { "hareruya": 10678, "amenity": 16, "yellowsub": 240, "tonamel": 104, "manual": 89 },
   "events": [ { "d": "2026-10-25", "t": "13:00", "p": 13, "c": "千代田区",
                 "shop": "hareruya", "store": "秋葉原店", "name": "モダン神挑戦者決定戦トライアル",
-                "url": "https://www.hareruyamtg.com/ja/events/620342/detail", "f": ["modern"], "fee": 1000 } ] }
+                "url": "https://www.hareruyamtg.com/ja/events/620342/detail", "f": ["modern"], "fee": 1000, "a": "秋葉原" } ] }
 ```
 
 One entry per event from today (Japan time) to 35 days ahead, sorted by day and start time. `t` is
 "" when the shop gives no time; `p` is the prefecture's JIS number (1–47), `c` the city or Tokyo
-ward; `shop` is `hareruya`, `amenity`, `yellowsub`, `tonamel`, `mint` or `x` (the site's
+ward, `a` the store's neighbourhood (above; left out when unknown); `shop` is `hareruya`, `amenity`, `yellowsub`, `tonamel`, `mint` or `x` (the site's
 `EVENT_SHOPS`); `store` is the store (for Tonamel, the organiser's name); `url` is the event's own
 page (Hareruya, Tonamel, MINT's Tonamel events), the post on X (`x`) or the store's schedule (the
 others); `sources` counts each reader's events (`manual`: the calendar pictures); `f` lists the formats (`standard`,
