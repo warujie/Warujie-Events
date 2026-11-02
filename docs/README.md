@@ -48,7 +48,9 @@ forbids automated collection without written permission, and pages need a login)
   this month and next (66 pages). `parse_hareruya()` takes each day's events: time, name, the
   event's own page and its format icons (`HARERUYA_ICONS`; Dr/Se → limited). Hareruya's standing
   daily league (names with `[毎日開催]`) is left out (`keep()`). The stores, their prefecture and city
-  are kept by hand in `HARERUYA` (calendar shop numbers, not the search's venue numbers).
+  are kept by hand in `HARERUYA` (calendar shop numbers, not the search's venue numbers). The
+  トーナメントセンター東京 and TCG BAR 飲める屋 are in 高田馬場, so 新宿区 (they were filed under 千代田区
+  until 2026-11-02; the owner noticed the Tournament Center missing from 新宿区).
 - **Amenity Dream** (`read_amenity()`): every store's MTG list, `/matches/?type=2&shop=&date=`
   (type 2 = ＭＴＧ), shows only the coming week, so the reader then reads one page per day for each
   day its 開催日 drop-down offers (`amenity_dates()`, about a month: some 32 pages), with further
