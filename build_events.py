@@ -86,6 +86,57 @@ YELLOWSUB = [
     ("nagoya_gs", 23, "名古屋市"), ("nanba_s", 27, "大阪市"), ("nanba_3", 27, "大阪市"), ("kyoto", 26, "京都市"),
     ("sannomiya", 28, "神戸市"), ("himeji", 28, "姫路市"), ("hiroshima", 34, "広島市"), ("fukuoka_mc", 40, "福岡市"),
 ]
+# each store's neighbourhood (the station players know it by), shown beside its city in the 大会 tab's
+# city menu (新宿区: 高田馬場・新宿; the owner's pick of 2026-11-02) and found by its keyword box. A
+# store named after its place gives it by its name (秋葉原店 → 秋葉原, store_area()); these are the rest.
+STORE_AREA = {
+    ("hareruya", "トーナメントセンター東京"): "高田馬場", ("hareruya", "TCG BAR 飲める屋"): "高田馬場",
+    ("hareruya", "トーナメントセンター大阪"): "梅田", ("amenity", "池袋パワー9店"): "池袋", ("amenity", "なんば2号店"): "なんば",
+}
+YELLOWSUB_AREA = {
+    "akihabara_mnt": "秋葉原", "akihabara_rpg": "秋葉原", "shinjuku": "新宿", "ikebukuro_gs": "池袋", "machida": "町田",
+    "tachikawa": "立川", "yokohama": "横浜", "yokohama_m": "横浜", "mizo": "溝の口", "kawasaki": "川崎", "kashiwa_m": "柏",
+    "chiba_gs": "千葉", "omiya_ps": "大宮", "kawagoe_cs": "川越", "utsunomiya": "宇都宮", "sapporo_gs": "札幌",
+    "nagoya_gs": "名古屋", "nanba_s": "なんば", "nanba_3": "なんば", "kyoto": "京都", "sannomiya": "三宮", "himeji": "姫路",
+    "hiroshima": "広島", "fukuoka_mc": "天神",
+}
+# a Tonamel venue's town (from its address) → the station area players call it by; other towns stay as they are
+TOWN_AREA = {
+    "外神田": "秋葉原", "神田佐久間町": "秋葉原", "神田花岡町": "秋葉原", "神田練塀町": "秋葉原", "神田松永町": "秋葉原", "神田須田町": "秋葉原",
+    "西新宿": "新宿", "歌舞伎町": "新宿", "南池袋": "池袋", "東池袋": "池袋", "西池袋": "池袋", "道玄坂": "渋谷", "宇田川町": "渋谷",
+    "神南": "渋谷", "江東橋": "錦糸町", "錦糸": "錦糸町", "梅田": "梅田", "角田町": "梅田", "芝田": "梅田", "難波": "なんば",
+    "難波中": "なんば", "日本橋": "日本橋",
+}
+
+
+def store_area(shop, store):
+    """A store's neighbourhood: STORE_AREA, else the place its name gives (秋葉原店, 秋葉原駅前店 → 秋葉原)."""
+    if (shop, store) in STORE_AREA:
+        return STORE_AREA[(shop, store)]
+    if shop in ("hareruya", "amenity", "cardwings"):
+        m = re.fullmatch(r"([^\x00-\x7f\d]{1,6}?)(?:駅前)?店", store)
+        return m.group(1) if m else ""
+    return ""
+
+
+def town_area(address, city):
+    """The neighbourhood in a free-text address: the town after the city or ward (新宿区高田馬場3-12-2 →
+    高田馬場), as TOWN_AREA names it; "" when there is none."""
+    a = unicodedata.normalize("NFKC", address or "").replace(" ", "")
+    k = a.find(city) if city else -1
+    if k < 0:
+        return ""
+    rest = a[k + len(city):]
+    if city.endswith("市"):   # a big city's ward comes first (大阪市中央区難波…)
+        rest = re.sub(r"^[^\d\x00-\x7f]{1,4}?区", "", rest)
+    m = re.match(r"(?:大字|字)?([^\d\x00-\x7f丁番号ー－-]{1,8}?)(?:[一二三四五六七八九十]+丁目|\d|丁目|$)", rest)
+    town = m.group(1) if m else ""
+    if not town or re.search(r"[ビル階館F]|^[町村]$", town):
+        return ""
+    known = max((k for k in TOWN_AREA if town.startswith(k)), key=len, default="")
+    return TOWN_AREA[known] if known else town
+
+
 # the formats an event's name or notes name: スタン is スタンダード, プレモダン isn't モダン, and a
 # モダンホライゾン draft is limited, not modern
 FORMAT_WORDS = [
@@ -412,7 +463,8 @@ def parse_tonamel(nodes):
             if tm.get("isOnline"):
                 continue
             loc = tm.get("location") or {}
-            pref, city = place_of(((loc.get("address") or {}).get("input") or "") + " " + (loc.get("venueName") or ""))
+            address = ((loc.get("address") or {}).get("input") or "") + " " + (loc.get("venueName") or "")
+            pref, city = place_of(address)
             d, t = tonamel_time(tm.get("displayStartAt"))
             if not pref or not d:
                 continue
@@ -427,7 +479,8 @@ def parse_tonamel(nodes):
             m = re.search(r"フォーマット[】\]：:\s　]*([^<\n]{1,40})", n.get("description") or "")
             fs = formats_in(title) or (formats_in(clean(m.group(1))) if m else [])
             out.append({"d": d, "t": t, "p": pref, "c": city, "shop": shop, "store": store, "name": title,
-                        "url": f"https://tonamel.com/competition/{n['id']}", "f": fs, "fee": tonamel_fee(n.get("description"))})
+                        "url": f"https://tonamel.com/competition/{n['id']}", "f": fs, "fee": tonamel_fee(n.get("description")),
+                        "a": town_area(address, city)})
     return out
 
 
@@ -516,7 +569,8 @@ def parse_yellowsub(html, slug, pref, city, today):
             name = f"{name}（{'・'.join(FORMAT_JA[f] for f in fs)}）"
         t = tds[3] if re.fullmatch(r"\d{1,2}:\d{2}", tds[3]) else ""
         out.append({"d": f"{year_for(mo, today):04d}-{mo:02d}-{da:02d}", "t": t, "p": pref, "c": city,
-                    "shop": "yellowsub", "store": store, "name": name, "url": url, "f": fs, "fee": yen_of(tds[4])})
+                    "shop": "yellowsub", "store": store, "name": name, "url": url, "f": fs, "fee": yen_of(tds[4]),
+                    "a": YELLOWSUB_AREA.get(slug, "")})
     return out
 
 
@@ -610,7 +664,8 @@ def read_manual(today, log):
         fee = r.get("fee") if isinstance(r.get("fee"), int) and r["fee"] >= 0 else None
         fee_to = r.get("fee_to") if fee is not None and isinstance(r.get("fee_to"), int) and r["fee_to"] > fee else None
         e = {"d": r["d"], "t": r.get("t") or "", "p": r["p"], "c": r.get("c") or "", "shop": shop,
-             "store": r["store"], "name": r["name"], "url": url, "f": fs, "fee": fee, "fee_to": fee_to}
+             "store": r["store"], "name": r["name"], "url": url, "f": fs, "fee": fee, "fee_to": fee_to,
+             "a": str(r.get("a") or "")[:12]}
         # an event read automatically (x_events.json) gives way to the same event checked by hand
         if r["auto"] and any(same_event(e, m) for m in out if not m.get("auto")):
             continue
@@ -663,8 +718,9 @@ def tidy(events):
         unique.append(e)
     for e in unique:   # no empty fields in the file
         e.pop("auto", None)
-        for x in ("f", "fee", "fee_to"):
-            if e.get(x) is None or e.get(x) == []:
+        e["a"] = e.get("a") or store_area(e["shop"], e["store"])
+        for x in ("f", "fee", "fee_to", "a"):
+            if e.get(x) is None or e.get(x) == [] or e.get(x) == "":
                 e.pop(x, None)
     return unique
 
