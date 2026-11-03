@@ -92,6 +92,7 @@ YELLOWSUB = [
 STORE_AREA = {
     ("hareruya", "トーナメントセンター東京"): "高田馬場", ("hareruya", "TCG BAR 飲める屋"): "高田馬場",
     ("hareruya", "トーナメントセンター大阪"): "梅田", ("amenity", "池袋パワー9店"): "池袋", ("amenity", "なんば2号店"): "なんば",
+    ("mint", "GAMES 池袋店"): "池袋", ("mint", "横浜店"): "横浜", ("x", "東京MTG"): "岩本町",
 }
 YELLOWSUB_AREA = {
     "akihabara_mnt": "秋葉原", "akihabara_rpg": "秋葉原", "shinjuku": "新宿", "ikebukuro_gs": "池袋", "machida": "町田",
@@ -100,13 +101,27 @@ YELLOWSUB_AREA = {
     "nagoya_gs": "名古屋", "nanba_s": "なんば", "nanba_3": "なんば", "kyoto": "京都", "sannomiya": "三宮", "himeji": "姫路",
     "hiroshima": "広島", "fukuoka_mc": "天神",
 }
-# a Tonamel venue's town (from its address) → the station area players call it by; other towns stay as they are
+# a Tonamel venue's town (from its address) → the station area players call it by. A town in neither
+# table shows no neighbourhood (never a bare street name like 江木町; the owner's word, 2026-11-03) and is
+# named in the run's log, to be added here.
 TOWN_AREA = {
     "外神田": "秋葉原", "神田佐久間町": "秋葉原", "神田花岡町": "秋葉原", "神田練塀町": "秋葉原", "神田松永町": "秋葉原", "神田須田町": "秋葉原",
     "西新宿": "新宿", "歌舞伎町": "新宿", "南池袋": "池袋", "東池袋": "池袋", "西池袋": "池袋", "道玄坂": "渋谷", "宇田川町": "渋谷",
     "神南": "渋谷", "江東橋": "錦糸町", "錦糸": "錦糸町", "梅田": "梅田", "角田町": "梅田", "芝田": "梅田", "難波": "なんば",
-    "難波中": "なんば", "日本橋": "日本橋",
+    "難波中": "なんば", "日本橋": "日本橋", "日本橋馬喰町": "東日本橋", "高田馬場": "高田馬場",
 }
+# towns whose name is only a street in one city → the nearest station, as players say it. Looked up on
+# 2026-11-03 from each venue's address (GSI's address search, then the nearest stations); "" for a venue
+# with no station worth naming (沖縄's 中城村).
+CITY_TOWN_AREA = {
+    ("伊勢崎市", "宮子町"): "伊勢崎", ("高崎市", "江木町"): "高崎", ("小山市", "城山町"): "小山", ("松戸市", "本町"): "松戸",
+    ("厚木市", "中町"): "本厚木", ("塩尻市", "広丘"): "広丘", ("浜松市", "常盤町"): "浜松", ("浜松市", "貴布祢"): "浜北",
+    ("半田市", "一本木町"): "亀崎", ("名古屋市", "栄"): "栄", ("名古屋市", "椿町"): "名古屋", ("名古屋市", "港町"): "築地口",
+    ("弥富市", "鯏浦町"): "弥富", ("江南市", "東野町"): "江南", ("稲沢市", "小池"): "稲沢", ("草津市", "西草津"): "草津",
+    ("堺市", "三国ヶ丘"): "堺東", ("岡山市", "大供"): "岡山", ("福岡市", "大名"): "天神", ("長崎市", "大橋町"): "大橋",
+    ("出水市", "上鯖淵"): "出水", ("鹿児島市", "上之園町"): "鹿児島中央", ("中城村", "南上原"): "",
+}
+UNKNOWN_TOWNS = set()   # towns seen this run that neither table names (logged by read_tonamel())
 
 
 def store_area(shop, store):
@@ -120,8 +135,9 @@ def store_area(shop, store):
 
 
 def town_area(address, city):
-    """The neighbourhood in a free-text address: the town after the city or ward (新宿区高田馬場3-12-2 →
-    高田馬場), as TOWN_AREA names it; "" when there is none."""
+    """The neighbourhood in a free-text address: the station area of the town after the city or ward
+    (新宿区高田馬場3-12-2 → 高田馬場, 高崎市江木町333-1 → 高崎), as CITY_TOWN_AREA or TOWN_AREA names it;
+    "" when neither does (the town is kept in UNKNOWN_TOWNS)."""
     a = unicodedata.normalize("NFKC", address or "").replace(" ", "")
     k = a.find(city) if city else -1
     if k < 0:
@@ -133,8 +149,14 @@ def town_area(address, city):
     town = m.group(1) if m else ""
     if not town or re.search(r"[ビル階館F]|^[町村]$", town):
         return ""
+    local = max((k for c, k in CITY_TOWN_AREA if c == city and town.startswith(k)), key=len, default="")
+    if local:
+        return CITY_TOWN_AREA[(city, local)]
     known = max((k for k in TOWN_AREA if town.startswith(k)), key=len, default="")
-    return TOWN_AREA[known] if known else town
+    if known:
+        return TOWN_AREA[known]
+    UNKNOWN_TOWNS.add(city + town)
+    return ""
 
 
 # the formats an event's name or notes name: スタン is スタンダード, プレモダン isn't モダン, and a
@@ -546,6 +568,8 @@ def read_tonamel(today, log):
         log(f"  tonamel: {e!r}"[:300])
     events = parse_tonamel([e["node"] for c in pages for e in c.get("edges") or []])
     log(f"  tonamel: {len(events)} offline events from {len(pages)} lists")
+    if UNKNOWN_TOWNS:
+        log(f"  tonamel: towns with no station yet (add them to CITY_TOWN_AREA): {'、'.join(sorted(UNKNOWN_TOWNS))}")
     return events
 
 

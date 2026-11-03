@@ -163,7 +163,11 @@ forbids automated collection without written permission, and pages need a login)
   (トーナメントセンター東京 → 高田馬場, トーナメントセンター大阪 → 梅田…) and `YELLOWSUB_AREA` Yellow
   Submarine's stores by their page. A Tonamel event takes the town after the city or ward in its
   venue's address (`town_area()`: 新宿区高田馬場4-11-10 → 高田馬場, a big city's ward skipped), with
-  `TOWN_AREA` turning towns into the station players say (外神田 → 秋葉原, 難波千日前 → なんば). A hand-kept
+  `TOWN_AREA` turning towns into the station players say (外神田 → 秋葉原, 難波千日前 → なんば) and
+  `CITY_TOWN_AREA` a town that is only a street in one city (高崎市江木町 → 高崎, 厚木市中町 → 本厚木; looked
+  up on 2026-11-03 from each venue's address, GSI's address search then the nearest station). A town in
+  neither table shows no neighbourhood, never a bare street name (the owner's word, 2026-11-03), and the
+  run's log names it ("towns with no station yet", `UNKNOWN_TOWNS`) so it can be added. A hand-kept
   event may give its own `a`. `tidy()` fills it in last and leaves it out when unknown.
 - A shop that opens, closes or renumbers a store is a one-line change in its table.
 
