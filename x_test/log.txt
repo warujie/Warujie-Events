@@ -1,0 +1,137 @@
+X token: set; Anthropic key: set
+
+[notice] A new release of pip is available: 26.2.2 -> 26.3
+[notice] To update, run: pip install --upgrade pip
+== already in events.json (Tonamel or others):
+8504 events, 0 from these shops
+== X reader
+@batolocobaba: 24 new posts
+  https://x.com/batolocobaba/status/2119670505724916136 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVCh4bAAAkyIg.jpg
+    https://pbs.twimg.com/media/HWqVCh4bAAAkyIg.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119670576814203288 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVHjfbQAAUmCQ.jpg
+    https://pbs.twimg.com/media/HWqVHjfbQAAUmCQ.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119670623450644567 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVLySbEAAmFdU.jpg
+    https://pbs.twimg.com/media/HWqVLySbEAAmFdU.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119670704916570219 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVOvNbQAARziX.jpg
+    https://pbs.twimg.com/media/HWqVOvNbQAARziX.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119670749644607547 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVTCYaEAAaEBo.jpg
+    https://pbs.twimg.com/media/HWqVTCYaEAAaEBo.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119670801985323228 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVV29b0AAoM9W.jpg
+    https://pbs.twimg.com/media/HWqVV29b0AAoM9W.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119670878065807531 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVZpmbQAAe3Cl.jpg
+    https://pbs.twimg.com/media/HWqVZpmbQAAe3Cl.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119671616175268213 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqVddHbQAEvebL.jpg
+    https://pbs.twimg.com/media/HWqVddHbQAEvebL.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119671676220964886 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqWIiBbAAAY8Bm.jpg
+    https://pbs.twimg.com/media/HWqWIiBbAAAY8Bm.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119709708152099042 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWq4frkaAAArh7k.jpg
+    https://pbs.twimg.com/media/HWq4frkaAAArh7k.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119709712405180796 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWq4kPHbEAAKlSD.jpg
+    https://pbs.twimg.com/media/HWq4kPHbEAAKlSD.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119709717169836519 (2026-11-09): 4 pictures; https://pbs.twimg.com/media/HWq4rXHboAAY2XV.jpg https://pbs.twimg.com/media/HWq4ryeakAAAYMc.jpg https://pbs.twimg.com/media/HWq4sIeaEAAnSFE.jpg https://pbs.twimg.com/media/HWq4skjboAAWwJs.jpg
+    https://pbs.twimg.com/media/HWq4rXHboAAY2XV.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWq4ryeakAAAYMc.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWq4sIeaEAAnSFE.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWq4skjboAAWwJs.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119709721280307532 (2026-11-09): 3 pictures; https://pbs.twimg.com/media/HWq4uy_a4AADFh4.jpg https://pbs.twimg.com/media/HWq4vMibAAAtsOs.jpg https://pbs.twimg.com/media/HWq4vkvb0AA6NcG.jpg
+    https://pbs.twimg.com/media/HWq4uy_a4AADFh4.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWq4vMibAAAtsOs.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWq4vkvb0AA6NcG.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119710460417282157 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWq5XmlbcAA3wFm.jpg
+    https://pbs.twimg.com/media/HWq5XmlbcAA3wFm.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119710526049783874 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWq4yJmaIAAlkMx.jpg
+    https://pbs.twimg.com/media/HWq4yJmaIAAlkMx.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119710832275943913 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWq5rcJb0AAdW71.jpg
+    https://pbs.twimg.com/media/HWq5rcJb0AAdW71.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119713090891817001 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWq6eKda0AEQ113.jpg
+    https://pbs.twimg.com/media/HWq6eKda0AEQ113.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119732592979431808 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWrNjZ0a4AAXVnH.jpg
+    https://pbs.twimg.com/media/HWrNjZ0a4AAXVnH.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119750410907062620 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWrdwzbbAAEdeY7.jpg
+    https://pbs.twimg.com/media/HWrdwzbbAAEdeY7.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119764797223014670 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWrqt9MbUAApTB-.jpg
+    https://pbs.twimg.com/media/HWrqt9MbUAApTB-.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119777274194985470 (2026-11-09): 3 pictures; https://pbs.twimg.com/media/HWrFJMbaUAA6X8W.jpg https://pbs.twimg.com/media/HWrFV3SbsAADN97.jpg https://pbs.twimg.com/media/HWrFWLfakAAActu.jpg
+    https://pbs.twimg.com/media/HWrFJMbaUAA6X8W.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWrFV3SbsAADN97.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWrFWLfakAAActu.jpg: not a Magic schedule
+  https://x.com/batolocobaba/status/2119780796810604598 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWra5iJakAARxbF.png
+    https://pbs.twimg.com/media/HWra5iJakAARxbF.png: not a Magic schedule
+  https://x.com/batolocobaba/status/2119803469943181816 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWsOBFMaEAAEAC7.jpg
+    https://pbs.twimg.com/media/HWsOBFMaEAAEAC7.jpg: not a Magic schedule
+@GameShopTodo: 24 new posts
+  https://x.com/GameShopTodo/status/2118893703058292777 (2026-11-07): 1 pictures; https://pbs.twimg.com/media/HWfMaGGaIAEslDo.jpg
+    https://pbs.twimg.com/media/HWfMaGGaIAEslDo.jpg: 5 Magic events (of 5 given)
+      2026-11-06 19:00 スター・トレック プレリリース limited 4500
+      2026-11-07 12:00 スター・トレック プレリリース limited 4500
+      2026-11-07 16:00 スター・トレック プレリリース limited 4500
+      2026-11-08 12:00 スター・トレック プレリリース limited 4500
+      2026-11-08 16:00 スター・トレック プレリリース limited 4500
+  https://x.com/GameShopTodo/status/2118905390092181674 (2026-11-07): 1 pictures; https://pbs.twimg.com/media/HWfdEhEbUAAdSnu.jpg
+    https://pbs.twimg.com/media/HWfdEhEbUAAdSnu.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2118978096544297045 (2026-11-07): 1 pictures; https://pbs.twimg.com/media/HWgezO3bAAAXfu7.jpg
+    https://pbs.twimg.com/media/HWgezO3bAAAXfu7.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2118978740260888780 (2026-11-07): 1 pictures; https://pbs.twimg.com/media/HWgf7c4a4AAVhUH.jpg
+    https://pbs.twimg.com/media/HWgf7c4a4AAVhUH.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119009337142292805 (2026-11-07): 2 pictures; https://pbs.twimg.com/media/HWg7ws9boAAOo-d.jpg https://pbs.twimg.com/media/HWg7wcHbwAAzXeW.jpg
+    https://pbs.twimg.com/media/HWg7ws9boAAOo-d.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWg7wcHbwAAzXeW.jpg: 5 Magic events (of 5 given)
+      2026-11-06 19:00 スター・トレック プレリリース limited 4500
+      2026-11-07 12:00 スター・トレック プレリリース limited 4500
+      2026-11-07 16:00 スター・トレック プレリリース limited 4500
+      2026-11-08 12:00 スター・トレック プレリリース limited 4500
+      2026-11-08 16:00 スター・トレック プレリリース limited 4500
+  https://x.com/GameShopTodo/status/2119012735799132227 (2026-11-07): 1 pictures; https://pbs.twimg.com/media/HV0Iy-5bsAAuuSc.png
+    https://pbs.twimg.com/media/HV0Iy-5bsAAuuSc.png: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119012879412424914 (2026-11-07): 2 pictures; https://pbs.twimg.com/media/HWg-8CqbkAAc3nb.jpg https://pbs.twimg.com/media/HWg-8CpaIAAImx5.jpg
+    https://pbs.twimg.com/media/HWg-8CqbkAAc3nb.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWg-8CpaIAAImx5.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119252811825533031 (2026-11-08): 1 pictures; https://pbs.twimg.com/media/HWkZMtPa4AAKi3s.png
+    https://pbs.twimg.com/media/HWkZMtPa4AAKi3s.png: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119257133124645026 (2026-11-08): 3 pictures; https://pbs.twimg.com/media/HWkdIHwagAAOmLE.jpg https://pbs.twimg.com/media/HWkdIJFaUAAB5kE.jpg https://pbs.twimg.com/media/HWkdIIga0AEboyD.jpg
+    https://pbs.twimg.com/media/HWkdIHwagAAOmLE.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWkdIJFaUAAB5kE.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWkdIIga0AEboyD.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119271189600415954 (2026-11-08): 1 pictures; https://pbs.twimg.com/media/HWhAkqoaMAARh9O.jpg
+    https://pbs.twimg.com/media/HWhAkqoaMAARh9O.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119375236256923836 (2026-11-08): 1 pictures; https://pbs.twimg.com/media/HWmGyE9aoAAWLYh.jpg
+    https://pbs.twimg.com/media/HWmGyE9aoAAWLYh.jpg: 6 Magic events (of 6 given)
+      2026-11-06 19:00 スター・トレック プレリリース limited 4500
+      2026-11-07 12:00 スター・トレック プレリリース limited 4500
+      2026-11-07 16:00 スター・トレック プレリリース limited 4500
+      2026-11-08 12:00 スター・トレック プレリリース limited 4500
+      2026-11-08 16:00 スター・トレック プレリリース limited 4500
+      2026-11-09 19:00 『スター・トレック』プレリリース limited 4500
+  https://x.com/GameShopTodo/status/2119390223247520066 (2026-11-08): 1 pictures; https://pbs.twimg.com/media/HV0I3RzagAAGo9V.png
+    https://pbs.twimg.com/media/HV0I3RzagAAGo9V.png: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119391986000228836 (2026-11-08): 1 pictures; https://pbs.twimg.com/media/HWhAhtYbAAAjZfM.jpg
+    https://pbs.twimg.com/media/HWhAhtYbAAAjZfM.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119406832749846906 (2026-11-08): 1 pictures; https://pbs.twimg.com/media/HWhAaW1aEAAPuu_.jpg
+    https://pbs.twimg.com/media/HWhAaW1aEAAPuu_.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119657768328253448 (2026-11-09): 4 pictures; https://pbs.twimg.com/media/HWqJUZ-bQAEK3HS.jpg https://pbs.twimg.com/media/HWqJXHIakAAl5rO.jpg https://pbs.twimg.com/media/HWqJa7NbUAA3Pwe.jpg https://pbs.twimg.com/media/HWqJgSIbIAILrX5.png
+    https://pbs.twimg.com/media/HWqJUZ-bQAEK3HS.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWqJXHIakAAl5rO.jpg: not a Magic schedule
+    https://pbs.twimg.com/media/HWqJa7NbUAA3Pwe.jpg: 6 Magic events (of 6 given)
+      2026-11-06 19:00 プレリリース limited 4500
+      2026-11-07 12:00 プレリリース limited 4500
+      2026-11-07 16:00 プレリリース limited 4500
+      2026-11-08 12:00 プレリリース limited 4500
+      2026-11-08 16:00 プレリリース limited 4500
+      2026-11-09 19:00 スタートレックプレリリース limited 4500
+    https://pbs.twimg.com/media/HWqJgSIbIAILrX5.png: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119694271976747029 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqqtEDawAA-wWw.jpg
+    https://pbs.twimg.com/media/HWqqtEDawAA-wWw.jpg: 6 Magic events (of 6 given)
+      2026-11-06 19:00 スター・トレック プレリリース limited 4500
+      2026-11-07 12:00 スター・トレック プレリリース limited 4500
+      2026-11-07 16:00 スター・トレック プレリリース limited 4500
+      2026-11-08 12:00 スター・トレック プレリリース limited 4500
+      2026-11-08 16:00 スター・トレック プレリリース limited 4500
+      2026-11-09 19:00 『スター・トレック』プレリリース limited 4500
+  https://x.com/GameShopTodo/status/2119702345349235012 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWqyCyMa0AAcAtQ.jpg
+    https://pbs.twimg.com/media/HWqyCyMa0AAcAtQ.jpg: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119752862708146481 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HV0JBD4bMAADMBA.png
+    https://pbs.twimg.com/media/HV0JBD4bMAADMBA.png: not a Magic schedule
+  https://x.com/GameShopTodo/status/2119775812006428720 (2026-11-09): 1 pictures; https://pbs.twimg.com/media/HWr03apboAAElkj.jpg
+    https://pbs.twimg.com/media/HWr03apboAAElkj.jpg: not a Magic schedule
+X: 48 posts read (about $0.240); 56 pictures screened, 5 read (tokens in+out: 3822+289, 3829+614, 3859+715, 3848+814, 3858+915)
+Wrote 1 events to x_test/state.json
