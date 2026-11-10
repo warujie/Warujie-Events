@@ -93,6 +93,7 @@ STORE_AREA = {
     ("hareruya", "トーナメントセンター東京"): "高田馬場", ("hareruya", "TCG BAR 飲める屋"): "高田馬場",
     ("hareruya", "トーナメントセンター大阪"): "梅田", ("amenity", "池袋パワー9店"): "池袋", ("amenity", "なんば2号店"): "なんば",
     ("mint", "GAMES 池袋店"): "池袋", ("mint", "横浜店"): "横浜", ("x", "東京MTG"): "岩本町",
+    ("x", "ゲームショップとど"): "高田馬場",
 }
 YELLOWSUB_AREA = {
     "akihabara_mnt": "秋葉原", "akihabara_rpg": "秋葉原", "shinjuku": "新宿", "ikebukuro_gs": "池袋", "machida": "町田",

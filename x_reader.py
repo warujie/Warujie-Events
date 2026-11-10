@@ -42,6 +42,7 @@ ACCOUNTS = os.path.join(HERE, "x_accounts.json")
 X_API = "https://api.x.com/2"
 X_WEEKDAY = 6           # each account is read once a week, on Sunday in Japan (the owner's choice, 2026-10-25)
 X_MAX_POSTS = 25        # per account and reading (about a week of a busy shop's posts; X's page is 5-100)
+X_POSTS_CAP = 100       # an account's own max_posts in x_accounts.json, for a shop that posts many times a day
 X_MAX_READS = 20        # pictures read by READ_MODEL per night, whatever the accounts post
 X_POST_DAYS = 45        # posts older than this are never read (a first night, or an account added later)
 SCREEN_MODEL = "claude-haiku-5-5"
@@ -200,7 +201,8 @@ def main():
         try:
             if not s.get("id"):
                 s["id"] = x_get(f"/users/by/username/{a['handle']}", {}, token)["data"]["id"]
-            params = {"max_results": X_MAX_POSTS, "exclude": "retweets,replies", "expansions": "attachments.media_keys",
+            most = max(5, min(X_POSTS_CAP, int(a.get("max_posts") or X_MAX_POSTS)))
+            params = {"max_results": most, "exclude": "retweets,replies", "expansions": "attachments.media_keys",
                       "media.fields": "type,url,alt_text", "tweet.fields": "created_at"}
             if s.get("since_id"):
                 params["since_id"] = s["since_id"]
@@ -211,8 +213,8 @@ def main():
             log(f"@{a['handle']}: {e}")
             continue
         posts = got.get("data", [])
-        if len(posts) >= X_MAX_POSTS and s.get("since_id"):
-            log(f"@{a['handle']}: more than {X_MAX_POSTS} posts this week; only the latest are read")
+        if len(posts) >= most and s.get("since_id"):
+            log(f"@{a['handle']}: more than {most} posts this week; only the latest are read")
         media = {m["media_key"]: m for m in got.get("includes", {}).get("media", [])}
         posts_read += len(posts)
         log(f"@{a['handle']}: {len(posts)} new posts")
