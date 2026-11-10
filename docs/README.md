@@ -114,7 +114,8 @@ forbids automated collection without written permission, and pages need a login)
   an account is added or was cut off):
   1. X's API (the owner's pay-per-use developer account, secret `X_BEARER_TOKEN`) gives the
      account's own posts since its last reading's newest (`since_id`), at most `X_MAX_POSTS` (25;
-     a busier week loses its oldest posts, and the log says so), no reposts or replies, with the
+     a busier week loses its oldest posts, and the log says so; an account that posts several
+     times a day has its own `max_posts`, up to `X_POSTS_CAP` (100): ゲームショップとど, 80), no reposts or replies, with the
      description a shop typed for a picture (alt text), which goes to the models too; the first
      time, the latest posts of the last `X_POST_DAYS` days. X bills
      each post read ($0.005 in 2026-10) and each account's first lookup ($0.01).
@@ -131,7 +132,8 @@ forbids automated collection without written permission, and pages need a login)
   the next night. `build_events.py --x-events` adds them as hand-kept events (the same merging
   with Tonamel), and **an event checked by hand in `manual_events.json` wins** over the same one
   read automatically. Without both secrets the step does nothing (X isn't read, so nothing is paid
-  for). **To add a shop:** a line in `x_accounts.json`; to drop one, remove its line (its events go
+  for). **To add a shop:** a line in `x_accounts.json` (and its station in `STORE_AREA`, as
+  ゲームショップとど → 高田馬場, added 2026-11-09 at the owner's request); to drop one, remove its line (its events go
   when they have passed). A spending limit is set in X's Developer Console and Anthropic's Console.
   To test on a work branch, run the reader with `--all` (every account whatever its week) from a
   throwaway workflow there; it is never published.
