@@ -5,11 +5,15 @@ automaton: 0 items
 denfaminico: 0 items
 gamewatch: 0 items
 inside: 0 items
+note: 14 items (newest 2026-11-15: 🌻夏を🇷🇺ウラジオストクで。❄️冬を🇵🇭マニラで暮らしたいうさぎ。※❤️赤単コントロール🪄👯‍♀️🃏MTG構築・紹介あり。)
 mtggoldfish: 15 items (newest 2026-11-15: Magic World Championship 32 Top 8 Decklists)
 edhrec: 10 items (newest 2026-11-13: MagicCon Atlanta 2026 Preview Panel Recap)
 mtgazone: 3 items (newest 2026-11-14: The MTG Hero’s Top 10 Universes Beyond: Star Trek Cards for Standard)
 draftsim: 10 items (newest 2026-11-14: $160 Secret Lair Exclusive Confirmed for 2027 Reprint)
 cardkingdom: 10 items (newest 2026-11-13: Star Trek Commons & Uncommons On Our Radar)
 magicspoiler: 4 items (newest 2026-11-12: Secret Lair: Dune Superdrop)
+wargamer: 15 items (newest 2026-11-13: MTG Nauctis has whale gods, elemental krakens, and a new 'Black Lotus')
+commandersherald: 10 items (newest 2026-11-13: A Rule Zero Conversation With A Democrat Insider)
+hipsters: 10 items (newest 2026-11-14: 7 Years, 5 Months, and 10 Days After Being Announced, Planeswalker, the Magic Show on Netflix Has It’s First Sneak Peak)
 17lands: 0 items
-Wrote 52 headlines to news_test/news.json
+Wrote 101 headlines to news_test/news.json
