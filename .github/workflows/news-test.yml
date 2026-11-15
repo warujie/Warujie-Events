@@ -1,0 +1,25 @@
+# THROWAWAY (remove before publishing): runs build_news.py once on this work branch and commits its log
+# and file to news_test/, to check which feeds answer and what they give. No secrets, nothing published.
+name: News page test
+on:
+  push:
+    branches: [claude/project-thread-b1pw60]
+    paths: [build_news.py, .github/workflows/news-test.yml]
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Build news.json
+        run: |
+          mkdir -p news_test
+          ( set -x; python3 build_news.py --out news_test/news.json ) > news_test/log.txt 2>&1 || true
+      - name: Commit the result
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add news_test && git commit -m "news test result [skip ci]" && git push || echo nothing
