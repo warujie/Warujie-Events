@@ -36,7 +36,7 @@ NEWS_PER_SOURCE = 15  # newest items kept per site
 # game news sites: only their Magic headlines); site: the page "more" links to.
 NEWS_SOURCES = [
     {"id": "4gamer", "name": "4Gamer.net", "lang": "ja", "kind": "news", "site": "https://www.4gamer.net/games/136/G013687/",
-     "feed": "https://www.4gamer.net/games/136/G013687/contents.xml"},
+     "feed": "https://www.4gamer.net/games/136/G013687/contents.xml", "must": "MTG"},
     {"id": "4gamer-arena", "name": "4Gamer.net（MTGアリーナ）", "lang": "ja", "kind": "news", "site": "https://www.4gamer.net/games/443/G044382/",
      "feed": "https://www.4gamer.net/games/443/G044382/contents.xml"},
     {"id": "automaton", "name": "AUTOMATON", "lang": "ja", "kind": "news", "site": "https://automaton-media.com/",

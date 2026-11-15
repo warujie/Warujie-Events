@@ -4,7 +4,7 @@ name: News page test
 on:
   push:
     branches: [claude/project-thread-b1pw60]
-    paths: [build_news.py, .github/workflows/news-test.yml]
+    paths: [build_news.py, news_probe.py, .github/workflows/news-test.yml]
 permissions:
   contents: write
 jobs:
@@ -19,6 +19,7 @@ jobs:
         run: |
           mkdir -p news_test
           ( set -x; python3 build_news.py --out news_test/news.json ) > news_test/log.txt 2>&1 || true
+          ( python3 news_probe.py ) > news_test/probe.txt 2>&1 || true
       - name: Commit the result
         run: |
           git config user.name "github-actions[bot]"; git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
