@@ -7,6 +7,7 @@
 | [`build_events.py`](../build_events.py) | Reads the shops' event pages and Tonamel's MTG event search, adds the events read by hand from shops' calendar pictures, and writes `events.json` (the next 35 days) |
 | [`manual_events.json`](../manual_events.json) | The Magic events read by hand from shops' calendar pictures: posts on X and MINT's schedule pages ("Calendar pictures" below) |
 | [`x_reader.py`](../x_reader.py), [`x_accounts.json`](../x_accounts.json) | Reads the calendar pictures of the shops' X accounts listed in `x_accounts.json` automatically, each night, into `x_events.json` (kept in R2): "Calendar pictures on X, read automatically" below |
+| [`build_news.py`](../build_news.py) | Reads Magic sites' own RSS/Atom feeds and writes `news.json`, the headlines of the site's news page ("News page" below) |
 | [`.github/workflows/events-nightly.yml`](../.github/workflows/events-nightly.yml) | Runs it every night and publishes `events.json` (and Hareruya's fee cache, `hareruya_fees.json`) to R2; a change to `manual_events.json` on `main` updates only those events at once |
 
 The site (`warujie/Warujie`) reads the file at `warujie.jp/data/events.json` (its Worker serves the
@@ -193,6 +194,37 @@ others); `sources` counts each reader's events (`manual`: the calendar pictures)
 when none is known; `fee` is the entry fee in yen (0 when free) and `fee_to` the higher fee when
 there are two (Japanese or English packs), both left out when unknown. About 11,000 events, 2.6 MB (much smaller compressed in transit).
 
+## News page (`news.json`)
+
+The site's news page (`?view=news`, the owner's request of 2026-11-15; a draft on the test sites) shows Magic sites'
+headlines. `build_news.py` reads each site in `NEWS_SOURCES` once a night, in the nightly run after the shops (step
+"Read the news feeds"), and publishes `news.json` to R2 beside `events.json`:
+
+- **Only feeds**: the RSS or Atom feed a site publishes for others to read, only where its `robots.txt` lets our
+  User-Agent in (`allowed()`; an unreadable robots.txt keeps us out), one feed at a time, `PAGE_GAP` seconds apart.
+- **Headline, link and date only** (`read_source()`): never the article's text or pictures, so every item sends the
+  reader to the article on its own site. Items older than `NEWS_DAYS` (30) drop out; each site keeps its
+  `NEWS_PER_SOURCE` (15) newest, or its own `max` (note's #MTG: 6, as anyone can post there). A general game news site
+  gives only its Magic headlines (`must`, the words in `MUST`).
+- **Never read**: Wizards' sites (`NEVER_HOSTS`: magic.wizards.com, mtg-jp.com, magic.gg; their terms forbid robots), and
+  shops that forbid reuse (Hareruya, BIG MAGIC…). The page links to them instead. Google News' feed is out too (its
+  robots.txt disallows it). **If a site asks us to stop, take its line out at once.**
+- One site's trouble never stops the others (its entry in `sources` gets `"error": true`); when no site answers at all,
+  nothing is written and yesterday's file stays.
+
+The sites (checked 2026-11-15 from a GitHub runner): Japanese: 4Gamer.net (its Magic and MTG Arena pages), AUTOMATON,
+電ファミニコゲーマー, GAME Watch, インサイド (their Magic headlines only, which are rare) and note's #MTG; English:
+MTGGoldfish, EDHREC, MTG Arena Zone, Draftsim, Card Kingdom's blog, Magic Spoiler, Wargamer (Magic only), Commander's
+Herald, Hipsters of the Coast and 17Lands' blog. Adding a site is one line in `NEWS_SOURCES` (the owner's yes first).
+
+```
+{ "updated": "2026-11-15T18:30:00Z",
+  "sources": [ { "id": "mtggoldfish", "name": "MTGGoldfish", "lang": "en", "kind": "article", "site": "https://www.mtggoldfish.com/articles", "n": 15 } ],
+  "items": [ { "s": "mtggoldfish", "t": "Magic World Championship 32 Top 8 Decklists", "u": "https://www.mtggoldfish.com/articles/…", "d": "2026-11-15T14:00:00Z" } ] }
+```
+
+The page's shop posts come from `x_events.json` (above), which the site reads itself: nothing more is read from X.
+
 ## Running it on your computer
 
 ```
@@ -201,6 +233,7 @@ python3 build_events.py --out out/events.json --only amenity
 python3 build_events.py --out out/events.json --only hareruya --fees out/hareruya_fees.json   # with fees
 python3 build_events.py --out out/events.json --only manual   # manual_events.json alone
 python3 build_events.py --out out/events.json --manual-only published.json   # its hand-kept events replaced
+python3 build_news.py --out out/news.json                                  # the news page's headlines, about a minute
 ```
 
 It needs Python 3.10+, for Amenity Dream `pip install cryptography`, and for Tonamel

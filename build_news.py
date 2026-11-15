@@ -33,7 +33,8 @@ NEWS_PER_SOURCE = 15  # newest items kept per site
 
 # The sites read (the owner's choice; add or remove a line). lang: the articles' language (ja/en);
 # kind: article (articles and columns) or news (news sites); must: a pattern a headline needs (general
-# game news sites: only their Magic headlines); site: the page "more" links to.
+# game news sites: only their Magic headlines); site: the page "more" links to; max: fewer than NEWS_PER_SOURCE
+# items for a busy site whose posts would push the others down (note's #MTG: anyone's posts).
 NEWS_SOURCES = [
     {"id": "4gamer", "name": "4Gamer.net", "lang": "ja", "kind": "news", "site": "https://www.4gamer.net/games/136/G013687/",
      "feed": "https://www.4gamer.net/games/136/G013687/contents.xml", "must": "MTG"},
@@ -48,7 +49,7 @@ NEWS_SOURCES = [
     {"id": "inside", "name": "インサイド", "lang": "ja", "kind": "news", "site": "https://www.inside-games.jp/",
      "feed": "https://www.inside-games.jp/rss/index.rdf", "must": "MTG"},
     {"id": "note", "name": "note（#MTG）", "lang": "ja", "kind": "article", "site": "https://note.com/hashtag/MTG",
-     "feed": "https://note.com/hashtag/MTG/rss", "must": "MTG"},
+     "feed": "https://note.com/hashtag/MTG/rss", "must": "MTG", "max": 6},
     {"id": "mtggoldfish", "name": "MTGGoldfish", "lang": "en", "kind": "article", "site": "https://www.mtggoldfish.com/articles",
      "feed": "https://www.mtggoldfish.com/feed"},
     {"id": "edhrec", "name": "EDHREC", "lang": "en", "kind": "article", "site": "https://edhrec.com/articles",
@@ -161,7 +162,7 @@ def read_source(src, since):
         seen.add(link)
         items.append({"s": src["id"], "t": title, "u": link.replace("http://", "https://", 1) if link.startswith("http://") else link, "d": d})
     items.sort(key=lambda i: i["d"], reverse=True)
-    return items[:NEWS_PER_SOURCE]
+    return items[:src.get("max", NEWS_PER_SOURCE)]
 
 
 def main():

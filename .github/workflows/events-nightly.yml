@@ -93,9 +93,16 @@ jobs:
           aws s3 cp "s3://warujie-price-data/x_events.json" x_events.json --endpoint-url "$R2_ENDPOINT" --only-show-errors || echo "No x_events.json yet"
           python3 build_events.py --out site/events.json --manual-only published.json --x-events x_events.json
 
+      # the news page's headlines (build_news.py): Magic sites' own feeds, headline and link only; when no feed answers,
+      # nothing is written and yesterday's news.json stays
+      - name: Read the news feeds
+        if: github.event_name != 'push'
+        run: python3 build_news.py --out site/news.json || echo "::warning::build_news.py read nothing; yesterday's news.json stays"
+
       - name: Publish to R2
         run: |
           aws s3 cp site/events.json "s3://warujie-price-data/events.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors
           echo "Published events.json ($(stat -c %s site/events.json) bytes)"
           if [ -s x_events.json ] && [ "${{ github.event_name }}" != push ]; then aws s3 cp x_events.json "s3://warujie-price-data/x_events.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors; fi
+          if [ -s site/news.json ]; then aws s3 cp site/news.json "s3://warujie-price-data/news.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors; fi
           if [ -s hareruya_fees.json ]; then aws s3 cp hareruya_fees.json "s3://warujie-price-data/hareruya_fees.json" --endpoint-url "$R2_ENDPOINT" --content-type "application/json; charset=utf-8" --only-show-errors; fi
