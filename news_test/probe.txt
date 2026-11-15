@@ -1,0 +1,74 @@
+https://www.4gamer.net/rss/index.xml
+   100 items, 0 Magic; newest item 2026-11-15
+https://www.4gamer.net/rss/rss.xml
+   HTTPError: HTTP Error 404: Not Found
+https://www.famitsu.com/rss/famitsu_news.rdf
+   HTTPError: HTTP Error 404: Not Found
+https://www.famitsu.com/rss/category/news.rdf
+   HTTPError: HTTP Error 404: Not Found
+https://gamebiz.jp/feed.rss
+   ParseError: not well-formed (invalid token): line 52, column 3
+https://gamebiz.jp/rss
+   HTTPError: HTTP Error 404: Not Found
+https://gamebiz.jp/feed
+   HTTPError: HTTP Error 404: Not Found
+https://dengekionline.com/rss/news.rss
+   HTTPError: HTTP Error 404: Not Found
+https://dengekionline.com/feed
+   HTTPError: HTTP Error 404: Not Found
+https://www.gamespark.jp/rss/index.rdf
+   50 items, 0 Magic; newest item 2026-11-15
+https://www.inside-games.jp/rss/index.rdf
+   50 items, 0 Magic; newest item 2026-11-15
+https://kyodonewsprwire.jp/rss/all.rdf
+   HTTPError: HTTP Error 404: Not Found
+https://prtimes.jp/index.rdf
+   200 items, 0 Magic; newest item 2026-11-15
+https://news.google.com/rss/search?q=%E3%83%9E%E3%82%B8%E3%83%83%E3%82%AF%EF%BC%9A%E3%82%B6%E3%83%BB%E3%82%AE%E3%83%A3%E3%82%B6%E3%83%AA%E3%83%B3%E3%82%B0&hl=ja&gl=JP&ceid=JP:ja
+   robots.txt disallows
+https://note.com/hashtag/MTG/rss
+   25 items, 14 Magic; newest item 2026-11-15
+     2026-11-15 🌻夏を🇷🇺ウラジオストクで。❄️冬を🇵🇭マニラで暮らしたいうさぎ。※❤️赤単コントロール🪄👯‍♀️🃏MTG構築・紹介あり。
+     2026-11-15 凛堂たいむさんをマジック：ザ・ギャザリングのカードによって表現する日
+     2026-11-15 一ヶ月一万円MTG生活（2026.11.01 Ver .3）
+     2026-11-15 ハーメルンの笛吹きは、MTGでネズミに味方した
+     2026-11-15 コレスキ語り：MTG「ホームランド」のフレーバーテキスト
+https://note.com/hashtag/mtg?f=new&rss
+   ParseError: not well-formed (invalid token): line 2, column 399939
+https://www.youtube.com/@mtgjp
+   HTTPError: HTTP Error 404: Not Found
+https://www.youtube.com/@MagicTheGathering
+   HTTPError: HTTP Error 404: Not Found
+https://www.youtube.com/@playmtg
+   channel UCKe6aQ2HCgiTI67Fvy7BCNQ
+https://mtg-arena-japan.com/feed
+   robots.txt disallows
+https://cardrush.media/mtg/feed
+   robots.txt disallows
+https://www.cardrush.media/feed
+   robots.txt disallows
+https://www.mtgsalvation.com/articles.rss
+   5 items, 0 Magic; newest item 2026-10-02
+https://www.wargamer.com/mainrss.xml
+   75 items, 15 Magic; newest item 2026-11-13
+     2026-11-13 MTG Nauctis has whale gods, elemental krakens, and a new 'Black Lotus'
+     2026-11-13 MTG Nauctis Commander decks include bloodthirsty sharks and group-hug seals
+     2026-11-12 Magic: The Gathering release schedule 2026-2027
+     2026-11-12 MTG Star Trek boxes plummet on the secondary market
+     2026-11-11 No, MTG Star Trek is not a Universes Beyond killer
+https://commandersherald.com/feed/
+   10 items, 1 Magic; newest item 2026-11-13
+     2026-10-31 Top 10 Legally Distinct Magic: The Gathering Halloween Costumes
+https://www.hipstersofthecoast.com/feed/
+   10 items, 0 Magic; newest item 2026-11-14
+https://aetherhub.com/Feed/Atom
+   40 items, 11 Magic; newest item 2026-10-17
+     2026-10-17 The BEST Decks in MTG Arena Historic BO1 Right Now!
+     2026-10-03 👉 BEST MTG Arena Standard BO1 Decks After Reality Fracture | Mythic Ranked Tier List
+     2026-08-21 The Top 10 POST BAN Best Performing Tier 1 Standard Meta Decks | MTG Arena
+     2026-08-13 MTG Standard Finally Picks Up the Axe
+     2026-08-08 Tons of New "Star Trek" MTG Cards Spoiled!!🔸𝐌𝐓𝐆 STAR TREK Spoiler Season
+https://www.tcgplayer.com/content/magic-the-gathering/rss
+   ParseError: not well-formed (invalid token): line 27, column 28
+https://infinite.tcgplayer.com/magic-the-gathering/rss
+   ParseError: not well-formed (invalid token): line 27, column 28

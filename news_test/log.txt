@@ -1,5 +1,5 @@
 + python3 build_news.py --out news_test/news.json
-4gamer: 3 items (newest 2026-11-12: 人はなぜモノを集めるのか。殺意に勝るコレクションの業を描きぬいた傑作ミステリ「古本屋探偵の事件簿」（ゲーマーのためのブックガイド：第73回）)
+4gamer: 0 items
 4gamer-arena: 0 items
 automaton: 0 items
 denfaminico: 0 items
@@ -12,4 +12,4 @@ draftsim: 10 items (newest 2026-11-14: $160 Secret Lair Exclusive Confirmed for 
 cardkingdom: 10 items (newest 2026-11-13: Star Trek Commons & Uncommons On Our Radar)
 magicspoiler: 4 items (newest 2026-11-12: Secret Lair: Dune Superdrop)
 17lands: 0 items
-Wrote 55 headlines to news_test/news.json
+Wrote 52 headlines to news_test/news.json
