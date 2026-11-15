@@ -224,6 +224,9 @@ Herald, Hipsters of the Coast and 17Lands' blog. Adding a site is one line in `N
 ```
 
 The page's shop posts come from `x_events.json` (above), which the site reads itself: nothing more is read from X.
+`x_reader.py` keeps each account's `NEWS_POSTS` (5) newest posts of the last `NEWS_POST_DAYS` (30) there with their text
+(`posts`: `{ "u": <the post>, "d": <UTC time>, "store", "handle", "p", "c", "text" }`, the closing t.co link taken off), from
+the posts it reads each Sunday anyway; the page shows them beside the events read from their pictures.
 
 ## Running it on your computer
 

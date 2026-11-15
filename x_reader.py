@@ -45,6 +45,8 @@ X_MAX_POSTS = 25        # per account and reading (about a week of a busy shop's
 X_POSTS_CAP = 100       # an account's own max_posts in x_accounts.json, for a shop that posts many times a day
 X_MAX_READS = 20        # pictures read by READ_MODEL per night, whatever the accounts post
 X_POST_DAYS = 45        # posts older than this are never read (a first night, or an account added later)
+NEWS_POSTS = 5          # each account's newest posts kept with their text for the site's news page (no extra reads)
+NEWS_POST_DAYS = 30     # and only this many days
 SCREEN_MODEL = "claude-haiku-5-5"
 READ_MODEL = "claude-opus-5-5"
 HANDLE_RE = re.compile(r"[A-Za-z0-9_]{1,15}")
@@ -185,6 +187,7 @@ def main():
         state = {}
     seen = state.get("accounts", {})
     kept = state.get("events", [])
+    news_posts = state.get("posts", [])   # the news page's shop posts: { u, d, store, handle, text }
     now = datetime.now(JST)
     today = now.date()
     last_sunday = (today - timedelta(days=(today.weekday() - X_WEEKDAY) % 7)).isoformat()
@@ -221,6 +224,11 @@ def main():
         done = s.get("since_id")   # the newest post whose pictures are all dealt with
         finished = True            # every new post dealt with: the account's week starts again
         for p in sorted(posts, key=lambda p: int(p["id"])):   # oldest first, so a newer reading replaces an older
+            if not args.dry_run and p.get("text"):   # its text for the news page, from the reading already paid for
+                purl = f"https://x.com/{a['handle']}/status/{p['id']}"
+                text = re.sub(r"\s*https://t\.co/\w+\s*$", "", p["text"]).strip()[:400]
+                news_posts = [n for n in news_posts if n["u"] != purl] + [{"u": purl, "d": p["created_at"], "store": a["store"], "handle": a["handle"],
+                              "p": a["p"], "c": a.get("c", ""), "text": text}]
             pics = [media[k] for k in p.get("attachments", {}).get("media_keys", []) if media.get(k, {}).get("type") == "photo" and media[k].get("url")]
             url = f"https://x.com/{a['handle']}/status/{p['id']}"
             posted = datetime.fromisoformat(p["created_at"].replace("Z", "+00:00")).astimezone(JST)
@@ -313,8 +321,16 @@ def main():
         return
     first = (today - timedelta(days=1)).isoformat()
     kept = [k for k in kept if k["d"] >= first]   # past events go
+    oldest = (datetime.now(timezone.utc) - timedelta(days=NEWS_POST_DAYS)).strftime("%Y-%m-%dT%H:%M:%S")
+    per, newest = {}, []
+    for n in sorted(news_posts, key=lambda n: n["d"], reverse=True):   # each account's NEWS_POSTS newest of the last NEWS_POST_DAYS
+        h = n["handle"].lower()
+        per[h] = per.get(h, 0) + 1
+        if n["d"] >= oldest and per[h] <= NEWS_POSTS:
+            newest.append(n)
+    news_posts = newest
     with open(args.state, "w", encoding="utf-8") as f:
-        json.dump({"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "accounts": seen, "pages": page_state,
+        json.dump({"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "accounts": seen, "pages": page_state, "posts": news_posts,
                    "events": sorted(kept, key=lambda e: (e["d"], e["t"], e["store"]))}, f, ensure_ascii=False, indent=1)
     log(f"Wrote {len(kept)} events to {args.state}")
 
