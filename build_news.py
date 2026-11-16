@@ -34,7 +34,8 @@ NEWS_PER_SOURCE = 15  # newest items kept per site
 # The sites read (the owner's choice; add or remove a line). lang: the articles' language (ja/en);
 # kind: article (articles and columns) or news (news sites); must: a pattern a headline needs (general
 # game news sites: only their Magic headlines); site: the page "more" links to; max: fewer than NEWS_PER_SOURCE
-# items for a busy site whose posts would push the others down (note's #MTG: anyone's posts).
+# items for a busy site whose posts would push the others down.
+# Official and company sources only (the owner's word, 2026-11-16: no note #MTG, nobody's personal posts).
 NEWS_SOURCES = [
     {"id": "4gamer", "name": "4Gamer.net", "lang": "ja", "kind": "news", "site": "https://www.4gamer.net/games/136/G013687/",
      "feed": "https://www.4gamer.net/games/136/G013687/contents.xml", "must": "MTG"},
@@ -48,8 +49,6 @@ NEWS_SOURCES = [
      "feed": "https://game.watch.impress.co.jp/data/rss/1.0/gmw/feed.rdf", "must": "MTG"},
     {"id": "inside", "name": "インサイド", "lang": "ja", "kind": "news", "site": "https://www.inside-games.jp/",
      "feed": "https://www.inside-games.jp/rss/index.rdf", "must": "MTG"},
-    {"id": "note", "name": "note（#MTG）", "lang": "ja", "kind": "article", "site": "https://note.com/hashtag/MTG",
-     "feed": "https://note.com/hashtag/MTG/rss", "must": "MTG", "max": 6},
     {"id": "mtggoldfish", "name": "MTGGoldfish", "lang": "en", "kind": "article", "site": "https://www.mtggoldfish.com/articles",
      "feed": "https://www.mtggoldfish.com/feed"},
     {"id": "edhrec", "name": "EDHREC", "lang": "en", "kind": "article", "site": "https://edhrec.com/articles",
@@ -58,6 +57,10 @@ NEWS_SOURCES = [
      "feed": "https://mtgazone.com/news/feed/"},
     {"id": "draftsim", "name": "Draftsim", "lang": "en", "kind": "article", "site": "https://draftsim.com/blog/",
      "feed": "https://draftsim.com/feed/"},
+    {"id": "tcgplayer", "name": "TCGplayer", "lang": "en", "kind": "article", "site": "https://www.tcgplayer.com/content/magic-the-gathering",
+     "feed": "https://www.tcgplayer.com/content/magic-the-gathering/rss"},
+    {"id": "starcitygames", "name": "Star City Games", "lang": "en", "kind": "article", "site": "https://articles.starcitygames.com/",
+     "feed": "https://articles.starcitygames.com/feed/"},
     {"id": "cardkingdom", "name": "Card Kingdom Blog", "lang": "en", "kind": "article", "site": "https://blog.cardkingdom.com/",
      "feed": "https://blog.cardkingdom.com/feed/"},
     {"id": "magicspoiler", "name": "Magic Spoiler", "lang": "en", "kind": "news", "site": "https://www.magicspoiler.com/",
@@ -129,8 +132,17 @@ def when(s):
 
 
 def parse_feed(data):
-    """[(title, link, date)] from RSS 2.0, RSS 1.0 (RDF) or Atom."""
-    root = ET.fromstring(data)
+    """[(title, link, date)] from RSS 2.0, RSS 1.0 (RDF) or Atom; a feed that isn't well-formed XML (a stray &, as
+    TCGplayer's) is read item by item with patterns instead."""
+    try:
+        root = ET.fromstring(data)
+    except ET.ParseError:
+        text = data.decode("utf-8", "replace")
+        out = []
+        for it in re.findall(r"<item\b.*?</item>", text, re.S):
+            get = lambda tag: (re.search(rf"<{tag}\b[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</{tag}>", it, re.S) or [None, None])[1]
+            out.append((get("title"), (get("link") or "").strip(), get("pubDate") or get("dc:date")))
+        return out
     out = []
     for it in root.iter("item"):                       # RSS 2.0
         out.append((it.findtext("title"), it.findtext("link"), it.findtext("pubDate") or it.findtext(DC + "date")))

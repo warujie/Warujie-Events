@@ -204,7 +204,7 @@ headlines. `build_news.py` reads each site in `NEWS_SOURCES` once a night, in th
   User-Agent in (`allowed()`; an unreadable robots.txt keeps us out), one feed at a time, `PAGE_GAP` seconds apart.
 - **Headline, link and date only** (`read_source()`): never the article's text or pictures, so every item sends the
   reader to the article on its own site. Items older than `NEWS_DAYS` (30) drop out; each site keeps its
-  `NEWS_PER_SOURCE` (15) newest, or its own `max` (note's #MTG: 6, as anyone can post there). A general game news site
+  `NEWS_PER_SOURCE` (15) newest, or its own `max`. A general game news site
   gives only its Magic headlines (`must`, the words in `MUST`).
 - **Never read**: Wizards' sites (`NEVER_HOSTS`: magic.wizards.com, mtg-jp.com, magic.gg; their terms forbid robots), and
   shops that forbid reuse (Hareruya, BIG MAGIC…). The page links to them instead. Google News' feed is out too (its
@@ -213,9 +213,12 @@ headlines. `build_news.py` reads each site in `NEWS_SOURCES` once a night, in th
   nothing is written and yesterday's file stays.
 
 The sites (checked 2026-11-15 from a GitHub runner): Japanese: 4Gamer.net (its Magic and MTG Arena pages), AUTOMATON,
-電ファミニコゲーマー, GAME Watch, インサイド (their Magic headlines only, which are rare) and note's #MTG; English:
-MTGGoldfish, EDHREC, MTG Arena Zone, Draftsim, Card Kingdom's blog, Magic Spoiler, Wargamer (Magic only), Commander's
-Herald, Hipsters of the Coast and 17Lands' blog. Adding a site is one line in `NEWS_SOURCES` (the owner's yes first).
+電ファミニコゲーマー, GAME Watch, インサイド (their Magic headlines only, which are rare); English: MTGGoldfish, EDHREC,
+MTG Arena Zone, Draftsim, the shops TCGplayer, Star City Games and Card Kingdom, Magic Spoiler, Wargamer (Magic only),
+Commander's Herald, Hipsters of the Coast and 17Lands' blog. **Official and company sources only** (the owner's word,
+2026-11-16): note's #MTG, where anyone posts, was taken out. Japanese shops' and Wizards' own articles need their
+permission first (asked by the owner). A feed that isn't well-formed XML is read item by item (`parse_feed()`). Adding a
+site is one line in `NEWS_SOURCES` (the owner's yes first).
 
 ```
 { "updated": "2026-11-15T18:30:00Z",
