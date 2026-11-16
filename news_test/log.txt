@@ -9,7 +9,6 @@ mtggoldfish: 15 items (newest 2026-11-15: Opening Packs Until I Open the Entire 
 edhrec: 10 items (newest 2026-11-13: MagicCon Atlanta 2026 Preview Panel Recap)
 mtgazone: 3 items (newest 2026-11-14: The MTG Hero’s Top 10 Universes Beyond: Star Trek Cards for Standard)
 draftsim: 10 items (newest 2026-11-15: The 34 Best Eldrazi Cards in Magic Ranked)
-tcgplayer: 0 items
 starcitygames: 10 items (newest 2026-11-13: Netflix Reveals Sneak Peek For Magic: The Gathering Animated Series)
 cardkingdom: 10 items (newest 2026-11-13: Star Trek Commons & Uncommons On Our Radar)
 magicspoiler: 3 items (newest 2026-11-12: Secret Lair: Dune Superdrop)
