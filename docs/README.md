@@ -214,10 +214,11 @@ headlines. `build_news.py` reads each site in `NEWS_SOURCES` once a night, in th
 
 The sites (checked 2026-11-15 from a GitHub runner): Japanese: 4Gamer.net (its Magic and MTG Arena pages), AUTOMATON,
 電ファミニコゲーマー, GAME Watch, インサイド (their Magic headlines only, which are rare); English: MTGGoldfish, EDHREC,
-MTG Arena Zone, Draftsim, the shops TCGplayer, Star City Games and Card Kingdom, Magic Spoiler, Wargamer (Magic only),
+MTG Arena Zone, Draftsim, the shops Star City Games and Card Kingdom, Magic Spoiler, Wargamer (Magic only),
 Commander's Herald, Hipsters of the Coast and 17Lands' blog. **Official and company sources only** (the owner's word,
 2026-11-16): note's #MTG, where anyone posts, was taken out. Japanese shops' and Wizards' own articles need their
-permission first (asked by the owner). A feed that isn't well-formed XML is read item by item (`parse_feed()`). Adding a
+permission first (asked by the owner). A feed that isn't well-formed XML is read item by item (`parse_feed()`); TCGplayer's feed gave no items with
+dates on 2026-11-16, so it isn't listed. Adding a
 site is one line in `NEWS_SOURCES` (the owner's yes first).
 
 ```

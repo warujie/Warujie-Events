@@ -57,8 +57,6 @@ NEWS_SOURCES = [
      "feed": "https://mtgazone.com/news/feed/"},
     {"id": "draftsim", "name": "Draftsim", "lang": "en", "kind": "article", "site": "https://draftsim.com/blog/",
      "feed": "https://draftsim.com/feed/"},
-    {"id": "tcgplayer", "name": "TCGplayer", "lang": "en", "kind": "article", "site": "https://www.tcgplayer.com/content/magic-the-gathering",
-     "feed": "https://www.tcgplayer.com/content/magic-the-gathering/rss"},
     {"id": "starcitygames", "name": "Star City Games", "lang": "en", "kind": "article", "site": "https://articles.starcitygames.com/",
      "feed": "https://articles.starcitygames.com/feed/"},
     {"id": "cardkingdom", "name": "Card Kingdom Blog", "lang": "en", "kind": "article", "site": "https://blog.cardkingdom.com/",
